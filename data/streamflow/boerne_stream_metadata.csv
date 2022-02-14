@@ -1,0 +1,4 @@
+"site","name","latitude","longitude","huc8","startYr","endYr","nYears","ws_watershed"
+"08183900","Cibolo Ck nr Boerne, TX",29.77498889,-98.7094694,"12100304",1962,2022,60,"Cibolo Creek"
+"08167500","Guadalupe Rv nr Spring Branch, TX",29.8604957,-98.3836275,"12100201",1922,2022,100,"Guadalupe River"
+"08167800","Guadalupe Rv at Sattler, TX",29.85910758,-98.1800106,"12100202",1960,2022,62,"Guadalupe River"
