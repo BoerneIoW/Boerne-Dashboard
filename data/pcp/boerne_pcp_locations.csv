@@ -1,0 +1,6 @@
+"id","latitude","longitude","elevation","state","name","gsn_flag","wmo_id","element","first_year","last_year"
+"USC00410902",29.7986,-98.7353,440.4,"TX","BOERNE","","HCN","PRCP",1893,2021
+"USC00411429",29.8608,-98.1958,304.8,"TX","CANYON DAM","","","PRCP",1961,2021
+"USC00411433",29.9461,-98.3967,373.4,"TX","CANYON DAM #3","","","PRCP",2004,2021
+"USC00411434",29.9111,-98.3714,356,"TX","CANYON DAM #4","","","PRCP",2009,2021
+"USC00411920",29.9614,-98.8944,436.8,"TX","COMFORT 2","","","PRCP",1985,2021
