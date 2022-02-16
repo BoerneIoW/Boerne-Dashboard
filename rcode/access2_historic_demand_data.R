@@ -28,6 +28,7 @@ ma <- function(x,n=7){stats::filter(x,rep(1/n,n), sides=1)}
 #
 #####################################################################################################################################################################
 gs4_auth()
+1
 
 demand_data <- read_sheet("https://docs.google.com/spreadsheets/d/1BKb9Q6UFEBNsGrLZhjdq2kKX5t1GqPFCWF553afUKUg/edit#gid=2030520898", sheet = 1, range = "A5854:H", col_names = FALSE)
 demand_by_source <- demand_data[, c("...1", "...2", "...3", "...6", "...7", "...8")]
