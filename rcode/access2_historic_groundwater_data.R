@@ -16,6 +16,7 @@
 
 #authenticate account
 gs4_auth()
+1
 
 # load in metadata for each well and merge into one 
 well_1_metadata <- read_sheet("https://docs.google.com/spreadsheets/d/1QoaOhrpz6vrSMBc0yc5-i7nhwj2lmsBHZFYOBJc0KVU/edit#gid=1522547605", sheet = 1, range = "A2:X3", col_names = FALSE)  
