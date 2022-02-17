@@ -6,6 +6,7 @@
 # Run anytime... change county.list if desire. 
 # Updated June 2021 by Sophia Bryson for TX.  
 # Updated November 2021 by Vianey Rueda for Boerne
+#
 ###################################################################################################################################################
 
 ######################################################################################################################################################################
@@ -147,7 +148,7 @@ print(ggplot(boerne_all_gw_levels, aes(x = as.Date(date, format = "%Y-%m-%d"), y
         ylab("depth below surface (ft)") + ylim(-1.1*max(boerne_all_gw_levels$depth_ft), 0))
 
 
-rm(all.well.metadata, all.well.data, gw.i.metadata, gw.i.data, boerne_all_gw_levels, boerne_all_well_metadata, boerne_gw_depth)
+rm(all.well.metadata, all.well.data, gw.i.metadata, gw.i.data, boerne_all_gw_levels, boerne_all_well_metadata, boerne_gw_depth, zt, nx)
 ######################################################################################################################################################################
 #
 #   RUN STATS: NOT NEEDED TO BE SAVED OUT
