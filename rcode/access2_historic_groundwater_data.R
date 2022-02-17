@@ -92,8 +92,6 @@ write.csv(boerne_all_well_metadata, paste0(swd_data, "gw/boerne_well_metadata.cs
 
 
 #clean up data
-  boerne_all_gw_levels <- as.data.frame(boerne_all_gw_levels) # change from a subclass to a data frame
-
   #rename columns
   boerne_all_gw_levels <- rename(all.well.data, site = State_Number, date = "...1", depth_ft = "...2", elevation_at_waterlevel = "...3")
   #colnames(boerne_all_gw_levels)
@@ -102,6 +100,7 @@ write.csv(boerne_all_well_metadata, paste0(swd_data, "gw/boerne_well_metadata.cs
   str(boerne_all_gw_levels)
   boerne_all_gw_levels$site <- unlist(boerne_all_gw_levels$site)
   boerne_all_gw_levels$date <- format(as.Date(boerne_all_gw_levels$date), "%Y-%m-%d")
+  boerne_all_gw_levels <- as.data.frame(boerne_all_gw_levels)
   str(boerne_all_gw_levels)
 
   #add julian indexing
