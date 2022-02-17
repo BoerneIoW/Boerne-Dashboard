@@ -55,78 +55,78 @@ for(i in 1:length(sheet.number)) {
 }
 
 #clean up metadata
-#rename columns
-boerne_all_well_metadata <- rename(all.well.metadata, location = "...1", dec_long_va = "...2", dec_lat_va = "...3",
+  #rename columns
+  boerne_all_well_metadata <- rename(all.well.metadata, location = "...1", dec_long_va = "...2", dec_lat_va = "...3",
                                    elevation = "...4", elevation_at_mp = "...5", total_depth = "...6", casing_diameter = "...7",
                                    casing_type = "...8", casing_depth = "...9", cemented = "...10", estimated_gpm = "...11", aquifer = "...12",
                                    strata = "...13", district_id = "...14", state_id = "...15", avg_level = "...16", median_level = "...17",
                                    low = "...18", high = "...19", range = "...20", yrs_in_service = "...21", current = "...22", month = "...23", year = "...24", long_va = "Long_Va", lat_va = "Lat_Va")
 
-boerne_all_well_metadata$agency <- "CCGCD" #include agency that collects data
+  boerne_all_well_metadata$agency <- "CCGCD" #include agency that collects data
 
-#colnames(boerne_all_well_metadata)
+  #colnames(boerne_all_well_metadata)
 
-boerne_all_well_metadata <- as.data.frame(boerne_all_well_metadata) # change from a subclass to a data frame
+  boerne_all_well_metadata <- as.data.frame(boerne_all_well_metadata) # change from a subclass to a data frame
 
-#remove spaces
-boerne_all_well_metadata$long_va <- gsub('\\s+', '', boerne_all_well_metadata$long_va)
-boerne_all_well_metadata$lat_va <- gsub('\\s+', '', boerne_all_well_metadata$lat_va)
+  #remove spaces
+  boerne_all_well_metadata$long_va <- gsub('\\s+', '', boerne_all_well_metadata$long_va)
+  boerne_all_well_metadata$lat_va <- gsub('\\s+', '', boerne_all_well_metadata$lat_va)
 
-# change from list to numeric and/or string
-str(boerne_all_well_metadata)
-boerne_all_well_metadata$long_va <- as.numeric(boerne_all_well_metadata$long_va)
-boerne_all_well_metadata$lat_va <- as.numeric(boerne_all_well_metadata$lat_va)
-boerne_all_well_metadata$dec_long_va <- as.numeric(boerne_all_well_metadata$dec_long_va)
-boerne_all_well_metadata$dec_lat_va <- as.numeric(boerne_all_well_metadata$dec_lat_va)
-boerne_all_well_metadata$elevation <- as.numeric(boerne_all_well_metadata$elevation)
-boerne_all_well_metadata$elevation_at_mp <- as.numeric(boerne_all_well_metadata$elevation_at_mp)
-boerne_all_well_metadata$total_depth <- as.numeric(boerne_all_well_metadata$total_depth)
-boerne_all_well_metadata$month <- as.numeric(boerne_all_well_metadata$month)
-boerne_all_well_metadata$year <- as.numeric(boerne_all_well_metadata$year)
-boerne_all_well_metadata$location <- unlist(boerne_all_well_metadata$location)
-boerne_all_well_metadata$current <- unlist(boerne_all_well_metadata$current)
-str(boerne_all_well_metadata)
+  # change from list to numeric and/or string
+  str(boerne_all_well_metadata)
+  boerne_all_well_metadata$long_va <- as.numeric(boerne_all_well_metadata$long_va)
+  boerne_all_well_metadata$lat_va <- as.numeric(boerne_all_well_metadata$lat_va)
+  boerne_all_well_metadata$dec_long_va <- as.numeric(boerne_all_well_metadata$dec_long_va)
+  boerne_all_well_metadata$dec_lat_va <- as.numeric(boerne_all_well_metadata$dec_lat_va)
+  boerne_all_well_metadata$elevation <- as.numeric(boerne_all_well_metadata$elevation)
+  boerne_all_well_metadata$elevation_at_mp <- as.numeric(boerne_all_well_metadata$elevation_at_mp)
+  boerne_all_well_metadata$total_depth <- as.numeric(boerne_all_well_metadata$total_depth)
+  boerne_all_well_metadata$month <- as.numeric(boerne_all_well_metadata$month)
+  boerne_all_well_metadata$year <- as.numeric(boerne_all_well_metadata$year)
+  boerne_all_well_metadata$location <- unlist(boerne_all_well_metadata$location)
+  boerne_all_well_metadata$current <- unlist(boerne_all_well_metadata$current)
+  str(boerne_all_well_metadata)
 
 # save out
 write.csv(boerne_all_well_metadata, paste0(swd_data, "gw/boerne_well_metadata.csv"), row.names = FALSE)
 
 
 #clean up data
-boerne_all_gw_levels <- as.data.frame(boerne_all_gw_levels) # change from a subclass to a data frame
+  boerne_all_gw_levels <- as.data.frame(boerne_all_gw_levels) # change from a subclass to a data frame
 
-#rename columns
-boerne_all_gw_levels <- rename(all.well.data, site = State_Number, date = "...1", depth_ft = "...2", elevation_at_waterlevel = "...3")
-#colnames(boerne_all_gw_levels)
+  #rename columns
+  boerne_all_gw_levels <- rename(all.well.data, site = State_Number, date = "...1", depth_ft = "...2", elevation_at_waterlevel = "...3")
+  #colnames(boerne_all_gw_levels)
 
-#double-check that each column is the desired type (numeric, character, etc.) and make necessary changes
-str(boerne_all_gw_levels)
-boerne_all_gw_levels$site <- unlist(boerne_all_gw_levels$site)
-boerne_all_gw_levels$date <- format(as.Date(boerne_all_gw_levels$date), "%Y-%m-%d")
-str(boerne_all_gw_levels)
+  #double-check that each column is the desired type (numeric, character, etc.) and make necessary changes
+  str(boerne_all_gw_levels)
+  boerne_all_gw_levels$site <- unlist(boerne_all_gw_levels$site)
+  boerne_all_gw_levels$date <- format(as.Date(boerne_all_gw_levels$date), "%Y-%m-%d")
+  str(boerne_all_gw_levels)
 
-#add julian indexing
-nx <- boerne_all_gw_levels %>% mutate(year = year(date), day_month = substr(date, 6, 10))
+  #add julian indexing
+  nx <- boerne_all_gw_levels %>% mutate(year = year(date), day_month = substr(date, 6, 10))
 
-for(i in 1:nrow(nx)) { #computationally slow. There's almost certainly a faster way. But it works. 
+  for(i in 1:nrow(nx)) { #computationally slow. There's almost certainly a faster way. But it works. 
   
-  if(leap_year(nx$year[i]) == TRUE) {nx$julian[i] <- julian.ref$julian_index_leap[julian.ref$day_month_leap == nx$day_month[i]]}
-  if(leap_year(nx$year[i]) == FALSE) {nx$julian[i] <- julian.ref$julian_index[julian.ref$day_month == nx$day_month[i]]}
+    if(leap_year(nx$year[i]) == TRUE) {nx$julian[i] <- julian.ref$julian_index_leap[julian.ref$day_month_leap == nx$day_month[i]]}
+    if(leap_year(nx$year[i]) == FALSE) {nx$julian[i] <- julian.ref$julian_index[julian.ref$day_month == nx$day_month[i]]}
   
-  print(paste(round(i/nrow(nx)*100,2),"% complete"))
-}
+    print(paste(round(i/nrow(nx)*100,2),"% complete"))
+  }
 
-boerne_all_gw_levels <- nx
+  boerne_all_gw_levels <- nx
 
-boerne_all_gw_levels$agency <- "CCGCD" #include agency that collects data
+  boerne_all_gw_levels$agency <- "CCGCD" #include agency that collects data
 
-#remove missing data
-boerne_all_gw_levels <- na.omit(boerne_all_gw_levels)
+  #remove missing data
+  boerne_all_gw_levels <- na.omit(boerne_all_gw_levels)
 
-# filter data up to 2021
-boerne_all_gw_levels <- boerne_all_gw_levels %>% filter(year <= 2021)
+  # filter data up to 2021
+  boerne_all_gw_levels <- boerne_all_gw_levels %>% filter(year <= 2021)
 
-check.last.date <- boerne_all_gw_levels %>% filter(date == max(date)) %>% dplyr::select(date)
-table(check.last.date$date)
+  check.last.date <- boerne_all_gw_levels %>% filter(date == max(date)) %>% dplyr::select(date)
+  table(check.last.date$date)
 
 # save out
 write.csv(boerne_all_gw_levels, paste0(swd_data, "gw/boerne_gw_levels.csv"), row.names = FALSE)
