@@ -197,4 +197,8 @@ rm(all.well.metadata, all.well.data, gw.i.metadata, gw.i.data, boerne_all_gw_lev
 #year.flow <- year.flow %>% filter(year(as.Date(date, format="%Y-%m-%d")) >= year(start.date))
 #write.csv(year.flow, paste0(swd_data, "gw/boerne_gw_depth2.csv"), row.names=FALSE) # file doesn't have julian
 
-
+################################################################################################################################################################
+# remove all except for global environment 
+rm(list= ls()[!(ls() %in% c('julian.ref','update.date', 'current.month', 'current.year', 'end.date', 'end.year', 
+                            'mymonths', 'source_path', 'start.date', 'state_fips', 'stateAbb', 'stateFips', 'swd_data', 'today', 
+                            '%notin%', 'ma'))])
