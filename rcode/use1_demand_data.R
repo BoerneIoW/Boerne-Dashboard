@@ -159,3 +159,9 @@ all_pop_data <- rbind(old_pop, new_pop_data)
 
 #write.csv
 write.csv(pop_data, paste0(swd_data, "demand/all_boerne_pop.csv"), row.names=FALSE)
+
+################################################################################################################################################################
+# remove all except for global environment 
+rm(list= ls()[!(ls() %in% c('julian.ref','update.date', 'current.month', 'current.year', 'end.date', 'end.year', 
+                            'mymonths', 'source_path', 'start.date', 'state_fips', 'stateAbb', 'stateFips', 'swd_data', 'today', 
+                            '%notin%', 'ma'))])
