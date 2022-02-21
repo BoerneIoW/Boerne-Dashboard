@@ -1,9 +1,10 @@
 ###################################################################################################################################################
 #
-#      CODE TO READ IN SENSOR OF THINGS DATA FOR NC WATER SUPPLY DASHBOARD
+# CODE TO READ IN SENSOR OF THINGS DATA FOR NC WATER SUPPLY DASHBOARD
 # CREATED BY LAUREN PATTERSON & KYLE ONDA @ THE INTERNET OF WATER
 # FEBRUARY 2021
 # RUN AFTER global0_set_apis_libraries
+# Updated November 2021 by Vianey Rueda for Boerne
 #
 ###################################################################################################################################################
 
