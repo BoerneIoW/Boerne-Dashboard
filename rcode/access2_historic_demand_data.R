@@ -4,7 +4,7 @@
 # CREATED BY LAUREN PATTERSON & KYLE ONDA @ THE INTERNET OF WATER
 # FEBRUARY 2021
 # RUN AFTER global0_set_apis_libraries
-# Updated November 2021 by Vianey Rueda for Boerne
+# Modified November 2021 by Vianey Rueda for Boerne
 #
 ###################################################################################################################################################
 
