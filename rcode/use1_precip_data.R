@@ -6,10 +6,12 @@
 # Can be updated daily
 # FEBRUARY 2021
 #
-# Modified by Sophia Bryson May 2021 for TX
+# Sample code for accessing TexMesonet API data for Boerne, TX (Kendall County)
+# Created Sophia Bryson @ THE INTERNET OF WATER. 
+# Updated by Vianey Rueda
+# February 2022
 #
 ########################################################################################################################################################
-
 
 ################################################################################################################################################
 #
@@ -18,7 +20,7 @@
 ################################################################################################################################################
 #download spatial data
 #drought <- file_to_geojson(input="https://droughtmonitor.unl.edu/data/kmz/usdm_current.kmz", method='web', output=paste0(swd_data, 'drought\\current_drought'))
-  #9/24/2021: Causing problems. Lauren's been having trouble with this, too. 
+#9/24/2021: Causing problems. Lauren's been having trouble with this, too. 
 drought <- read_sf(paste0(swd_data, "drought/current_drought.geojson")) %>%  st_transform(drought, crs = 4326) %>% select(Name, geometry); #already in correct projection
 
 #download tables for HUCS of interest 
@@ -38,27 +40,27 @@ end.date <- paste0("12/31/", year(today))
 #create dataframe and pull new data
 drought.time <- as.data.frame(matrix(nrow=0, ncol=9)); colnames(drought.time) <- c("huc8","name","date","none","d0","d1","d2","d3","d4")
 for (m in 1:length(huc.list)){
-  full_url <-paste0("https://usdmdataservices.unl.edu/api/HUCStatistics/GetDroughtSeverityStatisticsByAreaPercent?aoi=",huc.list[m],"&startdate=",last.date,"&enddate=", end.date, "&statisticsType=1")
-  api.data <- GET(full_url, timeout(15000)) #use httr libirary to avoid timeout
-  df <- content(api.data, "parse")
-  
-  for (i in 1:length(df)){
-    zt.name <- as.character(subset(huc8, huc8==huc.list[m])$name) 
-    zt = tibble(
-      huc8 = as.character(huc.list[m]),
-      name = zt.name,
-      date = df[[i]]$ValidStart,
-      none = df[[i]]$None,
-      d0 = df[[i]]$D0,
-      d1 = df[[i]]$D1,
-      d2 = df[[i]]$D2,
-      d3 = df[[i]]$D3,
-      d4 = df[[i]]$D4
-    )
-    drought.time <- rbind(drought.time, zt)
-  }
-  #print(zt.name)
-  print(paste0(zt.name, ", ", round(m*100/length(huc.list), 2), "% complete"))
+   full_url <-paste0("https://usdmdataservices.unl.edu/api/HUCStatistics/GetDroughtSeverityStatisticsByAreaPercent?aoi=",huc.list[m],"&startdate=",last.date,"&enddate=", end.date, "&statisticsType=1")
+   api.data <- GET(full_url, timeout(15000)) #use httr libirary to avoid timeout
+   df <- content(api.data, "parse")
+   
+   for (i in 1:length(df)){
+      zt.name <- as.character(subset(huc8, huc8==huc.list[m])$name) 
+      zt = tibble(
+         huc8 = as.character(huc.list[m]),
+         name = zt.name,
+         date = df[[i]]$ValidStart,
+         none = df[[i]]$None,
+         d0 = df[[i]]$D0,
+         d1 = df[[i]]$D1,
+         d2 = df[[i]]$D2,
+         d3 = df[[i]]$D3,
+         d4 = df[[i]]$D4
+      )
+      drought.time <- rbind(drought.time, zt)
+   }
+   #print(zt.name)
+   print(paste0(zt.name, ", ", round(m*100/length(huc.list), 2), "% complete"))
 }
 table(drought.time$huc8)
 
@@ -77,11 +79,6 @@ drought2 <- drought2 %>% arrange(huc8, date) %>% distinct()
 #save file
 write.csv(drought2, paste0(swd_data, "drought/all_percentAreaHUC.csv"))
 rm(drought, drought2, zt.name, zt, last.month, last.year, last.day, last.date, full_url, api.data, drought.time, df, old.drought, m, huc.list, i)
-###################################################################################################################################################################################################################################
-#
-###################################################################################################################################################################################################################################
-
-
 
 ################################################################################################################################################
 #
@@ -104,30 +101,30 @@ url.used <- paste0("https://water.weather.gov/precip/downloads/",year.url,"/",mo
 #call data in as a raster
 zt <- raster(url.used)
 #the data are provided as 4 bands in one raster. We are interested in Band 1 and Band 4
-  #Band 1 - Observation - Last 24 hours of QPE spanning 12Z to 12Z in inches
-  #Band 2 - PRISM normals - PRISM normals in inches (see "Normal Precipitation" section on the About page)
-  #Band 3 - Departure from normal - The departure from normal in inches
-  #Band 4 - Percent of normal - The percent of normal
+#Band 1 - Observation - Last 24 hours of QPE spanning 12Z to 12Z in inches
+#Band 2 - PRISM normals - PRISM normals in inches (see "Normal Precipitation" section on the About page)
+#Band 3 - Departure from normal - The departure from normal in inches
+#Band 4 - Percent of normal - The percent of normal
 zt1 <- raster(url.used, band=1);
 zt4 <- raster(url.used, band=4)
 
 #clip zt2 to huc
 zt1.proj <- projectRaster(zt1, crs="+proj=longlat +datum=WGS84")
 zt1.proj <- crop(zt1.proj, extent(huc8));    #zt1.proj <- mask(zt1.proj, huc8); #extent makes a box, while mask clips to huc
-  mapview::mapview(zt1.proj)
+mapview::mapview(zt1.proj)
 #NA value is -10000
 pol <- rasterToPolygons(zt1.proj); colnames(pol@data) <- c("obsv_in")
 pol <- pol %>% st_as_sf() %>% mutate(obsv_in = round(obsv_in,2)) %>% ms_simplify(keep = 0.5, keep_shapes=TRUE); #convert to a geojson and simplify to plot faster
 
 #summarize and dissolve based on ranges
 pol2 <- pol %>% mutate(bands = ifelse(obsv_in == 0, 0, ifelse(obsv_in <=0.1 & obsv_in > 0, 0.1, ifelse(obsv_in <=0.25 & obsv_in > 0.1, 0.25, ifelse(obsv_in <=0.5 & obsv_in > 0.25, 0.50, ifelse(obsv_in <=1 & obsv_in > 0.5, 1,
-                               ifelse(obsv_in <=2 & obsv_in > 1,2, ifelse(obsv_in <=3 & obsv_in > 2, 3, ifelse(obsv_in <=4 & obsv_in > 3, 4, ifelse(obsv_in <=5 & obsv_in > 4, 5, ifelse(obsv_in <=6 & obsv_in > 5, 6, 
-                                ifelse(obsv_in <=8 & obsv_in > 6,8, ifelse(obsv_in <=10 & obsv_in > 8, 10, ifelse(obsv_in <=15 & obsv_in > 10, 15, ifelse(obsv_in <20 & obsv_in > 15, 20, ifelse(obsv_in > 20,30, NA))))))))))))))))
+                                                                                                                                                                                                 ifelse(obsv_in <=2 & obsv_in > 1,2, ifelse(obsv_in <=3 & obsv_in > 2, 3, ifelse(obsv_in <=4 & obsv_in > 3, 4, ifelse(obsv_in <=5 & obsv_in > 4, 5, ifelse(obsv_in <=6 & obsv_in > 5, 6, 
+                                                                                                                                                                                                                                                                                                                                                           ifelse(obsv_in <=8 & obsv_in > 6,8, ifelse(obsv_in <=10 & obsv_in > 8, 10, ifelse(obsv_in <=15 & obsv_in > 10, 15, ifelse(obsv_in <20 & obsv_in > 15, 20, ifelse(obsv_in > 20,30, NA))))))))))))))))
 table(pol2$bands, useNA="ifany")
 pol2 <- pol2 %>% group_by(bands) %>% summarize(nbands = n(), .groups="drop")
 pol2 <- pol2 %>% mutate(colorVal = ifelse(bands==0, "white", ifelse(bands==0.1, "#3fc1bf", ifelse(bands==0.25, "#87b2c0", ifelse(bands==0.5, "#000080", ifelse(bands==1, "#00fc02", ifelse(bands==1.5, "#56b000", 
-                                   ifelse(bands==2, "#316400", ifelse(bands==3, "yellow", ifelse(bands==4, "#f7e08b", ifelse(bands==5, "orange", ifelse(bands==6, "red", ifelse(bands==8, "#9a0000",
-                                   ifelse(bands==10, "#4e0000", ifelse(bands==15, "#e00079", ifelse(bands>=20,"#8e2eff", "black"))))))))))))))))
+                                                                                                                                                                                           ifelse(bands==2, "#316400", ifelse(bands==3, "yellow", ifelse(bands==4, "#f7e08b", ifelse(bands==5, "orange", ifelse(bands==6, "red", ifelse(bands==8, "#9a0000",
+                                                                                                                                                                                                                                                                                                                                        ifelse(bands==10, "#4e0000", ifelse(bands==15, "#e00079", ifelse(bands>=20,"#8e2eff", "black"))))))))))))))))
 #convert pol to geojson and simplify
 leaflet() %>%  addProviderTiles("Stamen.TonerLite") %>% addPolygons(data = pol2, fillOpacity= 0.8, fillColor = pol2$colorVal, color="black", weight=0)
 #write 7 day observations to file
@@ -143,15 +140,15 @@ pol <- pol %>% st_as_sf() %>% mutate(percent_norm = round(percent_norm,2)) %>% m
 
 #summarize and dissolve based on ranges
 pol2 <- pol %>% mutate(bands = ifelse(percent_norm == 0, 0, ifelse(percent_norm <=5 & percent_norm > 0, 5, ifelse(percent_norm <=10 & percent_norm > 5, 10, ifelse(percent_norm <=25 & percent_norm > 10, 25, 
-                               ifelse(percent_norm <=50 & percent_norm > 25, 50, ifelse(percent_norm <=75 & percent_norm > 50, 75, ifelse(percent_norm <=90 & percent_norm > 75, 90, ifelse(percent_norm <=100 & percent_norm > 90, 100,
-                               ifelse(percent_norm <=110 & percent_norm > 100, 110, ifelse(percent_norm <=125 & percent_norm > 110, 125, ifelse(percent_norm <=150 & percent_norm > 125, 150, 
-                               ifelse(percent_norm <=200 & percent_norm > 150, 200, ifelse(percent_norm <=300 & percent_norm > 200, 300, ifelse(percent_norm <= 400 & percent_norm > 300, 400, 
-                               ifelse(percent_norm > 400 & percent_norm <=600, 600, ifelse(percent_norm > 600, 800, NA)))))))))))))))))
+                                                                                                                                                                   ifelse(percent_norm <=50 & percent_norm > 25, 50, ifelse(percent_norm <=75 & percent_norm > 50, 75, ifelse(percent_norm <=90 & percent_norm > 75, 90, ifelse(percent_norm <=100 & percent_norm > 90, 100,
+                                                                                                                                                                                                                                                                                                                                ifelse(percent_norm <=110 & percent_norm > 100, 110, ifelse(percent_norm <=125 & percent_norm > 110, 125, ifelse(percent_norm <=150 & percent_norm > 125, 150, 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                 ifelse(percent_norm <=200 & percent_norm > 150, 200, ifelse(percent_norm <=300 & percent_norm > 200, 300, ifelse(percent_norm <= 400 & percent_norm > 300, 400, 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ifelse(percent_norm > 400 & percent_norm <=600, 600, ifelse(percent_norm > 600, 800, NA)))))))))))))))))
 table(pol2$bands, useNA="ifany")
 pol2 <- pol2 %>% group_by(bands) %>% summarize(nbands = n(), .groups="drop")
 pol2 <- pol2 %>% mutate(colorVal = ifelse(bands==0, "white", ifelse(bands==5, "#4e0000", ifelse(bands==10, "#9a0000", ifelse(bands==25, "red", ifelse(bands==50, "orange", ifelse(bands==75, "#f7e08b", 
-                 ifelse(bands==90, "yellow", ifelse(bands==100, "#316400", ifelse(bands==110, "#00fc02", ifelse(bands==125, "#56b000", ifelse(bands==150, "#316400", ifelse(bands==200, "#3fc1bf",
-                 ifelse(bands==300, "#000080", ifelse(bands==400, "#8e2eff", ifelse(bands>400,"#e00079", "black"))))))))))))))))
+                                                                                                                                                                                  ifelse(bands==90, "yellow", ifelse(bands==100, "#316400", ifelse(bands==110, "#00fc02", ifelse(bands==125, "#56b000", ifelse(bands==150, "#316400", ifelse(bands==200, "#3fc1bf",
+                                                                                                                                                                                                                                                                                                                                             ifelse(bands==300, "#000080", ifelse(bands==400, "#8e2eff", ifelse(bands>400,"#e00079", "black"))))))))))))))))
 
 leaflet() %>%  addProviderTiles("Stamen.TonerLite") %>%   addPolygons(data = pol2, fillOpacity= 0.8, fillColor = pol2$colorVal, color="black", weight=0)
 geojson_write(pol2, file =  paste0(swd_data, "pcp/pcp_7day_percent_normal.geojson"))
@@ -174,13 +171,13 @@ if(nchar(day.url)==1) { day.url = paste0("0", day.url) }
 pcp <- read_sf(paste0(swd_data, 'pcp/pcp610forecast.geojson')) %>% dplyr::select(Name, geometry) %>% st_transform(crs = 4326)
 pcp <- pcp %>% mutate(percentage = as.numeric(trimws(substr(Name,0,3))), direction = trimws(substr(Name, (nchar(Name)-12), (nchar(Name)-7)),"both"))
 pcp <- pcp %>% mutate(colorVal = ifelse(percentage < 33, "white", "black")) %>% mutate(colorVal = ifelse(direction == "Above" & percentage >= 33 & percentage < 40, "#d4f8d4", colorVal)) %>% 
-  mutate(colorVal = ifelse(direction == "Above" & percentage >= 40 & percentage < 50, "#90ee90", ifelse(direction == "Above" & percentage >= 50 & percentage < 60, "#4ce44c", 
-                    ifelse(direction == "Above" & percentage >= 60 & percentage < 70, "#1ec31e", ifelse(direction == "Above" & percentage >= 70 & percentage < 80, "#169016", 
-                    ifelse(direction == "Above" & percentage >= 80 & percentage <= 100, "#0c4c0c", colorVal))))))
+   mutate(colorVal = ifelse(direction == "Above" & percentage >= 40 & percentage < 50, "#90ee90", ifelse(direction == "Above" & percentage >= 50 & percentage < 60, "#4ce44c", 
+                                                                                                         ifelse(direction == "Above" & percentage >= 60 & percentage < 70, "#1ec31e", ifelse(direction == "Above" & percentage >= 70 & percentage < 80, "#169016", 
+                                                                                                                                                                                             ifelse(direction == "Above" & percentage >= 80 & percentage <= 100, "#0c4c0c", colorVal))))))
 
 pcp <- pcp %>% mutate(colorVal = ifelse(direction == "Below" & percentage >= 33 & percentage < 40, "#e1d9d2", ifelse(direction == "Below" & percentage >= 40 & percentage < 50, "#b9a797", 
-                                 ifelse(direction == "Below" & percentage >= 50 & percentage < 60, "#b19d8c", ifelse(direction == "Below" & percentage >= 60 & percentage < 70, "#776250", 
-                                 ifelse(direction == "Below" & percentage >= 70 & percentage < 80, "#5f4f40", ifelse(direction == "Below" & percentage >= 80 & percentage <= 100, "#312821", colorVal)))))))
+                                                                                                                     ifelse(direction == "Below" & percentage >= 50 & percentage < 60, "#b19d8c", ifelse(direction == "Below" & percentage >= 60 & percentage < 70, "#776250", 
+                                                                                                                                                                                                         ifelse(direction == "Below" & percentage >= 70 & percentage < 80, "#5f4f40", ifelse(direction == "Below" & percentage >= 80 & percentage <= 100, "#312821", colorVal)))))))
 pcp <- pcp %>% mutate(colorVal = ifelse(direction == "Normal", "white", colorVal))
 pcp <- st_zm(pcp)
 table(pcp$colorVal)
@@ -193,13 +190,13 @@ file_to_geojson(input=paste0("ftp://ftp.cpc.ncep.noaa.gov/GIS/us_tempprcpfcst/61
 pcp <- read_sf(paste0(swd_data, 'pcp/temp610forecast.geojson')) %>% dplyr::select(Name, geometry) %>% st_transform(crs = 4326)
 pcp <- pcp %>% mutate(percentage = as.numeric(trimws(substr(Name,0,3))), direction = trimws(substr(Name, (nchar(Name)-12), (nchar(Name)-7)),"both"))
 pcp <- pcp %>% mutate(colorVal = ifelse(percentage < 33, "white", "black")) %>% mutate(colorVal = ifelse(direction == "Above" & percentage >= 33 & percentage < 40, "#ffc4c4", colorVal)) %>% 
-  mutate(colorVal = ifelse(direction == "Above" & percentage >= 40 & percentage < 50, "#ff7676", ifelse(direction == "Above" & percentage >= 50 & percentage < 60, "#ff2727", 
-                    ifelse(direction == "Above" & percentage >= 60 & percentage < 70, "#eb0000", ifelse(direction == "Above" & percentage >= 70 & percentage < 80, "#b10000", 
-                    ifelse(direction == "Above" & percentage >= 80 & percentage <= 100, "#760000", colorVal))))))
+   mutate(colorVal = ifelse(direction == "Above" & percentage >= 40 & percentage < 50, "#ff7676", ifelse(direction == "Above" & percentage >= 50 & percentage < 60, "#ff2727", 
+                                                                                                         ifelse(direction == "Above" & percentage >= 60 & percentage < 70, "#eb0000", ifelse(direction == "Above" & percentage >= 70 & percentage < 80, "#b10000", 
+                                                                                                                                                                                             ifelse(direction == "Above" & percentage >= 80 & percentage <= 100, "#760000", colorVal))))))
 
 pcp <- pcp %>% mutate(colorVal = ifelse(direction == "Below" & percentage >= 33 & percentage < 40, "#d8d8ff", ifelse(direction == "Below" & percentage >= 40 & percentage < 50, "#9d9dff", 
-                                 ifelse(direction == "Below" & percentage >= 50 & percentage < 60, "#4e4eff", ifelse(direction == "Below" & percentage >= 60 & percentage < 70, "#1414ff", 
-                                 ifelse(direction == "Below" & percentage >= 70 & percentage < 80, "#0000d8", ifelse(direction == "Below" & percentage >= 80 & percentage <= 100, "#00009d", colorVal)))))))
+                                                                                                                     ifelse(direction == "Below" & percentage >= 50 & percentage < 60, "#4e4eff", ifelse(direction == "Below" & percentage >= 60 & percentage < 70, "#1414ff", 
+                                                                                                                                                                                                         ifelse(direction == "Below" & percentage >= 70 & percentage < 80, "#0000d8", ifelse(direction == "Below" & percentage >= 80 & percentage <= 100, "#00009d", colorVal)))))))
 pcp <- pcp %>% mutate(colorVal = ifelse(direction == "Normal", "white", colorVal))
 pcp <- st_zm(pcp)
 table(pcp$colorVal)
@@ -219,11 +216,11 @@ pcp <- read_sf(paste0(swd_data, 'pcp/qpf1-7dayforecast.geojson')) %>% select(Nam
 #pcp2 <- st_crop(pcp, extent(huc8)) 
 #add colors
 pcp2 <- pcp %>% rename(bands = Name) %>% dplyr::select(bands, geometry) %>% 
-  mutate(colorVal = ifelse(bands==0, "white", ifelse(bands==0.01, "lightgray",ifelse(bands==0.1, "#228b22", ifelse(bands==0.25, "#2cb42c", ifelse(bands==0.5, "#000080", #greens
-                    ifelse(bands==0.75, "#000072",  ifelse(bands==1, "#005fbf",  ifelse(bands==1.25, "#007cfa", ifelse(bands==1.5, "#00bfbf", #blues
-                    ifelse(bands==1.75, "#9370db", ifelse(bands==2, "#663399", ifelse(bands==2.5, "#800080", #purples
-                    ifelse(bands==3, "darkred", ifelse(bands==4, "red", ifelse(bands==5, "#ff4500", ifelse(bands==7, "orange", #red/orange
-                    ifelse(bands==10, "#8b6313",ifelse(bands==15, "#daa520",ifelse(bands<=20,"yellow", "black"))))))))))))))))))))
+   mutate(colorVal = ifelse(bands==0, "white", ifelse(bands==0.01, "lightgray",ifelse(bands==0.1, "#228b22", ifelse(bands==0.25, "#2cb42c", ifelse(bands==0.5, "#000080", #greens
+                                                                                                                                                   ifelse(bands==0.75, "#000072",  ifelse(bands==1, "#005fbf",  ifelse(bands==1.25, "#007cfa", ifelse(bands==1.5, "#00bfbf", #blues
+                                                                                                                                                                                                                                                      ifelse(bands==1.75, "#9370db", ifelse(bands==2, "#663399", ifelse(bands==2.5, "#800080", #purples
+                                                                                                                                                                                                                                                                                                                        ifelse(bands==3, "darkred", ifelse(bands==4, "red", ifelse(bands==5, "#ff4500", ifelse(bands==7, "orange", #red/orange
+                                                                                                                                                                                                                                                                                                                                                                                                               ifelse(bands==10, "#8b6313",ifelse(bands==15, "#daa520",ifelse(bands<=20,"yellow", "black"))))))))))))))))))))
 #mapview::mapviewOptions(fgb = FALSE)
 #mapview::mapview(pcp2)
 pcp2 <- st_zm(pcp2); #Not sure what this does but it makes it work
@@ -232,135 +229,304 @@ leaflet() %>%  addProviderTiles("Stamen.TonerLite") %>% addPolygons(data = pcp2,
 geojson_write(pcp2, file =  paste0(swd_data, "pcp/qpf1-7dayforecast.geojson"))
 
 rm(pcp, pcp2)
-###################################################################################################################################################################################################################################
-#
-###################################################################################################################################################################################################################################
+#####################################################################################################################################################
 
-
-###################################################################################################################################
+###################################################################################################################################################################################################################################
+# 
+# Read in old pcp data
 #
-#          
-#          READ IN STATIONS AND OLD DATA 
-#         
-#
-###################################################################################################################################
+########################################################################################################################################################
 boerne.sites <- read.csv(paste0(swd_data, "pcp/boerne_pcp_locations.csv"))
 old.pcp <- read.csv(paste0(swd_data, "pcp/boerne_pcp_data.csv")) %>% mutate(date = as.POSIXct(date, format = "%Y-%m-%d")) #historic data
-###################################################################################################################################
-#          PULL NEW DATA TO BUILD DATABASE
-###################################################################################################################################
-ncdc_token <- 'xazWKRdECnwWdDDQVelRomkFPJctIhRy'
+########################################################################################################################################################
 
-unique.stations <- unique(old.pcp$id)              
+########################################################################################################################################################
+# 
+# Import New Synoptic Data
+#
+########################################################################################################################################################
+# Synoptic TexMesonet API definitions can be found here: 
+# https://developers.synopticdata.com/mesonet/v2/stations/precipitation/
 
-#NOT LOOPING - FUNCTION NOW CAN PULL by list
-#loop through - this first effort will decide which stations have enough data to keep
-#http://spatialecology.weebly.com/r-code--data/34
+# Base URL & station ID list for API calls: 
+   base.pcp.url <- "https://api.synopticdata.com/v2/stations/precip?stid=" #this is same for all sites
+   site.ids <- c("cict2", "twb03", "gubt2", "gbft2", "gbkt2", "gbjt2", 
+                 "gbrt2", "gbtt2", "gbvt2", "gbmt2", "gbst2", "gbdt2", "gbqt2",
+                 "gupt2", "smct2", "ea004", "ea006", "ea035") #this is the part that changes
+   
+   start_date = "202201011200" # this is the format needed for the listed website above
+   end_date <- as.POSIXct(today)
+   end_date = end_date +
+      hours(12)
+   end_date <- as.character(end_date)
+   end_date <- gsub('\\s+', '', end_date)
+   end_date <- gsub('-', '', end_date)
+   end_date <- gsub(':', '', end_date)
+   end_date <- substr(end_date, 1,12)
+   url_time_start = paste0("&start=",start_date)
+   url_time_end = paste0("&end=",end_date)
+   
+   addl.pars.url <- "&pmode=intervals&interval=day&units=english" #this is same for all sites
 
-  #create data frame
-    pcp.data <- as.data.frame(matrix(nrow=0, ncol=9)); colnames(pcp.data) <- c("id","year","month","day","precip","mflag","qflag","sflag","date")
-    values <- paste0("VALUE", seq(1,31,1));  mflag <- paste0("MFLAG", seq(1,31,1));  qflag <- paste0("QFLAG", seq(1,31,1));  sflag <- paste0("SFLAG", seq(1,31,1))
-  
-  #get data
-    dat.all <- ghcnd(stationid = unique.stations, token = ncdc_token, refresh = TRUE)
-  
-  # #temp saveout:
-  #   write.csv(dat.all, paste0(swd_data, "pcp\\temp_dat_all.csv"), row.names = FALSE)
-  
+   texmesonet.token <- "2517050a33774d43a7ff0557daf50271"
+   url_token = paste0("&token=", texmesonet.token)
+   
+# Pull the data   
+   # create empty storage dfs
+   synoptic.all.station.metadata <- matrix(nrow = 0, ncol = 14) %>% as.data.frame()
+   colnames(synoptic.all.station.metadata) <- c("STATUS", "MNET_ID", "ELEVATION", "NAME",                  
+                                                "STID", "ELEV_DEM", "LONGITUDE", "STATE",                 
+                                                "RESTRICTED", "LATITUDE", "TIMEZONE", "ID",                    
+                                                "PERIOD_OF_RECORD.start", "PERIOD_OF_RECORD.end")
+   
+   synoptic.all.station.data <- matrix(nrow = 0, ncol = 8) %>% as.data.frame()
+   colnames(synoptic.all.station.data) <- c("count", "first_report", "interval", "report_type", "last_report",
+                                            "total", "station", "agency")
+      
+      # create a list of assigned stations to their agencies
+      HADS <- c("CICT2", "GUBT2", "SMCT2")
+      TWDB <- c("TWB03")
+      EAA <- c("EA004", "EA006", "EA035")
+      GBRA <- c("GBFT2", "GBKT2", "GBJT2", "GBRT2", "GBTT2", "GBVT2", "GBMT2", "GBST2", "GBDT2", "GBQT2")
+      RAWS <- c("GUPT2")
+                                
+   # loop through sites and pull data
+   for(i in 1:length(site.ids)) {
+      api.url <- paste0(base.pcp.url, site.ids[i], url_time_start, url_time_end, addl.pars.url, url_token)
+      api.return <- fromJSON(api.url, flatten = TRUE)
+      api.station <- api.return$STATION
+      api.station.metadata <- subset(api.station, select=-c(OBSERVATIONS.precipitation))
+      api.station.data <- api.station$OBSERVATIONS.precipitation
+      api.station.data <- do.call(rbind.data.frame, api.station.data)
+      api.station.data$station <- api.station.metadata[1,5]
+      api.station.data$agency <- case_when(
+         api.station.data$station %in% HADS ~ "HADS",
+         api.station.data$station %in% TWDB ~ "TWDB",
+         api.station.data$station %in% EAA ~ "EAA", 
+         api.station.data$station %in% GBRA ~ "GBRA",
+         api.station.data$station %in% RAWS ~ "RAWS"
+      )
+      api.station.metadata$agency <- case_when(
+         api.station.metadata$STID %in% HADS ~ "HADS",
+         api.station.metadata$STID %in% TWDB ~ "TWDB",
+         api.station.metadata$STID %in% EAA ~ "EAA", 
+         api.station.metadata$STID %in% GBRA ~ "GBRA",
+         api.station.metadata$STID %in% RAWS ~ "RAWS"
+      )
+      # Now bind it up to save out
+      synoptic.all.station.metadata <- rbind(synoptic.all.station.metadata, api.station.metadata)
+      synoptic.all.station.data <- rbind(synoptic.all.station.data, api.station.data)
+      
+      # Keep an eye on the progress:
+      print(paste0("Completed pull for ", site.ids[i], ". ", round(i*100/length(site.ids), 2), "% complete."))
+   }
 
-      #filter and format data 
-      dat1 <- dat.all
-      dat <- dat1 %>% filter(year >= 2021 & month >= 1) %>%  filter(element == "PRCP")
+            
+# clean new data
+      synoptic.all.station.data2 <- select(synoptic.all.station.data, c(2, 5, 6, 7))
       
-      #need to use VALUE in place of PRCIP??? check - SB on 8/24
-      dat2 <- dat %>% select(id, year, month, values) %>% gather(key = "day", value = "precip", -id, -year, -month)
-      dat3 <- dat %>% select(id, year, month, all_of(mflag)) %>% gather(key = "day", value = "mflag", -id, -year, -month)
-      dat4 <- dat %>% select(id, year, month, all_of(qflag)) %>% gather(key = "day", value = "qflag", -id, -year, -month)
-      dat5 <- dat %>% select(id, year, month, all_of(sflag)) %>% gather(key = "day", value = "sflag", -id, -year, -month)
+      # make sure there are no duplicates
+      synoptic.all.station.data2 <- unique(synoptic.all.station.data2[c("station", "first_report", "last_report", "total")])
       
-      dat <- cbind(dat2,dat3$mflag,dat4$qflag, dat5$sflag);  colnames(dat) <- c("id", "year", "month","day", "precip", "mflag", "qflag", "sflag")
-      table(dat$mflag); #t means trace precip
-      table(dat$qflag);
-      table(dat$sflag); #N means COCORAHS; G means Offical systems, 0 or 7 means US COOP...
+      # choose last report as the date and rename columns
+      synoptic.all.station.data2 <- select(synoptic.all.station.data2, c(1, 3, 4))
+      synoptic.all.station.data2 <- rename(synoptic.all.station.data2, id = "station", date = "last_report", pcp_in = "total")
       
-      dat <- dat %>% mutate(day = substr(day,6,7), date = as.Date(paste0(year,"-",month,"-",day), "%Y-%m-%d"))
-      #remove those dates that do not exist
-      dat <- dat %>% filter(is.na(date)==FALSE)
+      #format dates
+      synoptic.all.station.data2$year <- year(synoptic.all.station.data2$date)
+      synoptic.all.station.data2$month <- month(synoptic.all.station.data2$date)
+      synoptic.all.station.data2$day <- day(synoptic.all.station.data2$date)
+      synoptic.all.station.data2 <- synoptic.all.station.data2 %>% mutate(date = as.POSIXct(date, format = "%Y-%m-%d"))
       
-      pcp.data <- dat
-      
-      summary(pcp.data)
-      
-      #clean up
-      pcp.data <- pcp.data %>% mutate(date = as.Date(date, "%Y-%m-%d"))
-      
-      #slim down data
-      zt <- pcp.data %>% select(id, sflag) %>% distinct() 
-      zt <- zt %>% filter(sflag != " "); length(unique(zt$id))
-      zt <- zt %>% filter(sflag != "D") %>% filter(sflag != "Z"); length(unique(zt$id))
-      zt <- zt %>% filter(sflag != "N"); length(unique(zt$id)) #206 sites that are not cocorhas
-      
-      #filter data to those that are not cocorahs (CoCoRHaS - N - community collaboraitve rain, hail, snow. Z - Datzilla.)
-      boerne.sites <- boerne.sites %>% filter(id %in% zt$id)
-      pcp.data <- pcp.data %>% filter(id %in% boerne.sites$id)
-      table(pcp.data$qflag);
-      table(pcp.data$mflag)
-      
-      #Assume NA is zero
-      pcp.data[is.na(pcp.data)] <- 0
-      
-      boerne.data <- pcp.data 
-      boerne.loc <- boerne.sites
-      
-      #rename columns and minimize
-      pcp.data <- boerne.data %>% select(id, date, precip) %>% mutate(precip = as.numeric(precip))
-      colnames(pcp.data) <- c("id", "date", "pcp_in")
-      
-      #convert date into year, month, day
-      pcp.data <- pcp.data %>% mutate(date = as.Date(date, format="%Y-%m-%d"), year = year(date), month = month(date), day = day(date))
-      pcp.data <- pcp.data %>% arrange(id, date) %>% distinct()
-      table(pcp.data$id, pcp.data$year)
-      
+      #check the last date
+      check.last.date <- synoptic.all.station.data2 %>% filter(date == max(date)) %>% dplyr::select(date)
+      table(check.last.date$date)
 
-      check.last.date <- pcp.data %>% group_by(id) %>% filter(is.na(pcp_in) == FALSE) %>% filter(date == max(date)) %>% dplyr::select(id, date, month)
-      table(substr(check.last.date$date,0,10))
+##################################################################################################################################################################
+#
+#   Import New NOAA Data  
+#
+#################################################################################################################################################################
+# token for National Climatic Data Center (NCDC) API (now NCEI - National Center for Environmental Information). 
+# Obtain unique token from: https://www.ncdc.noaa.gov/cdo-web/token
+   ncdc_token <- 'xazWKRdECnwWdDDQVelRomkFPJctIhRy'
+   state_fips = paste0("FIPS:", stateFips)
 
-      #from tenths of a mm, to mm, to inches
-      pcp.data$pcp_mm <- pcp.data$pcp_in/10
-      pcp.data$pcp_in <- pcp.data$pcp_mm*0.0393701
-      #truncate the number of decimals
-      pcp.data$pcp_in <- trunc(pcp.data$pcp_in*100)/100
-      #remove pcp_mm
-      pcp.data <- subset(pcp.data, select=-c(pcp_mm))    
-  
-  #merge older data with newer data  
-  old.pcp <- old.pcp %>% mutate(date = as.Date(date, format = "%Y-%m-%d")) %>% filter(date < as.Date("2022-01-01", "%Y-%m-%d")) #%>% select(!X)
-  
-  
-  pcp.data <- rbind(old.pcp, pcp.data)
-  pcp.data <- pcp.data %>% arrange(id, date) %>% distinct()
-  table(pcp.data$id, pcp.data$year)
-  
-  check.last.date <- pcp.data %>% group_by(id) %>% filter(is.na(pcp_in) == FALSE) %>% filter(date == max(date)) %>% select(id, date, month)
-  summary(check.last.date)
-  table(substr(check.last.date$date,0,10))
-
+#lets find stations in TX
+   noaa.stations <- ghcnd_stations()
+   #takes a long time to run... save out file for later
+   #write.csv(noaa.stations, paste0(swd_data,"pcp/noaa_stations.csv"), row.names = FALSE)
+   #noaa.stations <- read.csv(paste0(swd_data,"pcp/noaa_stations.csv"))
+   bkup <- noaa.stations;
+   
+# filter sites of relevance
+   noaa.boerne.stations <- noaa.stations %>% filter(id=="USC00410902" | id=="USC00411429" | id=="USC00411433" | id=="USC00411434" | id=="USC00411920") #filter the specific site(s) of interest
+   noaa.boerne.sites <- noaa.boerne.stations %>% filter(element == "PRCP")
+   noaa.boerne.sites <- noaa.boerne.sites %>% filter(first_year <= 2015)
+   noaa.boerne.sites <- noaa.boerne.sites %>% filter(last_year == current.year-1) 
+   
+#Or if we want daily summaries
+   # Fetch more information about location id FIPS:48
+   daily.stations <- ncdc_locs(datasetid = 'GHCND', locationcategoryid = "ST", token = ncdc_token) #Global Historical Climatological Network Daily
+   # Fetch available locations for the GHCND (Daily Summaries) dataset
+   ## change ST in locationcategoryid
+   
+   # #Other datasets:
+   # ncdc_locs(datasetid='GHCND', token = ncdc_token)
+   # ncdc_locs(datasetid=c('GHCND', 'ANNUAL'), token = ncdc_token)
+   # ncdc_locs(datasetid=c('GSOY', 'ANNUAL'), token = ncdc_token)
+   # ncdc_locs(datasetid=c('GHCND', 'GSOM'), token = ncdc_token)
+   
+sites <- noaa.boerne.sites
+   
+#Pull and save out historic precip data. 
+   #metadata: https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt
+   #mflag is the measurement flag. 
+   #qflag is the quality flag. 
+   #sflag is the source flag. 
+   
+#parameters
+   unique.stations <- unique(sites$id)
+   
+#create data frame
+   noaa.all.station.data <- as.data.frame(matrix(nrow=0, ncol=9)); colnames(noaa.all.station.data) <- c("id","year","month","day","precip","mflag","qflag","sflag","date")
+   values <- paste0("VALUE", seq(1,31,1));  mflag <- paste0("MFLAG", seq(1,31,1));  qflag <- paste0("QFLAG", seq(1,31,1));  sflag <- paste0("SFLAG", seq(1,31,1))
+   
+   
+# Modify this to fit the number of unique sites you need to loop through 
+   length(unique.stations) # Split up calls according to the number of unique stations
+   dat.a <- ghcnd(stationid = unique.stations[1:5], token = ncdc_token)
+   #dat.b <- ghcnd(stationid = unique.stations[100:199], token = ncdc_token)
+   #dat.c <- ghcnd(stationid = unique.stations[200:299], token = ncdc_token)
+   #dat.d <- ghcnd(stationid = unique.stations[300:399], token = ncdc_token)
+   #dat.e <- ghcnd(stationid = unique.stations[400:length(unique.stations)], token = ncdc_token)
+   #dat.f <- ghcnd(stationid = unique.stations[500:599], token = ncdc_token)
+   #dat.g <- ghcnd(stationid = unique.stations[600:699], token = ncdc_token)
+   #dat.h <- ghcnd(stationid = unique.stations[700:799], token = ncdc_token)
+   #dat.i <- ghcnd(stationid = unique.stations[800:899], token = ncdc_token) # literally running for 8 hours...
+   #dat.j <- ghcnd(stationid = unique.stations[900:999], token = ncdc_token)
+   #dat.k <- ghcnd(stationid = unique.stations[1000:length(unique.stations)], token = ncdc_token) #catch all. Will be slower
+   
+#check and bind
+   dat.all <- dat.a
+   #dat.all <- rbind(dat.a, dat.b, dat.c, dat.d, dat.e, dat.f, dat.g, dat.h, dat.i, dat.j, dat.k); write.csv(dat.all, paste0(swd_data, "ghcnd_backup_full.csv"), row.names = FALSE)
+   #rm(dat.a, dat.b, dat.c, dat.d, dat.e, dat.f, dat.g, dat.h, dat.i, dat.j, dat.k) #clear out
+   
+   
+#filter and format data 
+   dat1 <- dat.all
+   dat <- dat1 %>% filter(year >= 1990) %>%  filter(element == "PRCP")
+   
+   dat2 <- dat %>% select(id, year, month, values) %>% gather(key = "day", value = "precip", -id, -year, -month)
+   dat3 <- dat %>% select(id, year, month, all_of(mflag)) %>% gather(key = "day", value = "mflag", -id, -year, -month)
+   dat4 <- dat %>% select(id, year, month, all_of(qflag)) %>% gather(key = "day", value = "qflag", -id, -year, -month)
+   dat5 <- dat %>% select(id, year, month, all_of(sflag)) %>% gather(key = "day", value = "sflag", -id, -year, -month)
+   
+   dat <- cbind(dat2,dat3$mflag,dat4$qflag, dat5$sflag);  colnames(dat) <- c("id", "year", "month","day", "precip", "mflag", "qflag", "sflag")
+   table(dat$mflag); #t means trace precip
+   table(dat$qflag);
+   table(dat$sflag); #N means COCORAHS; G means Offical systems, 0 or 7 means US COOP...
+   
+   dat <- dat %>% mutate(day = substr(day,6,7), date = as.Date(paste0(year,"-",month,"-",day), "%Y-%m-%d"))
+#remove those dates that do not exist
+   dat <- dat %>% filter(is.na(date)==FALSE)
+   
+noaa.all.station.data <- dat
+   
+summary(noaa.all.station.data)
+   
+#slim down data
+   zt <- noaa.all.station.data %>% select(id, sflag) %>% distinct() 
+   zt <- zt %>% filter(sflag != " "); length(unique(zt$id))
+   zt <- zt %>% filter(sflag != "D") %>% filter(sflag != "Z"); length(unique(zt$id))
+   zt <- zt %>% filter(sflag != "N"); length(unique(zt$id)) #206 sites that are not cocorhas
+   
+#filter data to those that are not cocorahs (CoCoRHaS - N - community collaboraitve rain, hail, snow. Z - Datzilla.)
+   noaa.boerne.sites <- noaa.boerne.sites %>% filter(id %in% zt$id)
+   noaa.all.station.data <- noaa.all.station.data %>% filter(id %in% noaa.boerne.sites$id)
+   table(noaa.all.station.data$qflag);
+   table(noaa.all.station.data$mflag)
+   
+#Assume NA is zero
+   noaa.all.station.data[is.na(noaa.all.station.data)] <- 0
+   
+   boerne.data <- noaa.all.station.data 
+   
+# clean metadata
+   noaa.all.station.metadata <- noaa.boerne.sites
+   noaa.all.station.metadata$agency <- "NOAA"
+   noaa.all.station.metadata2 <- subset(noaa.all.station.metadata, select=-c(7, 8, 9))
+   
+#rename columns and minimize
+   noaa.all.station.data <- boerne.data %>% select(id, date, precip) %>% mutate(precip = as.numeric(precip))
+   colnames(noaa.all.station.data) <- c("id", "date", "pcp_in")
+   
+#convert date into year, month, day
+   noaa.all.station.data <- noaa.all.station.data %>% mutate(date = as.Date(date, format="%Y-%m-%d"), year = year(date), month = month(date), day = day(date))
+   noaa.all.station.data <- noaa.all.station.data %>% arrange(id, date) %>% distinct()
+   table(noaa.all.station.data$id, noaa.all.station.data$year)
+   
+# make sure there are no duplicates
+   noaa.all.station.data <- unique(noaa.all.station.data[c("date", "pcp_in", "id", "year", "month", "day")])
+   
+# filter for new data (beyond 2021)
+   noaa.all.station.data2 <- noaa.all.station.data %>% filter(year >= 2022)
+   check.last.date <- noaa.all.station.data2 %>% group_by(id) %>% filter(is.na(pcp_in) == FALSE) %>% filter(date == max(date)) %>% dplyr::select(id, date, month)
+   table(substr(check.last.date$date,0,10))
+   
+#from tenths of a mm, to mm, to inches
+   noaa.all.station.data2$pcp_mm <- noaa.all.station.data2$pcp_in/10
+   noaa.all.station.data2$pcp_in <- noaa.all.station.data2$pcp_mm*0.0393701
+   #truncate the number of decimals
+   noaa.all.station.data2$pcp_in <- trunc(noaa.all.station.data2$pcp_in*100)/100
+   #remove pcp_mm
+   noaa.all.station.data2 <- subset(noaa.all.station.data2, select=-c(pcp_mm))
+##################################################################################################################################################################
+#
+#  Combine New Synoptic and NOAA Data 
+#
+#################################################################################################################################################################
+#data
+   new.all.station.data <- rbind(synoptic.all.station.data2, noaa.all.station.data2) 
+   new.all.station.data <- new.all.station.data %>% mutate(date = as.Date(date)) # precaution to make sure all are in the same date format
+   check.last.date <- new.all.station.data %>% filter(date == max(date)) %>% dplyr::select(date)
+   table(check.last.date$date)
+   
+##################################################################################################################################################################
+#
+#  Combine New and Old Data 
+#
+#################################################################################################################################################################
+#make sure each column is of the same type 
+new.all.station.data <- new.all.station.data %>% mutate(date = as.Date(date, format = "%Y-%m-%d")) %>% filter(date > as.Date("2021-12-31", "%Y-%m-%d")) #%>% select(!X)
+old.pcp <- old.pcp %>% mutate(date = as.Date(date, format = "%Y-%m-%d")) %>% filter(date < as.Date("2022-01-01", "%Y-%m-%d")) #%>% select(!X)
+str(new.all.station.data) 
+str(old.pcp)
+   
+pcp.data <- rbind(old.pcp, new.all.station.data)
+pcp.data <- pcp.data %>% arrange(id, date) %>% distinct() #GBVT2 was showing up twice for some reason
+table(pcp.data$id, pcp.data$year)
+   
+check.last.date <- pcp.data %>% group_by(id) %>% filter(is.na(pcp_in) == FALSE) %>% filter(date == max(date)) %>% select(id, date, month)
+summary(check.last.date)
+table(substr(check.last.date$date,0,10))
+   
 ###################################################################################################################################
 #          LOOP THROUGH AND COMBINE OLD AND NEW DATA, REMOVING ANY DUPLICATE DAYS
 #          ALL DATA WITH A BAD DATA SCORE REPORT 0 RAIN...so NOTHING TO DO THERE
 ###################################################################################################################################
 #rename columns and minimize
-  pcp.data <- pcp.data %>% dplyr::select(id, date, pcp_in) 
-  
-  # #convert date time to just date and add year column
-  pcp.data <- pcp.data %>% mutate(date = as.Date(substr(date,0,10), "%Y-%m-%d"), year = year(date), month = month(date), day= day(date))
-  pcp.data <- pcp.data %>% arrange(id, date) %>% distinct()
-  
-  table(pcp.data$id, pcp.data$year)
-  
-  check.last.date <- pcp.data %>% group_by(id) %>% filter(is.na(pcp_in) == FALSE) %>% filter(date == max(date)) %>% dplyr::select(id, date, month)
-  table(check.last.date$date)
-  
+pcp.data <- pcp.data %>% dplyr::select(id, date, pcp_in) 
+
+# #convert date time to just date and add year column
+pcp.data <- pcp.data %>% mutate(date = as.Date(substr(date,0,10), "%Y-%m-%d"), year = year(date), month = month(date), day= day(date))
+pcp.data <- pcp.data %>% arrange(id, date) #%>% distinct()
+
+table(pcp.data$id, pcp.data$year)
+
+check.last.date <- pcp.data %>% group_by(id) %>% filter(is.na(pcp_in) == FALSE) %>% filter(date == max(date)) %>% dplyr::select(id, date, month)
+table(check.last.date$date)
+
 # ...........................................................................
 #WRITE OUT UPDATED
 write.csv(pcp.data, paste0(swd_data, "pcp/all_boerne_pcp_data.csv"), row.names = FALSE)
@@ -371,7 +537,6 @@ pcp.data <- read.csv(paste0(swd_data,"pcp/all_boerne_pcp_data.csv"), header = TR
 pcp.loc <- read.csv(paste0(swd_data, "pcp/all_boerne_pcp_locations.csv"), header = TRUE)
 # ............................................................................
 
-
 ###################################################################################################################################
 #          CREATE TABLE FOR MONTHLY PRECIPITATION TOTALS
 ###################################################################################################################################
@@ -379,7 +544,7 @@ pcp.data <- read.csv(paste0(swd_data, "pcp/all_boerne_pcp_data.csv"), header = T
 
 #Can plot like demand - monthly summary
 foo.month <- pcp.data %>% group_by(id, year, month) %>% summarize(pcp_in = sum(pcp_in, na.rm=TRUE), ndays = n(), .groups="drop")  %>% 
-  pivot_wider(id_cols = c("id", "month"), names_from = year, names_prefix = "yr_", values_from = pcp_in) %>% arrange(id, month)
+   pivot_wider(id_cols = c("id", "month"), names_from = year, names_prefix = "yr_", values_from = pcp_in) %>% arrange(id, month)
 #we need to do the pivots to get NA fields in there
 foo.month <- foo.month %>% pivot_longer(cols = starts_with("yr"), names_to = "year", names_prefix = "yr_", values_to = "pcp_in", values_drop_na = FALSE)
 foo.month <- foo.month %>% arrange(id, year, month)
@@ -388,17 +553,16 @@ foo.m <- pcp.data %>% group_by(id, year, month) %>% summarize(ndays = n(), .grou
 foo.month <- merge(foo.month, foo.m, by.x=c("id", "month", "year"), by.y=c("id", "month", "year"), all=TRUE)
 
 #lets say you have to have ~90% of data... so 27 days... but we want to keep the current months data
-  yt <- foo.month %>% filter(ndays < 27); table(yt$year, yt$month)
+yt <- foo.month %>% filter(ndays < 27); table(yt$year, yt$month)
 current.month <- month(Sys.time()); current.year <- year(Sys.time())
 
 foo.month <- foo.month %>% mutate(pcp_in = ifelse((month == current.month & year == current.year) | ndays >=27, pcp_in, NA))
-  yt <- foo.month %>% filter(is.na(pcp_in)); table(yt$year, yt$month)
-  foo.month <- foo.month %>% mutate(year = as.numeric(as.character(year))) %>% filter(year >= year(start.date))
+yt <- foo.month %>% filter(is.na(pcp_in)); table(yt$year, yt$month)
+foo.month <- foo.month %>% mutate(year = as.numeric(as.character(year))) %>% filter(year >= year(start.date))
 
 #save file --- since only plotting recent years will only save out 2000 onward
 #foo.month <- foo.month %>% filter(year>=1997)
 write.csv(foo.month, paste0(swd_data, "pcp/all_boerne_pcp_months_total.csv"), row.names=FALSE)
-
 
 ###################################################################################################################################
 #
@@ -413,7 +577,7 @@ foo.cum <- foo.cum %>% distinct() %>% filter(year>=2000); #shorten for this file
 foo.cum$julian <- yday(foo.cum$date)
 
 foo.cum <- foo.cum %>% arrange(id, year, julian) %>% dplyr::select(id, year, date, julian, pcp_in) %>% distinct() %>% 
-  group_by(id, year) %>% mutate(pcp_in2 = ifelse(is.na(pcp_in), 0, pcp_in)) %>%  mutate(cum_pcp = cumsum(pcp_in2)) %>% dplyr::select(-pcp_in, -pcp_in2) %>% rename(pcp_in = cum_pcp) %>% distinct()
+   group_by(id, year) %>% mutate(pcp_in2 = ifelse(is.na(pcp_in), 0, pcp_in)) %>%  mutate(cum_pcp = cumsum(pcp_in2)) %>% dplyr::select(-pcp_in, -pcp_in2) %>% rename(pcp_in = cum_pcp) %>% distinct()
 
 table(foo.cum$id, foo.cum$year)
 #in case duplicate days - take average
@@ -421,7 +585,7 @@ foo.cum <- foo.cum %>% group_by(id, year, date, julian) %>% summarize(pcp_in = r
 foo.cum <- foo.cum %>% pivot_wider(id_cols = c("id", "julian"), names_from = year, names_prefix = "yr_", values_from = pcp_in, values_fn = mean) %>% arrange(id, julian) %>% distinct()
 
 foo.cum <- foo.cum %>% pivot_longer(cols = starts_with("yr"), names_to = "year", names_prefix = "yr_", values_to = "pcp_in", values_drop_na = FALSE) %>% arrange(id, year, julian) %>% 
-  filter(julian == 365 & is.na(pcp_in)==FALSE | julian < 365) %>% group_by(id, year) %>% mutate(ndays = n()) %>% ungroup()
+   filter(julian == 365 & is.na(pcp_in)==FALSE | julian < 365) %>% group_by(id, year) %>% mutate(ndays = n()) %>% ungroup()
 
 #remove years with more than 30 days missing (with the exception of the current year)
 foo.cum2 <- foo.cum %>% group_by(id, year) %>% mutate(nMissing = sum(is.na(pcp_in)))
@@ -436,7 +600,6 @@ foo.cum2 <- foo.cum2 %>% dplyr::select(id, year, julian, pcp_in, date)
 
 write.csv(foo.cum2, paste0(swd_data, "pcp/all_boerne_pcp_cum_total.csv"), row.names=FALSE)
 
-
 ###################################################################################################################################
 #          Add current status to map
 ###################################################################################################################################
@@ -446,7 +609,7 @@ sites <- st_as_sf(boerne.loc, coords = c("longitude", "latitude"), crs = 4326);
 mapview::mapview(sites)
 
 #sites <- sites %>% mutate(startYr = year(start_date), endYr = year(end_date)) %>% dplyr::select(locID, network, name, elev_ft, agency, startYr, endYr, geometry) %>% rename(id = locID)
-sites <- sites %>% rename(startYr = first_year, endYr = last_year) %>% dplyr::select(id, name, elevation, startYr, endYr, geometry) #lacking network and agency variables. Omitted gsn_flag and wmo_id.
+sites <- sites %>% rename(startYr = first_year, endYr = last_year) %>% dplyr::select(id, name, elevation, startYr, endYr, geometry, agency) #lacking network and agency variables. Omitted gsn_flag and wmo_id.
 
 #get statistics by julian day to see cumulative pcp
 ytd2 <- foo.cum %>% group_by(id, julian) %>%  summarize(min = round(min(pcp_in, na.rm=TRUE),2), flow10 =  round(quantile(pcp_in, 0.10, na.rm=TRUE),2), flow25 = round(quantile(pcp_in, 0.25, na.rm=TRUE),2),
@@ -461,8 +624,16 @@ ytd.now <- merge(ytd.now, ytd2, by.x=c("id", "julian"), by.y=c("id","julian"), a
 ytd.now <- ytd.now %>% mutate(status = ifelse(pcp_in <= flow10, "Extremely Dry", ifelse(pcp_in > flow10 & pcp_in <= flow25, "Very Dry", ifelse(pcp_in >= flow25 & pcp_in < flow50, "Moderately Dry", 
                                                                                                                                                ifelse(pcp_in >= flow50 & pcp_in < flow75, "Moderately Wet", ifelse(pcp_in >= flow75 & pcp_in < flow90, "Very Wet", ifelse(pcp_in >= flow90, "Extremely Wet", "Unknown")))))))
 ytd.now <- ytd.now %>% mutate(date = as.Date(date)) %>% mutate(status = ifelse(is.na(status)==TRUE, "Unknown", status)) %>%
-  mutate(status = ifelse(date <= (max(date)-10), "Unknown", status)) 
+   mutate(status = ifelse(date <= (max(date)-10), "Unknown", status)) 
+ytd.now <- ytd.now%>% distinct() # site GBVT2 was duplicated for some reason 
 table(ytd.now$status, useNA="ifany")
 
 boerne.sites <- merge(sites, ytd.now[,c("id", "julian", "date", "year", "pcp_in", "status")], by.x="id", by.y="id", all=TRUE)
 geojson_write(boerne.sites, file = paste0(swd_data, "pcp/all_boerne_pcp_sites.geojson"))
+mapview::mapview(boerne.sites)
+
+################################################################################################################################################################
+# remove all except for global environment 
+rm(list= ls()[!(ls() %in% c('julian.ref','update.date', 'current.month', 'current.year', 'end.date', 'end.year', 
+                            'mymonths', 'source_path', 'start.date', 'state_fips', 'stateAbb', 'stateFips', 'swd_data', 'today', 
+                            '%notin%', 'ma'))])   
