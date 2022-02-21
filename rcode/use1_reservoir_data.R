@@ -302,8 +302,11 @@ year.flow  <- as.data.frame(matrix(nrow=0, ncol=10));   colnames(year.flow) <- c
   stats.flow <- stats.flow %>% rename(site = nidid)
   write.csv(stats.flow, paste0(swd_data, "reservoirs/all_canyon_reservoir_stats.csv"), row.names=FALSE)
   
-#remove files
-  rm(stats, recent.flow, current.stat, stats.flow, stats.past, zt, fx, nx, res.loc, current.year, bk.up, year.flow, old.last.date)
+################################################################################################################################################################
+# remove all except for global environment 
+rm(list= ls()[!(ls() %in% c('julian.ref','update.date', 'current.month', 'current.year', 'end.date', 'end.year', 
+                            'mymonths', 'source_path', 'start.date', 'state_fips', 'stateAbb', 'stateFips', 'swd_data', 'today', 
+                            '%notin%', 'ma'))])
 
 
 
