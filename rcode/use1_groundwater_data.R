@@ -284,10 +284,8 @@ gw.annual <- year.flow %>% mutate(year = year(date)) %>% group_by(site, year) %>
 write.csv(gw.annual, paste0(swd_data, "gw/all_boerne_gw_annual.csv"), row.names=FALSE)
 
   
-#remove files
-rm(boerne.sites, boerne.sites2, old.data, startDate, endDate, sheet.number, all.well.metadata, all.well.data, gw.i.metadata, gw.i.data, 
-   boerne_all_gw_levels, boerne_gw_depth, new_boerne_gw_levels, new_boerne_gw_depth, all_boerne_gw_depth, zt, gw.annual, 
-   recent.flow, current.stat, current.stat2, stats, year.flow, stats2, year.flow2, zt.stats, bk.up, unique.sites, nx)
-  
-  
-  
+################################################################################################################################################################
+# remove all except for global environment 
+rm(list= ls()[!(ls() %in% c('julian.ref','update.date', 'current.month', 'current.year', 'end.date', 'end.year', 
+                            'mymonths', 'source_path', 'start.date', 'state_fips', 'stateAbb', 'stateFips', 'swd_data', 'today', 
+                            '%notin%', 'ma'))])
