@@ -5,7 +5,7 @@
 # FEBRUARY 2021
 # Should not need to be run
 # Updated June 2021 for TX by Sophia Bryson
-# Updated November 2021 by Vianey Rueda for Boerne
+# Modified November 2021 by Vianey Rueda for Boerne
 #
 ########################################################################################################################################################
 
