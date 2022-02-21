@@ -78,8 +78,13 @@ write.csv(year.flow, paste0(swd_data, "streamflow/boerne_stream_data.csv"), row.
 boerne_points <- st_as_sf(relevant.sites, coords = c("longitude", "latitude"), crs = 4326, agr = "constant")
 mapview::mapview(boerne_points)
 geojson_write(boerne_points, file =  paste0(swd_data, "streamflow/boerne_stream_gauge_sites.geojson"))
-############################################################################################################################
 
+
+################################################################################################################################################################
+# remove all except for global environment 
+rm(list= ls()[!(ls() %in% c('julian.ref','update.date', 'current.month', 'current.year', 'end.date', 'end.year', 
+                            'mymonths', 'source_path', 'start.date', 'state_fips', 'stateAbb', 'stateFips', 'swd_data', 'today', 
+                            '%notin%', 'ma'))])
 
 
   
