@@ -188,7 +188,11 @@ write.csv(current.stat2, paste0(swd_data, "streamflow/current_sites_status.csv")
 # write.csv(t.current, "..//data//streamflow//sites_status.csv", row.names=FALSE)
 
 
-rm(current.stat2, stats2, tx.sites2, year.flow2, year.flow, year.past, stats.past, recent.flow, current.stat, zt, stats, tx.sites)
+################################################################################################################################################################
+# remove all except for global environment 
+rm(list= ls()[!(ls() %in% c('julian.ref','update.date', 'current.month', 'current.year', 'end.date', 'end.year', 
+                            'mymonths', 'source_path', 'start.date', 'state_fips', 'stateAbb', 'stateFips', 'swd_data', 'today', 
+                            '%notin%', 'ma'))])
 
 
 
