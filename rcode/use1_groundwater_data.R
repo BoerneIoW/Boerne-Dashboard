@@ -5,7 +5,7 @@
 # FEBRUARY 2021
 # Run anytime... change county.list if desire. 
 # Updated July 2021 by Sophia Bryson for TX. 
-# Updated November 2021 by Vianey Rueda for Boerne
+# Modified November 2021 by Vianey Rueda for Boerne
 #
 ###################################################################################################################################################
 
