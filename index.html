@@ -486,7 +486,7 @@ function setSystemThis(target){
 //draw initial map... set delay to ensure utilities loaded first
   var utilities;
   function getSystemData() { 
-    return $.getJSON("data/nc_utilities.geojson", function(siteData){
+    return $.getJSON("data/boerne_utility.geojson", function(siteData){
            utilities = siteData; 
            setTimeout(drawMap(), 4000);
     });
@@ -496,7 +496,7 @@ function setSystemThis(target){
 
   //Get the most recent stream gauge data to show map updates
   d3.csv("data/update_date.csv").then(function(today){
-  // $.getJSON("data/streamflow/stream_gauge_sites.geojson", function(lastData){
+  // $.getJSON("data/streamflow/boerne_stream_gauge_sites.geojson", function(lastData){
         // var lastDate = lastData.features[0].properties.date + "-" + lastData.features[0].properties.endYr;
         //console.log(today);
         var lastDate = today[0].today_date;
