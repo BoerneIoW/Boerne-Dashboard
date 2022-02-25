@@ -1,11 +1,11 @@
 <!doctype html>
-<!-- (c) Copyright protected by Duke University -->
+<!-- (c) Copyright protected by The Internet of Water -->
 <html class="no-js" lang="en-US" dir="ltr">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>NC Water Supply</title>
-    <meta name="description" content="North Carolina water supply status">
+    <title>Boerne Water Supply</title>
+    <meta name="description" content="Boerne water supply status">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="favicon.png">
 
@@ -48,7 +48,7 @@
 <body>
 <div class = "row header">
     <div class="col-sm-9">    
-        <h1 style="padding-left: 1em;">Triangle Water Supply</h1>    
+        <h1 style="padding-left: 1em;">Boerne Water Supply</h1>    
         <hr style="background-color: #02145C; height: 5px; margin-top: 1px;">
     </div>
     <div class="col-sm-3">
@@ -266,8 +266,10 @@ function setSystemThis(target){
             <input onclick="createTraceDemand(this.value)" name="checkDemandYear" value="2015" type="checkbox"> 2015<br>
             <input onclick="createTraceDemand(this.value)" name="checkDemandYear" value="2016" type="checkbox"> 2016<br>  
             <input onclick="createTraceDemand(this.value)" name="checkDemandYear" value="2017" type="checkbox"> 2017<br>  
-            <input onclick="createTraceDemand(this.value)" name="checkDemandYear" value="2018" type="checkbox"> 2018<br>  
-            <input onclick="createTraceDemand(this.value)" name="checkDemandYear" value="2019" type="checkbox"> 2019<br><input onclick="createTraceDemand(this.value)" name="checkDemandYear" value="2020" type="checkbox" checked> 2020<br>  
+            <input onclick="createTraceDemand(this.value)" name="checkDemandYear" value="2018" type="checkbox"> 2018<br>
+            <input onclick="createTraceDemand(this.value)" name="checkDemandYear" value="2019" type="checkbox"> 2019<br>
+            <input onclick="createTraceDemand(this.value)" name="checkDemandYear" value="2020" type="checkbox"> 2020<br>
+            <input onclick="createTraceDemand(this.value)" name="checkDemandYear" value="2021" type="checkbox"> 2021<br><input onclick="createTraceDemand(this.value)" name="checkDemandYear" value="2022" type="checkbox" checked> 2022<br>  
         </form>
       </div>
       
@@ -323,19 +325,11 @@ function setSystemThis(target){
               <span><strong>Select Watershed:  </strong></span> &nbsp;
               <select style="width: 280px;" name="setHUC" id="setHUC" onchange="setHUCThis(this);">
                   <option selected = "selected" value="none"> Select from dropdown </option>
-                  <optgroup label = "CAPE FEAR RIVER BASIN">
-                    <option value="03030003"> Deep </option>
-                    <option value="03030002"> Haw </option>
-                    <option value="03030004"> Upper Cape Fear </option>
-                    <option value="03030005"> Lower Cape Fear </option>
-                    <option value="03030006"> Black </option>  
-                    <option value="03030007"> Northeast Cape Fear </option>
+                  <optgroup label = "GUADALUPE RIVER BASIN">
+                    <option value="12100201"> Upper Guadalupe </option>
                   </optgroup>
-                  <optgroup label = "NEUSE RIVER BASIN">
-                    <option value="03020201"> Upper Neuse </option>
-                    <option value="03020202"> Middle Neuse </option>
-                    <option value="03020203"> Contentnea </option>
-                    <option value="03020204"> Lower Neuse </option>
+                  <optgroup label = "SAN ANTONIO RIVER BASIN">
+                    <option value="12100304"> Cibolo </option>
                   </optgroup>
               </select>  
          </form>
@@ -355,7 +349,7 @@ function setSystemThis(target){
         <img class = "chart-holder-icon" src="img/drought_chart_icon.png" style= "height: 200px; width: 200px;">
       </div>
        <div class = "row" style="margin-left: 10px;">
-        <p><br> To learn more about current drought conditions, visit the <a href="https://www.ncdrought.org/" target="_blank">US Drought Monitor of North Carolina</a>.<br></p>
+        <p><br> To learn more about current drought conditions, visit the <a href="https://droughtmonitor.unl.edu/CurrentMap/StateDroughtMonitor.aspx?TX" target="_blank">US Drought Monitor of North Carolina</a>.<br></p>
       </div>
 
     <!-- ###################################### PCP INFORMATION -->
@@ -376,8 +370,10 @@ function setSystemThis(target){
           <input onclick="createTracePCP(this.value)" name="checkPCPYear" value="2016" type="checkbox"> 2016<br>  
           <input onclick="createTracePCP(this.value)" name="checkPCPYear" value="2017" type="checkbox"> 2017<br>  
           <input onclick="createTracePCP(this.value)" name="checkPCPYear" value="2018" type="checkbox"> 2018<br>  
-          <input onclick="createTracePCP(this.value)" name="checkPCPYear" value="2019" type="checkbox"> 2019<br>  
-          <input onclick="createTracePCP(this.value)" name="checkPCPYear" value="2020" type="checkbox" checked> 2020<br>  
+          <input onclick="createTracePCP(this.value)" name="checkPCPYear" value="2019" type="checkbox"> 2019<br>
+          <input onclick="createTracePCP(this.value)" name="checkPCPYear" value="2020" type="checkbox"> 2020<br>
+          <input onclick="createTracePCP(this.value)" name="checkPCPYear" value="2021" type="checkbox"> 2021<br>
+          <input onclick="createTracePCP(this.value)" name="checkPCPYear" value="2022" type="checkbox" checked> 2022<br>  
         </form>
       </div>
         <div class = "row">
@@ -468,11 +464,11 @@ function setSystemThis(target){
   });
  
 
-  mapboxgl.accessToken = 'pk.eyJ1IjoiaW50ZXJuZXRvZndhdGVyIiwiYSI6ImNrZjQ5ZXQ1NjAxc2ozNHFmbHU2enRlbTUifQ.EmuQRIFGR3cGeUDnEwmcyg';
+  mapboxgl.accessToken = 'pk.eyJ1IjoidnJ1ZWRhOTciLCJhIjoiY2t3bWZiOXYxMmJ2YTJ2cHcwcTRlYThvbyJ9.wN7ZXW4T0fI0TFzzSVAOfg';
   var map = new mapboxgl.Map({
     container: 'map', //specify container ID
     style: 'mapbox://styles/mapbox/streets-v11', //specify map style
-    center: [-78.9, 35.6], //specify the start position; long, lat
+    center: [-98.73175, 29.79472], //specify the start position; long, lat
     zoom: 8
   });
   map.addControl(new mapboxgl.NavigationControl(), 'top-left');
@@ -480,7 +476,7 @@ function setSystemThis(target){
   var geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
     //limit results to NC
-    bbox: [-84.321869, 33.842316, -75.460621, 36.588117],
+    bbox: [-98.804533,29.748961,-98.672802,29.839155],
     mapboxgl: mapboxgl,
     placeholder: "Enter address to find your utility",
     zoom: 11
