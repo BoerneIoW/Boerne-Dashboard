@@ -1,0 +1,654 @@
+/*! HTML5 Boilerplate v6.0.1 | MIT License | https://html5boilerplate.com/ */
+
+/*
+ * What follows is the result of much research on cross-browser styling.
+ * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
+ * Kroc Camen, and the H5BP dev community and team.
+ */
+
+/* ==========================================================================
+   Base styles: opinionated defaults
+   ========================================================================== */
+
+html {
+    color: #222;
+    font-size: 1em;
+    line-height: 1.4;
+}
+
+/*
+ * Remove text-shadow in selection highlight:
+*/
+::-moz-selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+::selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+/*
+ * A better looking default horizontal rule
+ */
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+/*
+ * Remove the gap between audio, canvas, iframes,
+ * images, videos and the bottom of their containers:
+ * https://github.com/h5bp/html5-boilerplate/issues/440
+ */
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+    vertical-align: middle;
+}
+
+/*
+ * Remove default fieldset styles.
+ */
+
+fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/*
+ * Allow only vertical resizing of textareas.
+ */
+
+textarea {
+    resize: vertical;
+}
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+/*Color Palette*/
+/*https://fonts.google.com/*
+/*display: flow-root is the new version of the clearfix hack*/
+
+/* Global Styles
+---------------------------------------*/
+body {
+    color: #343434; /*dark gray*/
+    font-family: Lato, verdana, sans-serif;
+    font-size: 16px;
+    font-style: normal; /*italic and oblique are other options*/
+    font-weight: 300; /*goes from 100 to 900 with 100 being lighter and 900 darker*/
+    line-height: 1.4;
+    max-width: 1600px;
+    margin: auto;
+    overflow-x: hidden; /*gets rid of the horizontal scroll bar at the bottom*/
+    padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: Quicksand, sans-serif;
+}
+
+ul {
+    list-style: none;
+    list-style-position: outside;
+    padding-left: 12px;
+    text-indent: 2px;
+}
+
+li {
+    font-family: Lato, verdana;
+    font-size: 16px;
+    padding-top: 0.5em;
+}
+
+/*Make URL's IoW specific*/
+a {
+    /*color: #831a1b;*/
+    color: #031010;
+    text-decoration: underline;
+}
+a:hover {
+    color: #831a1b;
+    text-decoration: underline;
+}
+
+/* TABLE FORMATTING
+------------------------------------*/
+table {
+    font-size: 11px;
+}
+
+th {
+    border: thin solid black;
+    text-align: center;
+}
+
+td {
+    border: 1px solid black;
+    padding-top: 0.4em;
+    width: 90px;
+}
+
+tr {
+    height: 35px;
+}
+
+.sw-table {
+    background-color: #f0f0f0;
+    border: thin solid black;
+    margin-top: 5px;
+}
+
+.sw-table body {
+    font-weight: bold;
+}
+.sw-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table > tbody > tr > td {
+    text-align: left;
+    vertical-align: middle;
+}
+
+.my-custom-scrollbar {
+    height: 350px;
+    overflow: auto;
+    position: relative;
+}
+.my-custom-scrollbar thead th {
+    background: white;
+    position: sticky;
+    top: 0;
+}
+
+.table-wrapper-scroll-y {
+    display: block;
+}
+
+select {
+    text-align-last: center;
+}
+
+/* COLOR CLASSES
+---------------------------------------*/
+.sw-table .ext-dry {
+    color: darkred;
+}
+.sw-table .very-dry {
+    color: red;
+}
+.sw-table .mod-dry {
+    color: orange;
+}
+.sw-table .mod-wet {
+    color: cornflowerblue;
+}
+.sw-table .very-wet {
+    color: blue;
+}
+.sw-table .ext-wet {
+    color: navy;
+}
+
+/* HELP ICON
+---------------------------------------*/
+.help-icon {
+    cursor: pointer;
+    height: 24px;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    width: 24px;
+    z-index: 10;
+}
+
+.chart-holder-icon {
+    display: block;
+    height: 350px;
+    margin: auto;
+    width: 350px;
+}
+
+/*Header
+---------------------------------------*/
+.header {
+    color: #02145c;
+    font-family: Quicksand, sans-serif;
+    font-size: 18px;
+    margin: 5px 1px;
+}
+
+/* CONTAINERS & NAVITAGTION
+---------------------------------------------------------*/
+.container {
+    display: flex;
+    margin: 0 5px;
+    width: 100%;
+}
+
+/*Headers for chart titles and map layers
+---------------------------------------*/
+.chartTitles {
+    color: rgb(26, 131, 130);
+    font-family: Quicksand, sans-serif;
+    font-weight: bold;
+    margin: 1px auto;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.metadata {
+    font-size: 12px;
+    text-align: center;
+}
+
+/* TAB NAVIGATION HEADERS
+---------------------------------------*/
+.nav-pills {
+    top: 0;
+    font-size: 16px;
+    /* position: absolute; */
+    text-align: center;
+    border-bottom: rgb(28, 43, 88) solid 2px;
+}
+.nav-pills > li {
+    border-radius: 4px 4px 0 0;
+    display: inline-block;
+    float: none;
+    min-width: 110px;
+    zoom: 1;
+}
+
+.nav-pills > li > a {
+    color: rgb(28, 43, 88);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+    background-color: #5d6d7e;
+    color: #aed6f1;
+    font-weight: bold;
+}
+
+/* MAP LEGEND 
+---------------------------------------------------------*/
+.map-layers-row {
+    background-color: rgb(240, 240, 240);
+    border: thin solid rgb(26, 131, 130);
+    margin: 1px 0 0 0;
+    padding: 2px;
+    text-align: center;
+}
+
+.chart-row {
+    margin: 0 5px;
+    text-align: center;
+}
+
+.btn {
+    background: rgb(200, 200, 200);
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 3px;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    height: 40px;
+    line-height: 90%;
+    /*min-width: 100px;*/
+    margin-top: 2px;
+    padding-left: 3px;
+    padding-right: 3px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: normal; /*breaks text to wrap*/
+    width: 90px;
+}
+
+.forecast {
+    background: repeating-linear-gradient(
+        45deg,
+        rgb(230, 230, 230),
+        rgb(230, 230, 230) 10px,
+        rgb(200, 200, 200) 10px,
+        rgb(200, 200, 200) 20px
+    );
+}
+
+.geocoder {
+    bottom: 5px;
+    left: 5px;
+    line-height: 1.5;
+    position: relative;
+    width: 90%;
+    z-index: 1;
+}
+
+.mapboxgl-ctrl-geocoder {
+    min-width: 90%;
+}
+
+.mapboxgl-popup-content {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid darkgray;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    color: #383939;
+    font-size: 12px;
+    max-width: 240px;
+}
+
+.legend {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 3px;
+    /*bottom: 25px;*/
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    font: 12px/20px Arial, Helvetica, sans-serif;
+    padding: 5px;
+    position: absolute;
+    right: 2px;
+    z-index: 100;
+}
+/*.legend h4 { margin: 0 0 10px; }*/
+
+.legend div span {
+    border-radius: 50%;
+    display: inline-block;
+    height: 10px;
+    margin-right: 5px;
+    /*width: 10px;*/
+}
+
+#drought-legend {
+    top: 0px;
+}
+
+#stream-legend {
+    bottom: 30px;
+}
+
+.info {
+    background: rgb(255, 255, 255);
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    color: #777;
+    font-size: 12px;
+    margin-top: 1px;
+    opacity: 0.8;
+    padding: 6px;
+}
+
+.infoMap {
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid black;
+    border-radius: 5px;
+    bottom: 0; /*puts on bottom of div*/
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    color: #383939;
+    font-size: 13px;
+    /*font: 14px/16px Arial, Helvetica, sans-serif;*/
+    margin-bottom: 30px;
+    margin-left: 2px;
+    max-width: 220px;
+    padding: 6px 8px;
+    position: absolute;
+    z-index: 10;
+}
+
+/* MY UTILITY TAB
+---------------------------------------------------------*/
+.tab-pane {
+    position: relative;
+}
+.intro-bkgd {
+    background-color: rgb(245, 245, 245);
+    border-bottom: solid 2px rgb(26, 131, 130);
+    padding: 20px;
+    position: relative;
+    margin: 0 -10px;
+    /* margin: 0 -20px; */
+    z-index: 0;
+}
+
+/* Rain & DROUGHT
+---------------------------------------------------------*/
+.curDBlocksStyle {
+    border: thin solid black;
+    line-height: 0.9;
+    margin: 15px 25px;
+}
+
+.dstat {
+    height: 50px;
+    padding-top: 7px;
+    position: relative;
+    text-align: center;
+}
+
+/* FOOTER
+---------------------------------------------------------*/
+footer {
+    background-color: rgb(230, 230, 230);
+    display: block;
+    margin-top: 50px;
+    padding: 20px;
+    width: 100%;
+}
+
+.left-footer {
+    background-color: rgb(230, 230, 230);
+    border-right: solid 2px rgb(26, 131, 130);
+    display: inline-block;
+    left: 0;
+    position: relative;
+    text-align: right;
+    top: 0;
+    width: 50%;
+}
+
+.right-footer {
+    background-color: rgb(230, 230, 230);
+    display: inline-block;
+    position: relative;
+    right: 0;
+    top: 0;
+    width: 50%;
+}
+
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+/*
+ * Hide visually and from screen readers
+ */
+.hidden {
+    display: none !important;
+}
+
+/*
+ * Hide only visually, but have it available for screen readers:
+ * https://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+ *
+ * 1. For long content, line feeds are not interpreted as spaces and small width
+ *    causes content to wrap 1 word per line:
+ *    https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
+ */
+
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    -webkit-clip-path: inset(50%);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap; /* 1 */
+}
+
+/*
+ * Extends the .visuallyhidden class to allow the element
+ * to be focusable when navigated to via the keyboard:
+ * https://www.drupal.org/node/897638
+ */
+
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+    clip: auto;
+    -webkit-clip-path: none;
+    clip-path: none;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
+    white-space: inherit;
+}
+
+/*
+ * Hide visually and from screen readers, but maintain layout
+ */
+
+.invisible {
+    visibility: hidden;
+}
+
+/*
+ * Clearfix: contain floats
+ *
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    `contenteditable` attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that receive the `clearfix` class.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+/* ==========================================================================
+   EXAMPLE Media Queries for Responsive Design.
+   These examples override the primary ('mobile first') styles.
+   Modify as content requires.
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+    /* Style adjustments for viewports that meet the condition */
+}
+
+@media print,
+    (-webkit-min-device-pixel-ratio: 1.25),
+    (min-resolution: 1.25dppx),
+    (min-resolution: 120dpi) {
+    /* Style adjustments for high resolution devices */
+}
+
+/* ==========================================================================
+   Print styles.
+   Inlined to avoid the additional HTTP request:
+   http://www.phpied.com/delay-loading-your-print-css/
+   ========================================================================== */
+
+@media print {
+    *,
+    *:before,
+    *:after {
+        background: transparent !important;
+        color: #000 !important; /* Black prints faster:
+                                   http://www.sanbeiji.com/archives/953 */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
+    /*
+     * Don't show links that are fragment identifiers,
+     * or use the `javascript:` pseudo protocol
+     */
+
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+
+    pre {
+        white-space: pre-wrap !important;
+    }
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    /*
+     * Printing Tables:
+     * http://css-discuss.incutio.com/wiki/Printing_Tables
+     */
+
+    thead {
+        display: table-header-group;
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}
