@@ -92,7 +92,7 @@ function drawMap(){
   //console.log(myUtilityID);
     map.addSource('water_supply', {
       type: 'geojson',
-      data: 'data_state/water_supply_watersheds.geojson'
+      data: 'data/canyon_lake_reservoir.geojson'
     });
     map.addLayer({
       'id': 'water_supply',
@@ -112,7 +112,7 @@ function drawMap(){
     filter: ['in', 'drawFile', 'none'],
     layout: {
         "visibility": 'none',
-        "text-field": "{STREAM_NAM}",
+        "text-field": "{name}",
         "text-size": 10,
         'symbol-placement': "point"
     },
@@ -129,7 +129,7 @@ function drawMap(){
         //add drought to the map------------------------------------------------
     map.addSource('drought',{
       type: 'geojson',
-      data: 'data_state/drought/current_drought.geojson'
+      data: 'data/drought/current_drought.geojson'
     }); // end addSource
     map.addLayer({
     'id': 'drought',
@@ -154,7 +154,7 @@ function drawMap(){
  //add pcp 7 day observation to map------------------------------------------------
     map.addSource('pcp7obsv',{
       type: 'geojson',
-      data: 'data_state/pcp/pcp_7day_obsv.geojson'
+      data: 'data/pcp/pcp_7day_obsv.geojson'
     }); // end addSource
     map.addLayer({
     'id': 'pcp7obsv',
@@ -189,7 +189,7 @@ function drawMap(){
   //add pcp 7 day observation to map------------------------------------------------
     map.addSource('pcp7norm',{
       type: 'geojson',
-      data: 'data_state/pcp/pcp_7day_percent_normal.geojson'
+      data: 'data/pcp/pcp_7day_percent_normal.geojson'
     }); // end addSource
     map.addLayer({
     'id': 'pcp7norm',
@@ -200,21 +200,21 @@ function drawMap(){
                 property: 'bands', 
                 stops: [
                   [0, 'white'],
-                  [1, '#4e0000'],
-                  [5, '#9a0000'],
-                  [10, 'red'],
-                  [25, "orange"],
-                  [50, '#f7e08b'],
-                  [75, 'yellow'],
-                  [90, "#fafad2"],
-                  [100, '#00fc02'],
-                  [110, "#56b000"],
-                  [125, "#316400"],
-                  [150, '#3fc1bf'],
-                  [200, 'blue'],
-                  [300, '#8e23ff'],
-                  [400, '#e00079'],
-                  [600, 'black']
+                  [5, '#4e0000'],
+                  [10, '#9a0000'],
+                  [25, "red"],
+                  [50, 'orange'],
+                  [75, '#f7e08b'],
+                  [90, "yellow"],
+                  [100, '#316400'],
+                  [110, "#00fc02"],
+                  [125, "#56b000"],
+                  [150, '#316400'],
+                  [200, '#3fc1bf'],
+                  [300, '#000080'],
+                  [400, '#8e2eff'],
+                  [600, '#e00079'],
+                  [800, 'black']
                 ]
             },
               'fill-opacity': 0.4,
@@ -225,7 +225,7 @@ function drawMap(){
       //add pcp 7 day observation to map------------------------------------------------
     map.addSource('forecastPCP',{
       type: 'geojson',
-      data: 'data_state/pcp/pcp610forecast.geojson'
+      data: 'data/pcp/pcp610forecast.geojson'
     }); // end addSource
     map.addLayer({
     'id': 'forecastPCP',
@@ -257,7 +257,7 @@ function drawMap(){
           //add pcp 7 day observation to map------------------------------------------------
     map.addSource('forecastTEMP',{
       type: 'geojson',
-      data: 'data_state/pcp/temp610forecast.geojson'
+      data: 'data/pcp/temp610forecast.geojson'
     }); // end addSource
     map.addLayer({
     'id': 'forecastTEMP',
@@ -290,7 +290,7 @@ function drawMap(){
               //add pcp 7 day obxervation to map------------------------------------------------
     map.addSource('qpf7day',{
       type: 'geojson',
-      data: 'data_state/pcp/qpf1-7dayforecast.geojson'
+      data: 'data/pcp/qpf1-7dayforecast.geojson'
     }); // end addSource
     map.addLayer({
     'id': 'qpf7day',
@@ -339,7 +339,7 @@ function drawMap(){
     //COUNTY + LABELS----------------------------------------------
     map.addSource('county', {
       type: 'geojson',
-      data: 'data_state/county.geojson'
+      data: 'data/county.geojson'
     });
     map.addLayer({
       'id': 'county',
@@ -370,7 +370,7 @@ function drawMap(){
     //RIVER BASINS: HUC6 + LABELS----------------------------------------------
     map.addSource('riverbasins', {
       type: 'geojson',
-      data: 'data_state/huc6.geojson'
+      data: 'data/huc6.geojson'
     });
     map.addLayer({
       'id': 'riverbasins',
@@ -399,7 +399,7 @@ function drawMap(){
     //WATERSHEDS: HUC8 + LABELS----------------------------------------------
     map.addSource('watersheds', {
       type: 'geojson',
-      data: 'data_state/huc8.geojson'
+      data: 'data/huc8.geojson'
     });
     map.addLayer({
       'id': 'watersheds',
@@ -431,7 +431,7 @@ function drawMap(){
    //MAJOR RIVERS + LABELS----------------------------------------------
     map.addSource('rivers', {
       type: 'geojson',
-      data: 'data_state/rivers.geojson'
+      data: 'data/texas_rivers.geojson'
     });
     map.addLayer({
       'id': 'rivers',
@@ -462,7 +462,7 @@ function drawMap(){
  //Groundwater------------------------------------------------------
    map.addSource('groundwater', {
     'type': 'geojson',
-    'data': 'data_state/gw/gw_sites.geojson',
+    'data': 'data/gw/all_boerne_gw_sites.geojson',
     'generateId': true
    });
     map.addLayer({
@@ -498,7 +498,7 @@ function drawMap(){
  //STREAM GAUGES------------------------------------------------------
    map.addSource('streamgauges', {
     'type': 'geojson',
-    'data': 'data_state/streamflow/stream_gauge_sites.geojson',
+    'data': 'data/streamflow/all_boerne_stream_gauge_sites.geojson',
     'generateId': true
    });
     map.addLayer({
@@ -542,7 +542,7 @@ function drawMap(){
 
    map.addSource('reservoirs', {
     'type': 'geojson',
-    'data': 'data_state/reservoirs/usace_sites.geojson',
+    'data': 'data/reservoirs/all_canyon_lake_site.geojson',
     'generateId': true
    });
     map.addLayer({
@@ -574,7 +574,7 @@ function drawMap(){
 
     map.addSource('precipitation', {
     'type': 'geojson',
-    'data': 'data_state/pcp/pcp_sites.geojson',
+    'data': 'data/pcp/all_boerne_pcp_sites.geojson',
     'generateId': true
    });
     map.addLayer({

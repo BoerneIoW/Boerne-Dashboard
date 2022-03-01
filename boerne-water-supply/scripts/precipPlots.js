@@ -20,7 +20,7 @@ function plotPrecipitation(pcpID, checked) {
     //parse date to scale axis
     parseDate = d3.timeParse("%Y-%m-%d");
 
-    d3.csv("data_state/pcp/pcp_months_total.csv").then(function (dfpcp) {
+    d3.csv("data/pcp/all_boerne_pcp_months_total.csv").then(function (dfpcp) {
         dfpcp.forEach(function (d) {
             d.month = +d.month;
             d.year = +d.year;
@@ -178,7 +178,7 @@ function plotPrecipitation(pcpID, checked) {
 
     //parse date to scale axis
     //parseDate = d3.timeParse("%Y-%b-%d");
-    d3.csv("data_state/pcp/pcp_cum_total.csv").then(function (cumpcp) {
+    d3.csv("data/pcp/all_boerne_pcp_cum_total.csv").then(function (cumpcp) {
         cumpcp.forEach(function (d) {
             //d.date = parseDate(("2020-"+d.date));
             d.year = +d.year;

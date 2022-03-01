@@ -27,7 +27,7 @@ function createGWTab(gwID, recentDate, gwPlotType) {
 parseDate = d3.timeParse("%Y-%m-%d");
 
 //read in stream stats
-d3.csv("data_state/gw/gw_stats.csv").then(function(gwStats){
+d3.csv("data/gw/all_boerne_gw_stats.csv").then(function(gwStats){
     gwStats.forEach(function(d){
             d.julian = +d.julian;
             d.min = +d.min;
@@ -138,7 +138,7 @@ if(gwPlotType === "on"){
 //         PLOT BY STATUS AS MARKERS
 //#####################################################################################//
 //read in long-term gw levels
-d3.csv("data_state/gw/gw_levels_time.csv").then(function(gwLevels){
+d3.csv("data/gw/all_boerne_gw_status.csv").then(function(gwLevels){
     gwLevels.forEach(function(d){
             d.julian = +d.julian;
             d.flow = +d.depth_ft;
@@ -222,7 +222,7 @@ Plotly.newPlot('gwPlot2', data2, gwlayout2, config);
 //#####################################################################################//
 
 //read in stream stats
-d3.csv("data_state/gw/gw_annual_level.csv").then(function(gwAnnual){
+d3.csv("data/gw/all_boerne_gw_annual.csv").then(function(gwAnnual){
     gwAnnual.forEach(function(d){
             d.flow = +d.medianDepth;
             d.year = +d.year;

@@ -18,7 +18,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
 
     //console.log(checkedDemand);
     //read in stream stats
-    d3.csv("data/demand/demand_over_time.csv").then(function (demandData) {
+    d3.csv("data/demand/all_boerne_total_demand.csv").then(function (demandData) {
         demandData.forEach(function (d) {
             d.date3 = parseDate("2021-" + d.date2.substring(5, d.date2.length));
             d.mean_demand = +d.mean_demand;

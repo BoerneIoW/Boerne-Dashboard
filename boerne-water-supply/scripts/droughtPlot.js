@@ -28,7 +28,7 @@ function plotDroughtTime(myHUC) {
     //parse date to scale axis
     parseDate = d3.timeParse("%Y-%m-%d");
     //load current demand
-    d3.csv("data_state/drought/percentAreaHUC.csv").then(function (drought) {
+    d3.csv("data/drought/all_percentAreaHUC.csv").then(function (drought) {
         drought.forEach(function (d) {
             d.date2 = parseDate(d.date);
             d.none = +d.none;
