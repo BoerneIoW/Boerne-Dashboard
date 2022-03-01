@@ -54,6 +54,7 @@ ma <- function(x,n=7){stats::filter(x,rep(1/n,n), sides=1)}
 #
 #####################################################################################################################################################################
 gs4_auth()
+1
 
 demand_data <- read_sheet("https://docs.google.com/spreadsheets/d/1BKb9Q6UFEBNsGrLZhjdq2kKX5t1GqPFCWF553afUKUg/edit#gid=2030520898", sheet = 1, range = "A5854:H", col_names = FALSE)
 demand_by_source <- demand_data[, c("...1", "...2", "...3", "...6", "...7", "...8")]
@@ -108,15 +109,28 @@ table(check.last.date$date)
 write.csv(demand_by_mgd, paste0(swd_data, "demand/all_boerne_demand_by_source.csv"), row.names=FALSE)
 
 
+#include month abbreviations
+demand2 <- all_demand_by_mgd %>% group_by(pwsid) %>% mutate(julian = as.numeric(strftime(date, format = "%j")), month = month(date), monthAbb = mymonths[month], year = year(date))
+
+#calculate mean demand
+demand2 <- all_demand_by_mgd %>% mutate(date = as.Date(substr(date,1,10),format='%Y-%m-%d')) 
+demand3 <- demand2 %>% group_by(pwsid) %>% arrange(date) %>% mutate(timeDays = as.numeric(date - lag(date)))
+demand4 <- demand3 %>% group_by(pwsid) %>% mutate(mean_demand = ifelse(timeDays <= 3, round(as.numeric(ma(total)),2), total), 
+                                                  julian = as.numeric(strftime(date, format = "%j")), month = month(date), monthAbb = mymonths[month], year = year(date))
+demand5 <- demand4 %>% mutate(total = round(total,2), mean_demand = ifelse(is.na(mean_demand)==TRUE, total, mean_demand))
+
 #calculate monthly peak
-demand2 <- all_demand_by_mgd[, c("total", "month", "year", "pwsid")] 
-demand2 <- demand2 %>% group_by(pwsid, month, year) %>% mutate(peak_demand = round(quantile(total, 0.98),1)); #took the 98% to omit outliers
+demand6 <- demand5 %>% group_by(pwsid, month, year) %>% mutate(peak_demand = round(quantile(total, 0.98),1)); #took the 98% to omit outliers
 
 #provide julian date
-demand2$julian <- demand_by_mgd$julian
+demand7 <- demand6 %>% mutate(date2 = date, date = paste0(monthAbb,"-",day(date2))) %>% select(-timeDays)
+
+#clean up 
+demand7 <- rename(demand7, demand_mgd = "total")
+demand7 <- demand7[, c("pwsid", "date","demand_mgd", "mean_demand", "julian", "month", "monthAbb", "year", "peak_demand", "date2")]
 
 #write.csv
-write.csv(demand2, paste0(swd_data, "demand/all_boerne_total_demand.csv"), row.names=FALSE)
+write.csv(demand4, paste0(swd_data, "demand/all_boerne_total_demand.csv"), row.names=FALSE)
 
 ######################################################################################################################################################################
 #
