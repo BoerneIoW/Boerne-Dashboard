@@ -174,7 +174,7 @@ function setSystemThis(target){
     <div class="row">
     <ul id="tabs" class="nav nav-pills" data-tabs="tabs">
         <li class = "active"><a href="#about" data-toggle="tab">My <br> Utility</a></li>
-        <li><a href="#demand" data-toggle="tab">Demand <br> Data</a></li>
+        <li><a href="#demand" data-toggle="tab">Demand &<br>Population</a></li>
         <li><a href="#waterSupplyStatus" data-toggle="tab">Surface <br> Water</a></li>
         <li><a href="#pcpDrought" data-toggle="tab">Rain &<br>Drought</a></li>
         <li><a href="#groundwater" data-toggle="tab">Ground-<br>water</a></li>
@@ -276,6 +276,23 @@ function setSystemThis(target){
       <div class="col-sm-10" id="demandPlot">
         <img class="chart-holder-icon" src="img/demand_chart_icon.png">
       </div>
+    </div>
+     <!-- ###################################### POP INFORMATION -->
+    <h4 class="chartTitles" id="popTitle">Select a municipality from the map for more information</h4> 
+    <p class = "metadata" id = "popMetadata"></p>
+     <div class="row">
+        <div class = "col-sm-2">Select to Highlight
+        <form>
+          <input onclick="createTracePOP(this.value)" name="checkPOPType" value="CityLimits" type="checkbox"> City Limits<br>  
+          <input onclick="createTracePOP(this.value)" name="checkPOPYear" value="WaterServiceBoundary" type="checkbox"> Water Service Boundary<br> 
+        </form>
+      </div>
+        <div class = "row">
+          <div class = "col-sm-9" id = "popYearPlot" style="padding: 0;">
+            <img class = "chart-holder-icon" src="img/pcp_chart_icon.png">
+          </div>
+          <div class = "col-sm-9" id = "popCumPlot" ></div>
+        </div>
     </div>
   </div> <!-- end demand pane-->
 
