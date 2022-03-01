@@ -130,7 +130,11 @@ demand7 <- rename(demand7, demand_mgd = "total")
 demand7 <- demand7[, c("pwsid", "date","demand_mgd", "mean_demand", "julian", "month", "monthAbb", "year", "peak_demand", "date2")]
 
 #write.csv
+<<<<<<< HEAD
 write.csv(demand4, paste0(swd_data, "demand/all_boerne_total_demand.csv"), row.names=FALSE)
+=======
+write.csv(demand7, paste0(swd_data, "demand/all_boerne_total_demand.csv"), row.names=FALSE)
+>>>>>>> 8c83e77e4d14e4a550952499d7dfdbef8e2981e5
 
 ######################################################################################################################################################################
 #
