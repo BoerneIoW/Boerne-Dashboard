@@ -42,7 +42,7 @@ function myUtilityInfo(myUtility){
     
       
      //load data 
-     d3.csv("data_state/basic_info.csv").then(function(dataCSV){
+     d3.csv("data/basic_info.csv").then(function(dataCSV){
      var selectData = dataCSV.filter(function(d) {return d.utility_name === myUtility; });
      //console.log(dataCSV); console.log(selectData);
      var myUtilityWebsite = selectData[0].utility_website; 
