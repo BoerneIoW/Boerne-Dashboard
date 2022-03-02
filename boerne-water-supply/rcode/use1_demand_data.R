@@ -132,7 +132,6 @@ demand7 <- demand7[, c("pwsid", "date","demand_mgd", "mean_demand", "julian", "m
 #write.csv
 write.csv(demand7, paste0(swd_data, "demand/all_boerne_total_demand.csv"), row.names=FALSE)
 
-
 ######################################################################################################################################################################
 #
 # Read in new pop data
