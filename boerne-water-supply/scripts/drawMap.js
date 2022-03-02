@@ -186,7 +186,7 @@ function drawMap(){
              }
     });
   
-  //add pcp 7 day observation to map------------------------------------------------
+  //add pcp 7 day percent normal to map------------------------------------------------
     map.addSource('pcp7norm',{
       type: 'geojson',
       data: 'data/pcp/pcp_7day_percent_normal.geojson'
