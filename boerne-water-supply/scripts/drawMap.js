@@ -446,7 +446,7 @@ function drawMap(){
     source: "rivers",
     layout: {
         "visibility": 'none',
-        "text-field": "{StrmName}",
+        "text-field": "{SEG_NAME}",
         //"text-size": 10,
         'symbol-placement': "line"
     },
