@@ -222,7 +222,7 @@ function drawMap(){
     });
 
 
-      //add pcp 7 day observation to map------------------------------------------------
+      //add pcp 6-10 forecast to map------------------------------------------------
     map.addSource('forecastPCP',{
       type: 'geojson',
       data: 'data/pcp/pcp610forecast.geojson'
@@ -254,7 +254,7 @@ function drawMap(){
              }
     });
 
-          //add pcp 7 day observation to map------------------------------------------------
+          //add pcp 6-10 forecast temp to map------------------------------------------------
     map.addSource('forecastTEMP',{
       type: 'geojson',
       data: 'data/pcp/temp610forecast.geojson'
