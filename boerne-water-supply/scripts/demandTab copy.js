@@ -1,3 +1,6 @@
+//##################################################################################################################
+//               DEMAND DATA
+//##################################################################################################################
 function createTraceDemand(target) {
     checkedDemand = [];
     $("input[name='checkDemandYear']:checked").each(function () {
@@ -10,7 +13,7 @@ function createTraceDemand(target) {
 }
 
 //##################################################################################################################
-//               READ IN TIME SERIES
+//               READ IN TIME SERIES DEMAND DATA
 //##################################################################################################################
 function createDemandInfo(myUtilityID, checkedDemand) {
     //parse date to scale axis
