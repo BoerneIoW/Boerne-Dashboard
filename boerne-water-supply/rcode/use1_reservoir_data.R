@@ -217,7 +217,7 @@ timeUnit = "weeks"
    
    #common format
    names(usace); #names(usbr);
-   usace <- usace %>% mutate (year = Year) %>% select(NIDID, name, date, julian, day_month, year, storage_AF, elev_Ft, OT_Ft, OT_AF, percentStorage) %>% mutate(jurisdiction = "USACE") #dropping Julian, at least for now, since it's all wrong.  
+   usace <- usace %>% select(NIDID, name, date, julian, day_month, year, storage_AF, elev_Ft, OT_Ft, OT_AF, percentStorage) %>% mutate(jurisdiction = "USACE") #dropping Julian, at least for now, since it's all wrong.  
    #usbr <- usbr %>% select(NIDID, name, date, julian, day_month, year, storage_AF, elev_Ft, OT_Ft, OT_AF, percentStorage) %>% mutate(jurisdiction = "USBR") #dropping Julian, at least for now, since it's all wrong.  
    tx.dams <- usace
    summary(tx.dams) 
