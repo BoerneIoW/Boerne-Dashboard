@@ -276,6 +276,7 @@ current.stat2 <- merge(recent.flow, stats.merge, by.x=c("site","julian"), by.y=c
 
 current.stat2 <- current.stat2 %>% mutate(month = my.month.name(as.numeric(substr(date,6,7)))) %>% mutate(date = date2, date2 = date3) %>% dplyr::select(-date3);  #okay to have NA for date because want chart to end there
 current.stat2 <- current.stat2[with(current.stat2, order(site, date)),]
+
 write.csv(current.stat2, paste0(swd_data, "gw/all_boerne_gw_stats.csv"), row.names=FALSE)
 
 

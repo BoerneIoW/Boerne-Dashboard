@@ -339,7 +339,7 @@ map.on("click", "streamgauge-layer", function (e) {
         " target='_blank'>" +
         streamGaugeName +
         "</a><h4>";
-    fileName = "data_state/streamflow/stream_stats.csv";
+    fileName = "data/streamflow/all_boerne_stream_stats.csv";
 
     createDailyStatistics(streamID, streamPlotType);
 });
