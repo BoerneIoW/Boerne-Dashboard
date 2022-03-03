@@ -375,7 +375,7 @@ map.on("click", "reservoirs", function (e) {
         " target='_blank'>" +
         reservoirName +
         "</a></u><h4>";
-    fileName = "data_state/reservoirs/reservoir_stats.csv";
+    fileName = "data/reservoirs/all_canyon_reservoir_stats.csv";
     createDailyStatistics(streamID, streamPlotType);
 });
 
