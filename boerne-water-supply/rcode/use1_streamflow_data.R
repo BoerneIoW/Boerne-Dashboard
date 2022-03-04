@@ -30,7 +30,7 @@ serv <- "dv"
 ##############                               LOAD DATA
 #
 #################################################################################################################################
-#What sites are available in TX?
+#Old Data
 boerne.sites <- read_sf(paste0(swd_data, "streamflow/boerne_stream_gauge_sites.geojson")) %>% select(site, name, huc8, startYr, endYr, nYears, geometry,ws_watershed)
 boerne.site.metadata <- read.csv(paste0(swd_data, "streamflow/boerne_stream_metadata.csv"))
 boerne.data <- read.csv(paste0(swd_data, "streamflow/boerne_stream_data.csv"), colClasses=c("site" = "character")) %>% mutate(date = as.Date(date, format="%Y-%m-%d"))
@@ -59,13 +59,13 @@ unique.sites <- unique(boerne.sites$site)
 #set up data frame for stats and include year
 year.flow  <- as.data.frame(matrix(nrow=0, ncol=4));    colnames(year.flow) <- c("site", "date", "julian", "flow")
 
-#Loop through each site and calculate statistics
+#Loop through each site reads in new data
 for (i in 1:length(unique.sites)){
   old.data <- boerne.data %>% filter(site==unique.sites[i]) %>% filter(date==max(date))
 
   zt <- readNWISuv(siteNumbers = unique.sites[i], parameterCd = pcode, startDate=(old.data$date[1]+1), endDate = end.date); #only read in new data
   zt <- renameNWISColumns(zt);
-      names(zt) [names(zt) == "FROM.DCP_Flow" ] <- "Flow" #needed to fix name discrepancy for site 07344210 - CHECK
+      names(zt) [names(zt) == "FROM.DCP_Flow" ] <- "Flow" 
   if (dim(zt)[1] > 0)  {
     zt <- zt %>% mutate(julian = as.POSIXlt(dateTime, format = "%Y-%m-%d")$yday) %>% mutate(date = as.Date(dateTime, format="%Y-%m-%d")); #calculates julian date
     #calculate mean value
@@ -82,11 +82,12 @@ for (i in 1:length(unique.sites)){
 }
 summary(year.flow)
 
+#bind old and new data
 boerne.data <- rbind(boerne.data, year.flow) %>% arrange(site, date)
 write.csv(boerne.data, paste0(swd_data, "streamflow/all_boerne_stream_data.csv"), row.names=FALSE)
 #do rolling average etc next
 
-#bind all.data and year flow together and calculate 7 day rolling average (function is in global api)
+#calculate 7 day rolling average (function is in global api)
 #Check for missing days, if so, add NA rows: #https://waterdata.usgs.gov/blog/moving-averages/
 year.flow  <- as.data.frame(matrix(nrow=0, ncol=4));    colnames(year.flow) <- c("site", "date", "julian", "flow")
 stats <- as.data.frame(matrix(nrow=0,ncol=13));        colnames(stats) <- c("Site", "julian", "min", "flow10", "flow25", "flow50", "flow75", "flow90", "max", "Nobs","startYr","endYr","date"); 
