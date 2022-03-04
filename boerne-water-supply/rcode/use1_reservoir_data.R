@@ -22,16 +22,15 @@
 #
 ######################################################################################################################################################################
 #Now read in the website data and add the most recent files to the end of it
-old.data.all <- read.csv(paste0(swd_data, "reservoirs/usace_usbr_dams.csv"))
 old.data.usace <- read.csv(paste0(swd_data, "reservoirs/usace_dams.csv"))
 
 
-last.update <- max(old.data.all$date); today <- as.Date(substr(Sys.time(),1,10), "%Y-%m-%d")
+last.update <- max(old.data.usace$date); today <- as.Date(substr(Sys.time(),1,10), "%Y-%m-%d")
 difftime(today, last.update, units = "weeks") #time diff check since last update
 timeAmt = 2
 timeUnit = "weeks"
 
-
+mymonths <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
 ########################################################################################################################################
 ####### UPDATE ARMY CORPS ##############################################################################################################
 ########################################################################################################################################
@@ -48,6 +47,7 @@ timeUnit = "weeks"
     
     #read in shapefile
     project.df <- read_sf(paste0(swd_data, "reservoirs/usace_sites.geojson"))
+    #mapview::mapview(project.df)
     ace.df <- project.df
     #add url to data
     res.url <- "http://water.usace.army.mil/a2w/f?p=100:1:0::::P1_LINK:"
@@ -130,15 +130,15 @@ timeUnit = "weeks"
     
     new.data.usace <- all_district_data
     
-    ########################################################################################################################################################################################################################
-    #
-    #          ADD OLD AND NEW DATA TOGETHER
-    #
-    ########################################################################################################################################################################################################################
-    #pull out unique reservoirs
-    unique.nid <- unique(new.data.usace$NIDID); unique.nid
+########################################################################################################################################################################################################################
+#
+#     ADD OLD AND NEW DATA TOGETHER
+#
+########################################################################################################################################################################################################################
+#pull out unique reservoirs
+  unique.nid <- unique(new.data.usace$NIDID); unique.nid
     
-    #new data
+  #new data
       nx <- new.data.usace 
         dateFormat = nx$date[1]
           if(substr(dateFormat,5,5) == "-") {dateFormatFinal = "%Y-%m-%d"}
@@ -161,8 +161,11 @@ timeUnit = "weeks"
         maxCap <- nx %>% group_by(NIDID) %>% summarize(maxCap = 1.2*quantile(elev_Ft, 0.90, na.rm=TRUE), maxStor = 1.2*quantile(storage_AF, 0.90, na.rm=TRUE), maxfStor = 1.2*quantile(fstorage_AF, 0.90, na.rm=TRUE), .groups="drop");
       nx <- nx %>% left_join(maxCap, by="NIDID") %>% mutate(elev_Ft = ifelse(elev_Ft > maxCap, NA, elev_Ft), storage_AF = ifelse(storage_AF > maxStor, NA, storage_AF), fstorage_AF = ifelse(fstorage_AF > maxfStor, NA, fstorage_AF)) %>% 
           select(-maxCap, -maxStor, -maxfStor)
-      
-      #old data
+        
+      #include month abbreviations  
+      nx2 <- nx %>% mutate(julian = as.numeric(strftime(date, format = "%j")), month = month(date), monthAbb = mymonths[month])
+  
+  #old data
       fx <- old.data.usace
       dateFormat = fx$date[1]
       if(substr(dateFormat,5,5) == "-") {dateFormatFinal = "%Y-%m-%d"}
@@ -179,51 +182,40 @@ timeUnit = "weeks"
       #   print(paste(round(i/nrow(fx)*100,2),"% complete"))
       # }
       
+      #include month abbreviations  
+      fx2 <- fx %>% mutate(julian = as.numeric(strftime(date, format = "%j")), month = month(date), monthAbb = mymonths[month])
       
-      #what is the most recent date?
-      old.last.date <- fx %>% group_by(NIDID) %>% filter(date == max(date, na.rm=TRUE)) %>% select(NIDID, date) %>% distinct() %>% rename(lastDate = date)
+#what is the most recent date?
+old.last.date <- fx2 %>% group_by(NIDID) %>% filter(date == max(date, na.rm=TRUE)) %>% select(NIDID, date) %>% distinct() %>% rename(lastDate = date)
       
-      #remove anything new before that date
-      nx2 <- nx %>% left_join(old.last.date, by="NIDID") %>% filter(date > lastDate)
-      fx.2020 <- fx %>% filter(Year>=2020) %>% select(NIDID, day_month, OT_Ft, OT_AF) %>% distinct(); #2020 has complete data
-      nx2 <- merge(nx, fx.2020, by.x=c("NIDID","day_month"), by.y=c("NIDID","day_month"), all.x=TRUE)  
+      #remove anything new after that date
+      nx2 <- nx2 %>% left_join(old.last.date, by="NIDID") %>% filter(date > lastDate)
+      fx.2020 <- fx2 %>% filter(Year>=2020) %>% select(NIDID, day_month, OT_Ft, OT_AF) %>% distinct(); #2020 has complete data
+      nx2 <- merge(nx2, fx.2020, by.x=c("NIDID","day_month"), by.y=c("NIDID","day_month"), all.x=TRUE)  
       nx2 <- nx2 %>% mutate(percentStorage = round(storage_AF/OT_AF*100,2))
-      nx2 <- nx2 %>% select(NIDID, name, date, Year, day_month, julian, elev_Ft, storage_AF, OT_Ft, OT_AF, percentStorage); colnames(nx2) <- colnames(fx)
+      nx2 <- nx2 %>% select(NIDID, name, date, Year, day_month, julian, elev_Ft, storage_AF, OT_Ft, OT_AF, percentStorage, monthAbb, month); #colnames(nx2) <- colnames(fx2)
       
-      #combine
-      fx <- rbind(fx, nx2)
+#combine
+  fx <- rbind(fx2, nx2)
       
-      #make sure no duplicates
-      fx <- fx %>% distinct()
-      #arrange by NIDID and date
-      fx <- fx %>% arrange(NIDID, date)
+#make sure no duplicates
+  fx <- fx %>% distinct()
+#arrange by NIDID and date
+  fx <- fx %>% arrange(NIDID, date)
       
-      #SCOTT KERR HAS HAD A NEW SEDIMENT SURVEY
-      scott.ot = 36639
-      fx <- fx %>% mutate(OT_AF = ifelse(NIDID == "NC00300" & Year >=2017, 36639, OT_AF))
+#SCOTT KERR HAS HAD A NEW SEDIMENT SURVEY
+  scott.ot = 36639
+  fx <- fx %>% mutate(OT_AF = ifelse(NIDID == "NC00300" & Year >=2017, 36639, OT_AF))
       
-      fx <- fx %>% mutate(percentStorage = round(storage_AF/OT_AF*100,2)) %>% mutate(storage_AF = ifelse(percentStorage > 300, NA, storage_AF), percentStorage = ifelse(percentStorage > 300, NA, percentStorage))
-      summary(fx)
-      write.csv(fx, paste0(swd_data, "reservoirs/all_usace_dams.csv"), row.names=FALSE)
+  fx <- fx %>% mutate(percentStorage = round(storage_AF/OT_AF*100,2)) %>% mutate(storage_AF = ifelse(percentStorage > 300, NA, storage_AF), percentStorage = ifelse(percentStorage > 300, NA, percentStorage))
+  summary(fx)
+  
+  tx.dams <- fx 
+  tx.dams <- tx.dams %>% mutate(jurisdiction = "USACE") 
+  
+  write.csv(tx.dams, paste0(swd_data, "reservoirs/all_usace_dams.csv"), row.names=FALSE) 
 
       
-
-########################################################################################################################################
-#######filter out reservoir(s) of interest (DIDNT NEED USBR DATA FOR BOERNE)##############################################################################################################
-########################################################################################################################################
-       
-   usace <- read.csv(paste0(swd_data, "reservoirs/all_usace_dams.csv"), header = TRUE) #load in
-   #usbr <- read.csv(paste0(swd_data, "reservoirs/usbr_dams.csv"), header = TRUE) #load in
-   
-   #common format
-   names(usace); #names(usbr);
-   usace <- usace %>% select(NIDID, name, date, julian, day_month, year, storage_AF, elev_Ft, OT_Ft, OT_AF, percentStorage) %>% mutate(jurisdiction = "USACE") #dropping Julian, at least for now, since it's all wrong.  
-   #usbr <- usbr %>% select(NIDID, name, date, julian, day_month, year, storage_AF, elev_Ft, OT_Ft, OT_AF, percentStorage) %>% mutate(jurisdiction = "USBR") #dropping Julian, at least for now, since it's all wrong.  
-   tx.dams <- usace
-   summary(tx.dams) 
-   
-   write.csv(tx.dams, paste0(swd_data, "reservoirs/all_usace_dams.csv"), row.names=FALSE) #save out, this is different from above in that it includes jurisdiction   
-   
 # filter out reservoir(s) of interest
    canyon.lake <- tx.dams %>% filter(name == "Canyon Lake")
    write.csv(canyon.lake, paste0(swd_data, "reservoirs/all_canyon_lake.csv"), row.names=FALSE)
@@ -234,7 +226,7 @@ timeUnit = "weeks"
 #
 ########################################################################################################################################################################################################################
 
-#fx <- read.csv(paste0(swd_data, "reservoirs/canyon_lake"), header = TRUE) #for picking up part-way
+#fx <- read.csv(paste0(swd_data, "reservoirs/all_canyon_lake"), header = TRUE) #for picking up part-way
 fx <- canyon.lake %>% filter(is.na(OT_Ft) == FALSE) #drop sites without operational target
 unique.sites <- unique(fx$NIDID) 
 
@@ -243,36 +235,43 @@ stats <- as.data.frame(matrix(nrow=0,ncol=13));        colnames(stats) <- c("nid
 year.flow  <- as.data.frame(matrix(nrow=0, ncol=10));   colnames(year.flow) <- c("nidid", "name", "date", "year", "julian", "elev_ft","storage_af", "target_ft", "target_af", "percent_storage")
 
 
-  for (i in 1:length(unique.sites)){
+  #for (i in 1:length(unique.sites)){  ##### loop not needed because it is only one site
   #for (i in 17:length(unique.sites)){  #test
-    zt <- fx %>% filter(NIDID == unique.sites[i]) %>% filter(year >= year(start.date))
+    zt <- fx %>% filter(NIDID == unique.sites) %>% filter(Year >= year(start.date))
     #summarize annual
-    zt.stats <- zt %>% group_by(NIDID, julian) %>% summarize(Nobs = n(), min=round(min(percentStorage, na.rm=TRUE),4), flow10 = round(quantile(percentStorage, 0.10, na.rm=TRUE),4), flow25 = round(quantile(percentStorage, 0.25, na.rm=TRUE),4),
+    zt.stats <- fx %>% group_by(NIDID, julian) %>% summarize(Nobs = n(), min=round(min(percentStorage, na.rm=TRUE),4), flow10 = round(quantile(percentStorage, 0.10, na.rm=TRUE),4), flow25 = round(quantile(percentStorage, 0.25, na.rm=TRUE),4),
                                                       flow50 = round(quantile(percentStorage, 0.5, na.rm=TRUE),4), flow75 = round(quantile(percentStorage, 0.75, na.rm=TRUE),4), flow90 = round(quantile(percentStorage, 0.90, na.rm=TRUE),4), 
                                                       max = round(max(percentStorage, na.rm=TRUE),4), .groups="drop")
-    zt.stats <- zt.stats %>% mutate(nidid = as.character(unique.sites[i]), startYr = min(zt$year), endYr = max(zt$year)) %>% select(nidid, julian, min, flow10, flow25, flow50, flow75, flow90, max, Nobs, startYr, endYr)
+    zt.stats <- zt.stats %>% mutate(nidid = as.character(nidid), startYr = min(fx$Year), endYr = max(fx$Year)) 
     if(dim(zt.stats)[1] == 366) {zt.stats$date = julian.ref$day_month_leap}
     if(dim(zt.stats)[1] == 365) {zt.stats$date = julian.ref$day_month[c(1:365)]} 
     
-    
     #fill dataframe
     stats <- rbind(stats, zt.stats)
-    zt <- zt %>% filter(year>=2017) %>% select(NIDID, name, date, year, julian, elev_Ft, storage_AF, OT_Ft, OT_AF, percentStorage, jurisdiction);    
-      colnames(zt) <- c("nidid", "name", "date", "year", "julian", "elev_ft","storage_af", "target_ft", "target_af", "percent_storage", "jurisdiction")
+    
+    zt <- fx %>% filter(Year>=2017) #%>% select(NIDID, name, date, year, julian, elev_Ft, storage_AF, OT_Ft, OT_AF, percentStorage, jurisdiction);    
+    colnames(zt) <- c("nidid", "name", "date", "year", "day_month", "julian", "elev_ft","storage_af", "target_ft", "target_af", "percent_storage", "month", "monthAbb", "jurisdiction")
     year.flow <- rbind(year.flow, zt)
     
-    print(i)
-  }
+#    print(i)
+#  }
   bk.up <- stats
   summary(stats)
   summary(year.flow)
   
-  stats <- stats %>% mutate(date2 = as.Date(paste0(end.year, "-",date), "%Y-%b-%d")) %>% mutate(month = substr(date,0,3))
-  
+#fix date stuff  
+  stats2 <- stats
+  stats2$endYr <- as.character(stats$endYr)
+  stats2$startYr <- as.character(stats$startYr)
+  stats2 <- stats2 %>% mutate(date2 = as.Date(paste0(end.year, "-",date)))
+  stats2 <- stats2 %>% mutate(month = mymonths[month])
   
   #Now attach most recent value to stream stats for the map
   recent.flow <- year.flow %>% group_by(nidid) %>% filter(is.na(storage_af) == FALSE) %>% filter(date == max(date)); #do we want to do most recent date or most recent date with data?
-  current.stat <- merge(recent.flow[,c("nidid", "julian", "date", "percent_storage")], stats, by.x=c("nidid","julian"), by.y=c("nidid", "julian"), all.x=TRUE) %>% select(-date.y, -date2) %>% rename(date = date.x)
+  current.stat <- merge(recent.flow, stats2, by.x=c("nidid","julian"), by.y=c("nidid", "julian"), all.x=TRUE) #%>% rename(date = date.x)
+  #clean
+  current.stat <- current.stat %>% select(-date.x, -year, -date.y, -elev_ft, -storage_af, -target_af, -target_ft, -month.x, -jurisdiction, -month.y)
+  current.stat <- current.stat %>% rename(date = day_month, month = monthAbb)
   
   #if else for this year and last years flow
   current.stat <- current.stat %>% mutate(status = ifelse(percent_storage <= flow10, "Extremely Dry", ifelse(percent_storage > flow10 & percent_storage <= flow25, "Very Dry", ifelse(percent_storage >= flow25 & percent_storage < flow50, "Moderately Dry", 
@@ -281,26 +280,30 @@ year.flow  <- as.data.frame(matrix(nrow=0, ncol=10));   colnames(year.flow) <- c
   table(current.stat$status)
   
   #merge to sites geojson 
-  project.df <- read_sf(paste0(swd_data, "reservoirs/canyon_lake_site.geojson"))
-  #res.loc <- project.df %>% select(NIDID, Loc_ID, District, Name, url_link, geometry) #Can't do all of this - lacking from USBR. 
+  project.df <- read_sf(paste0(swd_data, "reservoirs/all_canyon_lake_site.geojson"))
   res.loc <- project.df %>% select(NIDID, Name, Jurisdiction, geometry)
   canyon.lake.site.stats <- merge(res.loc, current.stat[,c("nidid","status","percent_storage","julian","flow50")], by.x="NIDID", by.y="nidid") #why are there 4 of everything?
+  #mapview::mapview(canyon.lake.site.stats)
   geojson_write(canyon.lake.site.stats, file=paste0(swd_data, "reservoirs/all_canyon_lake_site.geojson"))
-  
 
   #rename nidid to site so can use same code as streamflow - used to make charts
   current.year <- year.flow %>% filter(year == year(max(date)));     last.year <- year.flow %>% filter(year == (year(max(date))-1));     
-  stats.flow <- merge(stats, current.year[,c("nidid","julian","percent_storage")], by.x=c("nidid","julian"), by.y=c("nidid","julian"), all.x=TRUE) %>% rename(flow = percent_storage)
-  stats.past <- merge(stats, last.year[,c("nidid", "julian", "percent_storage")], by.x=c("nidid", "julian"), by.y=c("nidid", "julian"), all.x=TRUE) %>% mutate(date2 = as.Date(paste0((end.year-1),"-",date), "%Y-%b-%d"))  %>% 
-    rename(flow = percent_storage) %>% as.data.frame()
+  stats.flow <- merge(stats, current.year, by.x=c("nidid","julian"), by.y=c("nidid","julian"), all.x=TRUE) %>% rename(site = nidid, flow = percent_storage)
+  stats.past <- merge(stats, last.year, by.x=c("nidid", "julian"), by.y=c("nidid", "julian"), all.x=TRUE) %>% rename(site = nidid, flow = percent_storage) %>% as.data.frame()
+  #clean and bind
+  stats.flow <- stats.flow %>% select(-date.x, -name, -year, -elev_ft, -storage_af, -target_af, -target_ft, -month, -jurisdiction)
+  stats.flow <- stats.flow %>% rename(date = day_month, date2 = date.y, month = monthAbb)
+  stats.past <- stats.past %>% select(-date.x, -name, -year, -elev_ft, -storage_af, -target_af, -target_ft, -month, -jurisdiction)
+  stats.past <- stats.past %>% rename(date = day_month, date2 = date.y, month = monthAbb)
   stats.flow <- rbind(stats.past, stats.flow)
   
+  #get status
   stats.flow <- stats.flow %>% mutate(status = ifelse(flow <= flow10, "Extremely Dry", ifelse(flow > flow10 & flow <= flow25, "Very Dry", ifelse(flow >= flow25 & flow < flow50, "Moderately Dry", 
                                                ifelse(flow >= flow50 & flow < flow75, "Moderately Wet", ifelse(flow >= flow75 & flow < flow90, "Very Wet", ifelse(flow >= flow90, "Extremely Wet", "Unknown")))))))
   stats.flow <- stats.flow %>% mutate(colorStatus = ifelse(status=="Extremely Dry", "darkred", ifelse(status=="Very Dry", "red", ifelse(status=="Moderately Dry", "orange", ifelse(status=="Moderately Wet", "cornflowerblue",
                                               ifelse(status=="Very Wet", "blue", ifelse(status=="Extremely Wet", "navy", "gray")))))))
-  #attach flow of current year
-  stats.flow <- stats.flow %>% rename(site = nidid)
+  
+  #save out
   write.csv(stats.flow, paste0(swd_data, "reservoirs/all_canyon_reservoir_stats.csv"), row.names=FALSE)
   
 ################################################################################################################################################################
