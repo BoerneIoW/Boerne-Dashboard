@@ -48,7 +48,7 @@ function drawMap(){
     'id': 'utilities-layer',
     'type': 'fill',
     'source': 'utilities-source',
-    //'filter': ['in', 'data', 'yes'],
+    'filter': ['in', 'data', 'yes'],
     'paint': {'fill-color': '#708090', 
               'fill-outline-color': 'black',
               'fill-opacity': 0.75,
