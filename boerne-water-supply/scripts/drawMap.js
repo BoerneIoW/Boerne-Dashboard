@@ -79,7 +79,7 @@ function drawMap(){
                 'no', 'darkgray',
                 /* other */ '#ccc'
             ],
-            'line-width': 0.25
+            'line-width': 0.75
     },
     'layout': {"visibility": 'visible'}
     }); //if want thicker line
