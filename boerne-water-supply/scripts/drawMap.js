@@ -60,7 +60,7 @@ function drawMap(){
       'id': 'no-utilities-layer',
       'type': 'fill',
       'source': 'utilities-source',
-      'filter': ['in', 'data', 'no'],
+      //'filter': ['in', 'data', 'no'],
       'paint': {'fill-color': '#708090', 
               'fill-opacity': 0.2,
              },
