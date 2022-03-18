@@ -467,7 +467,7 @@ function setSystemThis(target){
     container: 'map', //specify container ID
     style: 'mapbox://styles/mapbox/streets-v11', //specify map style
     center: [-98.73175, 29.79472], //specify the start position; long, lat
-    zoom: 10
+    zoom: 12
   });
   map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
@@ -477,7 +477,7 @@ function setSystemThis(target){
     bbox: [-98.804533,29.748961,-98.672802,29.839155],
     mapboxgl: mapboxgl,
     placeholder: "Enter address to find your utility",
-    zoom: 11
+    zoom: 12
    });
   document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
 
