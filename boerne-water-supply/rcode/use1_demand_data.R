@@ -97,7 +97,7 @@ demand_by_mgd$day <- as.numeric(demand_by_mgd$day)
 
 str(demand_by_mgd)
 
-new_demand_by_mgd <- demand_by_mgd %>% filter(year >= 2022)
+new_demand_by_mgd <- demand_by_mgd %>% filter(year >= 2022 & date < today)
 new_demand_by_mgd$date <- format(as.Date(new_demand_by_mgd$date), "%Y-%m-%d") # make sure the date format is the same for old and new before binding
 
 #merge old and new data
