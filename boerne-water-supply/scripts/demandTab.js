@@ -20,7 +20,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
     //read in stream stats
     d3.csv("data/demand/all_boerne_total_demand.csv").then(function (demandData) {
         demandData.forEach(function (d) {
-            d.date3 = parseDate("2021-" + d.date2.substring(5, d.date2.length));
+            d.date3 = parseDate("2022-" + d.date2.substring(5, d.date2.length));
             d.mean_demand = +d.mean_demand;
             d.month = +d.month;
             d.year = +d.year;
@@ -171,7 +171,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
                 line: { color: "rgb(43,28,88", width: 3 },
                 mode: "lines",
                 type: "scatter",
-                name: "2021",
+                name: "2022",
                 showlegend: true,
                 hovertemplate: "%{y:.1f} mgd in %{x}",
             };
