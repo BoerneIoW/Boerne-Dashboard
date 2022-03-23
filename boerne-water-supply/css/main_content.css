@@ -86,7 +86,7 @@ textarea {
 /* Global Styles
 ---------------------------------------*/
 body {
-    color: #ec0cb5; /*dark gray*/
+    color: #343434; /*dark gray*/
     font-family: Lato, verdana, sans-serif;
     font-size: 16px;
     font-style: normal; /*italic and oblique are other options*/
@@ -233,7 +233,7 @@ select {
 /*Header
 ---------------------------------------*/
 .header {
-    color: #02145c;
+    color: ##6c019c;
     font-family: Quicksand, sans-serif;
     font-size: 18px;
     margin: 5px 1px;
@@ -250,7 +250,7 @@ select {
 /*Headers for chart titles and map layers
 ---------------------------------------*/
 .chartTitles {
-    color: rgb(26, 131, 130);
+    color: rgb(108, 1, 156);
     font-family: Quicksand, sans-serif;
     font-weight: bold;
     margin: 1px auto;
