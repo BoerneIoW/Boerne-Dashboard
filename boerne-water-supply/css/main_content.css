@@ -290,8 +290,7 @@ select {
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
     background-color: #5d6d7e;
-    color: #6c019c;
-    /*color: #aed6f1;*/
+    color: #8f03ce;
     font-weight: bold;
 }
 
