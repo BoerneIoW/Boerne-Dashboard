@@ -11,7 +11,7 @@
    ========================================================================== */
 
 html {
-    color: #222;
+    color: #6c019c;
     font-size: 1em;
     line-height: 1.4;
 }
@@ -20,12 +20,12 @@ html {
  * Remove text-shadow in selection highlight:
 */
 ::-moz-selection {
-    background: #b3d4fc;
+    background: #6c019c;
     text-shadow: none;
 }
 
 ::selection {
-    background: #b3d4fc;
+    background: #6c019c;
     text-shadow: none;
 }
 
@@ -87,7 +87,7 @@ textarea {
 ---------------------------------------*/
 body {
     color: #343434; /*dark gray*/
-    font-family: Lato, verdana, sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 16px;
     font-style: normal; /*italic and oblique are other options*/
     font-weight: 300; /*goes from 100 to 900 with 100 being lighter and 900 darker*/
@@ -104,7 +104,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: Quicksand, sans-serif;
+    font-family: "Open Sans", sans-serif;
 }
 
 ul {
@@ -115,7 +115,7 @@ ul {
 }
 
 li {
-    font-family: Lato, verdana;
+    font-family: "Open Sans", sans-serif;
     font-size: 16px;
     padding-top: 0.5em;
 }
@@ -123,11 +123,11 @@ li {
 /*Make URL's IoW specific*/
 a {
     /*color: #831a1b;*/
-    color: #031010;
+    color: #6c019c;
     text-decoration: underline;
 }
 a:hover {
-    color: #831a1b;
+    color: #6c019c;
     text-decoration: underline;
 }
 
@@ -234,7 +234,7 @@ select {
 ---------------------------------------*/
 .header {
     color: ##6c019c;
-    font-family: Quicksand, sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 18px;
     margin: 5px 1px;
 }
@@ -251,7 +251,7 @@ select {
 ---------------------------------------*/
 .chartTitles {
     color: rgb(108, 1, 156);
-    font-family: Quicksand, sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-weight: bold;
     margin: 1px auto;
     padding-top: 10px;
@@ -281,7 +281,7 @@ select {
 }
 
 .nav-pills > li > a {
-    color: rgb(28, 43, 88);
+    color: rgb(108,1,156);
     font-weight: bold;
     text-decoration: none;
 }
@@ -289,7 +289,7 @@ select {
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
-    background-color: #974bcc;
+    background-color: #6c019c;
     color: #ffd700;
     font-weight: bold;
 }
