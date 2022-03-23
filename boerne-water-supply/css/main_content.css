@@ -87,7 +87,7 @@ textarea {
 ---------------------------------------*/
 body {
     color: #343434; /*dark gray*/
-    font-family: Lato, verdana, sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 16px;
     font-style: normal; /*italic and oblique are other options*/
     font-weight: 300; /*goes from 100 to 900 with 100 being lighter and 900 darker*/
@@ -104,7 +104,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: Quicksand, sans-serif;
+    font-family: "Open Sans", sans-serif;
 }
 
 ul {
@@ -115,7 +115,7 @@ ul {
 }
 
 li {
-    font-family: Lato, verdana;
+    font-family: "Open Sans", sans-serif;
     font-size: 16px;
     padding-top: 0.5em;
 }
@@ -234,7 +234,7 @@ select {
 ---------------------------------------*/
 .header {
     color: ##6c019c;
-    font-family: Quicksand, sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 18px;
     margin: 5px 1px;
 }
