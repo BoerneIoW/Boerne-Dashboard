@@ -28,7 +28,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
         });
 
         var selDemand = demandData.filter(function (d) {
-            return d.pwsid === myUtilityID.toLowerCase() && d.year >= 1997;
+            return d.pwsid === myUtilityID && d.year >= 1997;
         });
         //console.log(selDemand)
 
