@@ -15,8 +15,8 @@
 #
 ######################################################################################################################################################################
 #load in geojson for utilities
-utilities <- read_sf(paste0(swd_data, "demand/BoerneWaterServiceBoundary.geojson"))
-pwsid.list <- unique(utilities$PWSId) #Boerne is the utility of interest
+utilities <- read_sf(paste0(swd_data, "boerne_utility.geojson"))
+pwsid.list <- unique(utilities$pwsid) #Boerne is the utility of interest
 mymonths <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"); #used below to convert numbers to abbrev
 mapview::mapview(utilities)
 
@@ -31,14 +31,15 @@ ma <- function(x,n=7){stats::filter(x,rep(1/n,n), sides=1)}
 gs4_auth()
 1
 
-demand_data <- read_sheet("https://docs.google.com/spreadsheets/d/1BKb9Q6UFEBNsGrLZhjdq2kKX5t1GqPFCWF553afUKUg/edit#gid=2030520898", sheet = 1, range = "A5854:H", col_names = FALSE)
+demand_data <- read_sheet("https://docs.google.com/spreadsheets/d/1BKb9Q6UFEBNsGrLZhjdq2kKX5t1GqPFCWF553afUKUg/edit#gid=2030520898", sheet = 1, range = "A229:H", col_names = FALSE)
 demand_by_source <- demand_data[, c("...1", "...2", "...3", "...6", "...7", "...8")]
 
 #rename columns
 demand_by_mgd <- rename(demand_by_source, date = "...1", groundwater = "...2", boerne_lake = "...3", GBRA = "...6", reclaimed = "...7", total = "...8")
 
-#remove na's
-demand_by_mgd <- na.omit(demand_by_mgd)
+#replace na's with 0s
+demand_by_mgd <- as.data.frame(demand_by_mgd)
+demand_by_mgd[is.na(demand_by_mgd)] <- 0
 
 demand_by_mgd <- as.data.frame(demand_by_mgd)
 
@@ -46,7 +47,7 @@ demand_by_mgd <- as.data.frame(demand_by_mgd)
 demand_by_mgd$groundwater <- demand_by_mgd$groundwater/1000; demand_by_mgd$boerne_lake <- demand_by_mgd$boerne_lake/1000; demand_by_mgd$GBRA <- demand_by_mgd$GBRA/1000; demand_by_mgd$reclaimed <- demand_by_mgd$reclaimed/1000; demand_by_mgd$total <- demand_by_mgd$total/1000; 
 
 #include PWSId
-demand_by_mgd$pwsid <- utilities$PWSId
+demand_by_mgd$pwsid <- utilities$pwsid
 
 #add julian indexing
 #nx <- demand_by_mgd %>% mutate(year = year(date), month = month(date), day = day(date))
