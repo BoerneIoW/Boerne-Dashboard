@@ -66,7 +66,7 @@
   <p style=" font-size: 14px;"><i><b>Disclaimer:</b> This tool is best viewed in Chrome, Firefox, Microsoft Edge, and Safari.</i></p>
   <p style="font-size: 16px;"><span style="color: rgb(108,1,156); font-size: 18px"><b>To get started,</b></span> select a utility from the map, drop down menu, or type an address.<br>
     <span style="color: rgb(108,1,156); font-size: 18px"><b>Next,</b></span> select different tabs on the right to learn more about water supply conditions.<br>
-    <span style="color: rgb(252,57,67); font-size: 18px"><b>The help icons</b></span> provide more details to understand each tab.
+    <span style="color: rgb(108,1,156); font-size: 18px"><b>The help icons</b></span> provide more details to understand each tab.
   </p>
   <h3 class = "chartTitles" id="dataUpdateNotice" style="padding-top: 20px; left: 50%;"></h3>
   <br>
@@ -88,7 +88,7 @@
       <div class= "map-layers-row">   
         <h3 class="chartTitles">Turn Map Layers On and Off</h3> 
         <div class="row" style="text-align: center; display: inline;"> 
-            <button class = "btn" value = "menuUtility" id = "menuUtility" style= "background-color: #3f97a8; color: white;">Utility</button>
+            <button class = "btn" value = "menuUtility" id = "menuUtility" style= "background-color: #6c019c; color: gold;">Utility</button>
             <button class="btn" value= "menuCounty" id= "menuCounty">County</button>
             <button class="btn" value="menuBasins" id="menuBasins">River Basin</button>
             <button class="btn" value="menuWatershed" id="menuWatershed">Sub-Basin</button>
@@ -106,7 +106,7 @@
             <button class="btn forecast" value= "menuForecastTEMP6" id= "menuForecastTEMP6">Temp 6-10 Day Forecast</button>
         </div><!--end top row-->
      <!--ADD DIV TO TURN ON WHEN QPF 7-day forecast selected-->
-     <div id="moreForecastInfo" style="text-align: center; color: rgb(26,131,130); display: none;">
+     <div id="moreForecastInfo" style="text-align: center; color: rgb(108,1,156); display: none;">
         <p>For additional forecasts, please visit the <a href="https://www.wpc.ncep.noaa.gov/#page=ovw" target="_blank">Weather Precipitation Center</a>.</p>
     </div>
 
@@ -115,7 +115,7 @@
     <!--#######################################################################################################
                                     MAP DIV
     ######################################################################################################-->
-     <div class="map-layer-row" id = "map-column" style="z-index: 1px;" style="border: thin solid rgb(26,131,130);">
+     <div class="map-layer-row" id = "map-column" style="z-index: 1px;" style="border: thin solid rgb(108,1,156);">
            <div id="map" style="height: 600px; z-index: 10;"> <!--border: thin solid black;"--> 
            <div class="infoMap" id="map_hover_box"><p><strong>Hover over utilities</strong></p></div>
            <div class="legend" id="stream-legend" style="display: none;"></div>    
@@ -403,7 +403,7 @@ function setSystemThis(target){
                                      ADD FOOTER
       ######################################################################################################-->
 <footer>
-    <h4 style="color: rgb(26,131,130);">Credits</h4>
+    <h4 style="color: rgb(108,1,156);">Credits</h4>
     <p> This tool is a product of the  <a href="https://internetofwater.org/" target = "_blank">Internet of Water</a> and was developed in partnership with the <a href = "https://www.ci.boerne.tx.us/" target = "_blank"> City of Boerne</a>, Benjamin Eldredge and Margaret Lamar at the <a href="https://cibolo.org/" target="_blank">Cibolo Center for Conservation</a>, and Michael H. Young at the <a href="https://www.beg.utexas.edu/" target="_blank">Bureau of Economic Geology at the University of Texas at Austin</a>. 
       <br>
       This project was partially supported by the <a href="https://cgmf.org/p/home.html" target="_blank">Cynthia and George Mitchell Foundation</a>.
