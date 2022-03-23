@@ -251,7 +251,7 @@ select {
 ---------------------------------------*/
 .chartTitles {
     color: rgb(108, 1, 156);
-    font-family: Quicksand, sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-weight: bold;
     margin: 1px auto;
     padding-top: 10px;
@@ -281,7 +281,7 @@ select {
 }
 
 .nav-pills > li > a {
-    color: rgb(28, 43, 88);
+    color: rgb(108,1,156);
     font-weight: bold;
     text-decoration: none;
 }
@@ -289,7 +289,7 @@ select {
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
-    background-color: #974bcc;
+    background-color: #6c019c;
     color: #ffd700;
     font-weight: bold;
 }
