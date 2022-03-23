@@ -123,11 +123,11 @@ li {
 /*Make URL's IoW specific*/
 a {
     /*color: #831a1b;*/
-    color: #031010;
+    color: #6c019c;
     text-decoration: underline;
 }
 a:hover {
-    color: #831a1b;
+    color: #6c019c;
     text-decoration: underline;
 }
 
