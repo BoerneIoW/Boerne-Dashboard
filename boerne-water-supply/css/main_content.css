@@ -11,7 +11,7 @@
    ========================================================================== */
 
 html {
-    color: #e5f20c;
+    color: #222;
     font-size: 1em;
     line-height: 1.4;
 }
@@ -86,7 +86,7 @@ textarea {
 /* Global Styles
 ---------------------------------------*/
 body {
-    color: #343434; /*dark gray*/
+    color: #ec0cb5; /*dark gray*/
     font-family: Lato, verdana, sans-serif;
     font-size: 16px;
     font-style: normal; /*italic and oblique are other options*/
