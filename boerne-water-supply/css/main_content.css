@@ -297,8 +297,8 @@ select {
 /* MAP LEGEND 
 ---------------------------------------------------------*/
 .map-layers-row {
-    background-color: rgb(108, 1, 156);
-    border: thin solid rgb(26, 131, 130);
+    background-color: rgb(240, 240, 240);
+    border: thin solid rgb(108, 1, 156);
     margin: 1px 0 0 0;
     padding: 2px;
     text-align: center;
@@ -425,7 +425,7 @@ select {
 }
 .intro-bkgd {
     background-color: rgb(245, 245, 245);
-    border-bottom: solid 2px rgb(26, 131, 130);
+    border-bottom: solid 2px rgb(108, 1, 156);
     padding: 20px;
     position: relative;
     margin: 0 -10px;
@@ -460,7 +460,7 @@ footer {
 
 .left-footer {
     background-color: rgb(230, 230, 230);
-    border-right: solid 2px rgb(26, 131, 130);
+    border-right: solid 2px rgb(108, 1, 156);
     display: inline-block;
     left: 0;
     position: relative;
