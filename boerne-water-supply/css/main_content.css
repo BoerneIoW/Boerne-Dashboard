@@ -20,12 +20,12 @@ html {
  * Remove text-shadow in selection highlight:
 */
 ::-moz-selection {
-    background: #b3d4fc;
+    background: #6c019c;
     text-shadow: none;
 }
 
 ::selection {
-    background: #b3d4fc;
+    background: #6c019c;
     text-shadow: none;
 }
 
