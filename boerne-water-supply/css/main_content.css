@@ -289,8 +289,8 @@ select {
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
-    background-color: #5d6d7e;
-    color: #8f03ce;
+    background-color: #974bcc;
+    color: #ffd700;
     font-weight: bold;
 }
 
