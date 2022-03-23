@@ -21,7 +21,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
     d3.csv("data/demand/all_boerne_total_demand.csv").then(function (demandData) {
         demandData.forEach(function (d) {
             d.date3 = parseDate("2022-" + d.date2.substring(5, d.date2.length));
-            d.mean_demand = +d.mean_demand;
+            d.demand_mgd = +d.demand_mgd;
             d.month = +d.month;
             d.year = +d.year;
             d.peak_demand = +d.peak_demand;
@@ -75,7 +75,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
                 tempName = "%{y:.1f} mgd in " + tempSelect;
                 //xDate = temp.map(function(d){ return d.date; });
                 yOther = temp.map(function (d) {
-                    return d.mean_demand;
+                    return d.demand_mgd;
                 });
                 //create individual trace
                 var showLegVal = true;
@@ -127,7 +127,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
                         return d.year === tempSelect;
                     })
                     .map(function (d) {
-                        return d.mean_demand;
+                        return d.demand_mgd;
                     });
                 tempName = "%{y:.1f} mgd in %{x}, " + tempSelect;
                 colorLine = colorLineAll[i];
@@ -157,7 +157,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
                 return d.year === currentYear;
             });
             var ySelect = selDemandNow.map(function (d) {
-                return d.mean_demand;
+                return d.demand_mgd;
             });
 
             //PLOTLY
@@ -213,7 +213,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
 
             if (myUtility !== "none") {
                 var selCurDemand = selDemand.map(function (d) {
-                    return d.mean_demand;
+                    return d.demand_mgd;
                 });
                 var thisWeekDemand = selCurDemand[selCurDemand.length - 1];
                 var lastWeekDemand = selCurDemand[selCurDemand.length - 8];
