@@ -60,7 +60,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
 
             //draw the traces for all years but current
             var xYears = [];
-            for (var i = 2000; i <= currentYear; i++) {
+            for (var i = 2016; i <= currentYear; i++) {
                 xYears.push(i);
             }
 
