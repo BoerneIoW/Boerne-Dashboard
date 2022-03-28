@@ -154,7 +154,7 @@ function plotPrecipitation(pcpID, checked) {
                 showline: false,
                 showgrid: false,
                 showticklabels: true,
-                range: [0, 14],
+                range: [0, 20],
             },
             xaxis: {
                 showline: false,
