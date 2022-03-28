@@ -283,11 +283,12 @@ function setSystemThis(target){
             <input onclick="createTraceDemand(this.value)" name="checkDemandYear" value="2021" type="checkbox"> 2021<br><input onclick="createTraceDemand(this.value)" name="checkDemandYear" value="2022" type="checkbox" checked> 2022<br>  
         </form>
       </div>
-      
-      <div class="col-sm-10" id="demandPlot">
-        <img class="chart-holder-icon" src="img/demand_chart_icon.png">
-      </div>
-      <div class = "col-sm-9" id = "demandCumPlot" ></div>
+        <div class = "row">
+          <div class = "col-sm-9" id = "demandPlot" style="padding: 0;">
+            <img class = "chart-holder-icon" src="img/pcp_chart_icon.png">
+          </div>
+          <div class = "col-sm-9" id = "demandCumPlot" ></div>
+        </div>
     </div>
   </div> <!-- end demand pane-->
       
