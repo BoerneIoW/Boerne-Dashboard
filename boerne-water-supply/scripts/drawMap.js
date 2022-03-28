@@ -648,6 +648,7 @@ $('button').on('click', function(){
     //change visibility based on menu grabbed
       if (clickedLayer === "menuUtility") {mapLayer = "utilities-layer";}
       if (clickedLayer === "menuCounty") {mapLayer = "county";}
+      if (clickedLayer === "menuGMA") {mapLayer = "gma";}
       if (clickedLayer === "menuDrought") {mapLayer = "drought";}
       if (clickedLayer === "menuWatershed") {mapLayer = "watersheds";}
       if (clickedLayer === "menuBasins") {mapLayer = "riverbasins";}
@@ -715,6 +716,14 @@ $('button').on('click', function(){
             map.setLayoutProperty('county_name', 'visibility', 'visible');
           } else {
             map.setLayoutProperty('county_name', 'visibility', 'none');
+          }
+        }//end if mapLayer
+
+        if (mapLayer === "gma"){ 
+          if (visibility === 'none') {
+            map.setLayoutProperty('gma_name', 'visibility', 'visible');
+          } else {
+            map.setLayoutProperty('gma_name', 'visibility', 'none');
           }
         }//end if mapLayer
 
