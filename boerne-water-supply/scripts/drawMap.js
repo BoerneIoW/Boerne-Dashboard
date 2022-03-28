@@ -721,9 +721,9 @@ $('button').on('click', function(){
 
         if (mapLayer === "gma"){ 
           if (visibility === 'none') {
-            map.setLayoutProperty('gma_name', 'visibility', 'visible');
+            map.setLayoutProperty('GMAnum', 'visibility', 'visible');
           } else {
-            map.setLayoutProperty('gma_name', 'visibility', 'none');
+            map.setLayoutProperty('GMAnum', 'visibility', 'none');
           }
         }//end if mapLayer
 
