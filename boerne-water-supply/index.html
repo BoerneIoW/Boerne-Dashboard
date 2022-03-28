@@ -495,15 +495,15 @@ function setSystemThis(target){
   var map = new mapboxgl.Map({
     container: 'map', //specify container ID
     style: 'mapbox://styles/mapbox/streets-v11', //specify map style
-    center: [-98.73175, 29.79472], //specify the start position; long, lat
-    zoom: 11
+    center: [-98.49653, 29.80583], //specify the start position; long, lat
+    zoom: 9
   });
   map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
   var geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
-    //limit results to NC
-    bbox: [-98.804533,29.748961,-98.672802,29.839155],
+    //limit results to Boerne
+    bbox: [-98.878512,29.690694,-98.58712,29.89914],
     mapboxgl: mapboxgl,
     placeholder: "Enter address to find your utility",
     zoom: 11
