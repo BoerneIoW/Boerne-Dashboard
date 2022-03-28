@@ -382,7 +382,7 @@ map.addLayer({
   'paint': {'line-color': 'black', 'line-width': 4}
 });
 map.addLayer({
-id: "gma_name",
+id: "GMAnum",
 type: "symbol",
 source: "gma",
 layout: {
