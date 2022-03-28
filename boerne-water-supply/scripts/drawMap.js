@@ -348,7 +348,7 @@ function drawMap(){
       'layout': {
         'visibility': 'none',
       },
-      'paint': {'line-color': 'darkgray', 'line-width': 4}
+      'paint': {'line-color': 'darkgray', 'line-width': 3}
     });
    map.addLayer({
     id: "county_name",
@@ -379,7 +379,7 @@ map.addLayer({
   'layout': {
     'visibility': 'none',
   },
-  'paint': {'line-color': 'darkgray', 'line-width': 4}
+  'paint': {'line-color': 'black', 'line-width': 4}
 });
 map.addLayer({
 id: "gma_name",
