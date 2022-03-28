@@ -496,14 +496,14 @@ function setSystemThis(target){
     container: 'map', //specify container ID
     style: 'mapbox://styles/mapbox/streets-v11', //specify map style
     center: [-98.73175, 29.79472], //specify the start position; long, lat
-    zoom: 11
+    zoom: 9
   });
   map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
   var geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
     //limit results to Boerne
-    bbox: [-98.834123,29.677438,-98.136314,29.997311],
+    bbox: [-98.878512,29.690694,-98.58712,29.89914],
     mapboxgl: mapboxgl,
     placeholder: "Enter address to find your utility",
     zoom: 11
