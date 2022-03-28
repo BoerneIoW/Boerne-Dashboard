@@ -133,6 +133,23 @@ demand7 <- demand7[, c("pwsid", "date","demand_mgd", "mean_demand", "julian", "m
 #write.csv
 write.csv(demand7, paste0(swd_data, "demand/all_boerne_total_demand.csv"), row.names=FALSE)
 
+
+#create comulative demand
+demand.data <- demand7 %>% filter(date2>start.date)
+foo.count <- demand.data %>% group_by(pwsid, year) %>% count() %>% filter(year < current.year & n>340 | year == current.year) %>% mutate(idyr = paste0(pwsid,"-",year)) 
+foo.cum <- demand.data %>% mutate(idyr = paste0(pwsid,"-",year)) %>% filter(idyr %in% foo.count$idyr) %>% arrange(pwsid, year, month, date2)
+foo.cum <- foo.cum %>% distinct() %>% filter(year>=2000); #shorten for this file
+
+foo.cum2 <- foo.cum %>% arrange(pwsid, year, julian) %>% dplyr::select(pwsid, year, date, julian, demand_mgd) %>% distinct() %>% 
+  group_by(pwsid, year) %>% mutate(demand_mgd2 = ifelse(is.na(demand_mgd), 0, demand_mgd)) %>%  mutate(cum_demand = cumsum(demand_mgd2)) %>% dplyr::select(-demand_mgd, -demand_mgd2) %>% rename(demand_mgd = cum_demand) %>% distinct()
+
+table(foo.cum$pwsid, foo.cum$year)
+#in case duplicate days - take average
+foo.cum3 <- foo.cum2 %>% group_by(pwsid, year, julian, date) %>% summarize(demand_mgd = round(mean(demand_mgd, na.rm=TRUE),2), .groups="drop") %>% distinct()
+
+write.csv(foo.cum3, paste0(swd_data, "demand/all_boerne_demand_cum.csv"), row.names=FALSE)
+
+
 ######################################################################################################################################################################
 #
 # Read in new pop data
