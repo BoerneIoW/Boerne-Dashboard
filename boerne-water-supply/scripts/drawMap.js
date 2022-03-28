@@ -367,6 +367,37 @@ function drawMap(){
     }
     });
 
+//GMAs + LABELS----------------------------------------------
+map.addSource('gma', {
+  type: 'geojson',
+  data: 'data/gmas.geojson'
+});
+map.addLayer({
+  'id': 'gma',
+  'type': 'line',
+  'source': 'gma',
+  'layout': {
+    'visibility': 'none',
+  },
+  'paint': {'line-color': 'darkgray', 'line-width': 4}
+});
+map.addLayer({
+id: "gma_name",
+type: "symbol",
+source: "gma",
+layout: {
+    "visibility": 'none',
+    "text-field": "{name}",
+    'symbol-placement': "point"
+},
+paint: {
+    "text-color": "black",
+    "text-halo-color": "#fff",
+    "text-halo-width": 4,
+    "text-halo-blur": 0,
+}
+});
+
     //RIVER BASINS: HUC6 + LABELS----------------------------------------------
     map.addSource('riverbasins', {
       type: 'geojson',
