@@ -164,8 +164,6 @@ summary(stats)
 head(stats)
 
 max(stats$endYr) 
-
-# dates are out of order, fix
 ######################################################################################################################################################################
 #
 # CREATE FILES FOR WEBSITE
@@ -174,10 +172,6 @@ max(stats$endYr)
 #Now attach MOST recent value to stream stats
 recent.flow <- all_boerne_gw_depth %>% group_by(site) %>% filter(date == max(date)) #%>% rename(flow = depth_below_surface_ft)
 current.stat <- merge(recent.flow[,c("site", "julian", "depth_ft")], stats, by.x=c("site","julian"), by.y=c("site","julian"), all.x=TRUE) 
-
-#Now attach most recent value to stream stats
-current.stat <- merge(all_boerne_gw_depth[,c("site", "julian", "depth_ft")], stats, by.x=c("site","julian"), by.y=c("site","julian"), all.x=TRUE) 
-
 current.stat <- current.stat %>% arrange(site, date2)
 
 #if else for this year and last years flow... I think flip this for gw
@@ -207,6 +201,7 @@ boerne.sites2 <- merge(boerne.sites2 %>% dplyr::select(-date), recent.flow[,c("s
 #Save out
 boerne.sites2 <- boerne.sites2 %>% dplyr::select(agency, site, location, elevation, total_depth, aquifer, status, depth_ft, julian, flow50, date, geometry)
 geojson_write(boerne.sites2, file=paste0(swd_data, "gw/all_boerne_gw_sites.geojson"))
+mapview::mapview(boerne.sites2)
 
 #plot for fun
 boerne.sites2 <- boerne.sites2 %>% mutate(colorStatus = ifelse(status=="Extremely Dry", "darkred", 
