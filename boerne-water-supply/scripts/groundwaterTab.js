@@ -41,7 +41,7 @@ d3.csv("data/gw/all_boerne_gw_stats.csv").then(function(gwStats){
             d.Nobs = +d.Nobs;
             d.start_yr = +d.startYr;
             d.end_yr = +d.endYr;
-            d.date = parseDate(d.date2);
+            d.date = parseDate(currentYear+”-“+d.date2);
        });
 console.log(gwStats)
 var filterData = gwStats.filter(function(d){return d.site === gwID.toString(); });
