@@ -29,6 +29,7 @@ parseDate = d3.timeParse("%Y-%m-%d");
 //read in stream stats
 d3.csv("data/gw/all_boerne_gw_stats.csv").then(function(gwStats){
     gwStats.forEach(function(d){
+            d.site = +d.site;
             d.julian = +d.julian;
             d.min = +d.min;
             d.flow10 = +d.flow10;
@@ -44,7 +45,7 @@ d3.csv("data/gw/all_boerne_gw_stats.csv").then(function(gwStats){
             d.date = parseDate(d.date2);
        });
 console.log(gwStats)
-var filterData = gwStats.filter(function(d){return d.site === gwID.toString(); });
+var filterData = gwStats.filter(function(d){return d.site === gwID; });
 console.log(filterData)
 var todayGW = filterData.filter(function(d){ return d.julian === recentDate; });
 console.log(todayGW)
