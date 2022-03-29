@@ -200,6 +200,7 @@ boerne.sites2 <- st_as_sf(boerne.sites2, coords = c("dec_long_va", "dec_lat_va")
 boerne.sites2 <- merge(boerne.sites2 %>% dplyr::select(-date), recent.flow[,c("site","date")], by.x="site", by.y="site", all.x=TRUE)
 #Save out
 boerne.sites2 <- boerne.sites2 %>% dplyr::select(agency, site, location, elevation, total_depth, aquifer, status, depth_ft, julian, flow50, date, geometry)
+boerne.sites2 <- rename(boerne.sites2, AgencyCd = agency, SiteName = location, WellDepth = total_depth, LocalAquiferName = aquifer)
 geojson_write(boerne.sites2, file=paste0(swd_data, "gw/all_boerne_gw_sites.geojson"))
 mapview::mapview(boerne.sites2)
 
