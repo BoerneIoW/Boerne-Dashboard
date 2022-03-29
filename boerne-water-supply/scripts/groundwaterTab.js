@@ -44,7 +44,7 @@ d3.csv("data/gw/all_boerne_gw_stats.csv").then(function(gwStats){
             d.date = parseDate(d.date2);
        });
 console.log(gwStats)
-var filterData = gwStats.filter(function(d){return d.site === gwID; });
+var filterData = gwStats.filter(function(d){return d.site === gwID.toString(); });
 console.log(filterData)
 var todayGW = filterData.filter(function(d){ return d.julian === recentDate; });
 console.log(todayGW)
