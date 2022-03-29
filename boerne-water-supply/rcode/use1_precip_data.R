@@ -30,7 +30,7 @@ unzip("..\\temp\\temp.zip", files=NULL, exdir="..\\temp")
 #get day
 d <- today(); prev.days <- seq(d-7,d,by='day');  d <- prev.days[weekdays(prev.days)=='Tuesday'][1] %>% str_remove_all("[-]");
 current_drought <- readOGR(paste0("..\\temp"), paste0("USDM_",d)) %>% st_as_sf() %>% st_transform(crs = 4326) %>% rename(Name = DM) %>% select(Name, geometry) %>% mutate(Name = as.character(Name))
-mapview::mapview(drought, zcol = "Name", col.regions = c("lightyellow", "yellow", "orange", "red", "darkred"))
+mapview::mapview(current_drought, zcol = "Name", col.regions = c("lightyellow", "yellow", "orange", "red", "darkred"))
 geojson_write(current_drought, file = paste0(swd_data,"drought/current_drought.geojson"))
 
 #download tables for HUCS of interest 
