@@ -123,37 +123,7 @@ write.csv(all_boerne_gw_depth, paste0(swd_data, "gw/all_boerne_gw_depth.csv"), r
 #stats calculations:
 
 #unique sites:
-nx <- all_boerne_gw_depth  
-unique.sites <- unique(nx$site) 
-
-#set up data frame for stats and include year
-year.flow  <- as.data.frame(matrix(nrow=0, ncol=4));    colnames(year.flow) <- c("site", "date", "flow_cms")
-
-#loop through and calculate stats
-for (i in 1:length(unique.sites)) {
-  
-  zt <- nx %>% filter(site == unique.sites[i]) #one site at a time
-  
-  #fill in dataframe
-  zt <- zt %>% select(site, date, depth_ft);    colnames(zt) <- c("site", "date", "depth_ft")
-  year.flow <- rbind(year.flow, zt)
-  
-  print(paste0(round(100*i/length(unique.sites),2),"% complete"))
-}
-
-#add julian indexing
-nx <- year.flow %>% mutate(year = year(date), day_month = substr(date, 6, 10))
-
-for(i in 1:nrow(nx)) { #computationally slow. There's almost certainly a faster way. But it works. 
-  
-  if(leap_year(nx$year[i]) == TRUE) {nx$julian[i] <- julian.ref$julian_index_leap[julian.ref$day_month_leap == nx$day_month[i]]}
-  if(leap_year(nx$year[i]) == FALSE) {nx$julian[i] <- julian.ref$julian_index[julian.ref$day_month == nx$day_month[i]]}
-  
-  print(paste(round(i/nrow(nx)*100,2),"% complete"))
-}
-
-year.flow <- nx
-summary(year.flow)
+year.flow <- all_boerne_gw_depth  
 
 #account for any duplicates
 #  year.flow <- year.flow %>% group_by(site, date, julian) %>% summarize(depth_ft = median(depth_ft, na.rm=TRUE), .groups="drop")
@@ -196,7 +166,6 @@ head(stats)
 max(stats$endYr) 
 
 # dates are out of order, fix
-stats <- stats %>% arrange(site, date2)
 ######################################################################################################################################################################
 #
 # CREATE FILES FOR WEBSITE
