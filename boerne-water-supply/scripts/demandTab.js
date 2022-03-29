@@ -5,6 +5,7 @@ function createTraceDemand(target) {
     });
 
     Plotly.purge("demandPlot");
+    Plotly.purge("demandCumPlot");
     createDemandInfo(myUtilityID, checkedDemand);
     return checkedDemand;
 }
@@ -17,7 +18,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
     parseDate = d3.timeParse("%Y-%m-%d");
 
     //console.log(checkedDemand);
-    //read in stream stats
+    //read in demand data
     d3.csv("data/demand/all_boerne_total_demand.csv").then(function (demandData) {
         demandData.forEach(function (d) {
             d.date3 = parseDate("2022-" + d.date2.substring(5, d.date2.length));
@@ -242,10 +243,9 @@ function createDemandInfo(myUtilityID, checkedDemand) {
     //                     END THAT PLOT
     //##################################################################################################################################
 
-    //parse date to scale axis
-    //parseDate = d3.timeParse("%Y-%b-%d");
-    d3.csv("data/demand/all_boerne_demand_cum.csv").then(function (cumpcp) {
-        cumpcp.forEach(function (d) {
+    //Cmulative data plot
+    d3.csv("data/demand/all_boerne_demand_cum.csv").then(function (cumdemand) {
+        cumdemand.forEach(function (d) {
             //d.date = parseDate(("2020-"+d.date));
             d.year = +d.year;
             d.julian = +d.julian;
@@ -253,11 +253,11 @@ function createDemandInfo(myUtilityID, checkedDemand) {
         }); //end for each
 
         //if dont use julian, Feb 29th creates problems
-        var selpcp = cumpcp.filter(function (d) {
+        var seldemand = cumdemand.filter(function (d) {
             return d.pwsid === myUtilityID && d.date !== "Feb-29";
         });
 
-        //console.log(selpcp);
+        //console.log(seldemand);
         //create a trace for each year
         var cumdata = [];
         var xJulian = [];
@@ -269,7 +269,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
         //draw the traces for all years but current
         var xYear = [];
         var minYear = d3.min(
-            selpcp.map(function (d) {
+            seldemand.map(function (d) {
                 return d.year;
             })
         );
@@ -280,7 +280,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
 
         for (i = 0; i < xYear.length - 1; i++) {
             tempSelect = xYear[i];
-            temp = selpcp.filter(function (d) {
+            temp = seldemand.filter(function (d) {
                 return d.year === tempSelect;
             });
             tempName = "%{y:.1f} mgd by %{x} of " + tempSelect;
@@ -288,7 +288,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
                 return d.date;
             });
             yOther = temp.map(function (d) {
-                return d.pcp_in;
+                return d.demand_mgd;
             });
             //create individual trace
             OtherYearTrace = {
@@ -327,12 +327,12 @@ function createDemandInfo(myUtilityID, checkedDemand) {
 
         for (i = 0; i < checked.length; i++) {
             tempSelect = Number(checked[i]);
-            selectYears = selpcp
+            selectYears = seldemand
                 .filter(function (d) {
                     return d.year === tempSelect;
                 })
                 .map(function (d) {
-                    return d.pcp_in;
+                    return d.demand_mgd;
                 });
             tempName = "%{y:.1f} mgd by %{x} day of " + tempSelect;
             xJulian = temp.map(function (d) {
@@ -359,14 +359,14 @@ function createDemandInfo(myUtilityID, checkedDemand) {
         }
 
         //draw 2020 year
-        var yCurrent = selpcp
+        var yCurrent = seldemand
             .filter(function (d) {
                 return d.year === currentYear;
             })
             .map(function (d) {
-                return d.pcp_in;
+                return d.demand_mgd;
             });
-        xJulian = selpcp
+        xJulian = seldemand
             .filter(function (d) {
                 return d.year === currentYear;
             })
