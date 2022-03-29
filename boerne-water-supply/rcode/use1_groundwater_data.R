@@ -194,6 +194,9 @@ summary(stats)
 head(stats)
 
 max(stats$endYr) 
+
+# dates are out of order, fix
+stats <- stats %>% arrange(site, date2)
 ######################################################################################################################################################################
 #
 # CREATE FILES FOR WEBSITE
@@ -205,6 +208,8 @@ current.stat <- merge(recent.flow[,c("site", "julian", "depth_ft")], stats, by.x
 
 #Now attach most recent value to stream stats
 current.stat <- merge(all_boerne_gw_depth[,c("site", "julian", "depth_ft")], stats, by.x=c("site","julian"), by.y=c("site","julian"), all.x=TRUE) 
+
+current.stat <- current.stat %>% arrange(site, date2)
 
 #if else for this year and last years flow... I think flip this for gw
 current.stat <- current.stat %>% mutate(status = ifelse(depth_ft <= flow10, "Extremely Wet", 
