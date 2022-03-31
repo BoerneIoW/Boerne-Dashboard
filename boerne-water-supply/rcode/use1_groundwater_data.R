@@ -205,18 +205,18 @@ geojson_write(boerne.sites2, file=paste0(swd_data, "gw/all_boerne_gw_sites.geojs
 mapview::mapview(boerne.sites2)
 
 #plot for fun
-boerne.sites2 <- boerne.sites2 %>% mutate(colorStatus = ifelse(status=="Extremely Dry", "darkred", 
-                                                               ifelse(status=="Very Dry", "red", 
-                                                                      ifelse(status=="Moderately Dry", "orange", 
-                                                                             ifelse(status=="Moderately Wet", "cornflowerblue",
-                                                                                    ifelse(status=="Very Wet", "blue", 
-                                                                                           ifelse(status=="Extremely Wet", "navy", "gray")))))))
-leaflet() %>%  addProviderTiles("Stamen.TonerLite") %>% 
-  addCircleMarkers(data = boerne.sites2, radius=4, fillOpacity= 0.8, fillColor = boerne.sites2$colorStatus, color="black", weight=0) 
+#boerne.sites2 <- boerne.sites2 %>% mutate(colorStatus = ifelse(status=="Extremely Dry", "darkred", 
+#                                                               ifelse(status=="Very Dry", "red", 
+#                                                                      ifelse(status=="Moderately Dry", "orange", 
+#                                                                             ifelse(status=="Moderately Wet", "cornflowerblue",
+#                                                                                    ifelse(status=="Very Wet", "blue", 
+#                                                                                           ifelse(status=="Extremely Wet", "navy", "gray")))))))
+#leaflet() %>%  addProviderTiles("Stamen.TonerLite") %>% 
+#  addCircleMarkers(data = boerne.sites2, radius=4, fillOpacity= 0.8, fillColor = boerne.sites2$colorStatus, color="black", weight=0) 
 
 
 #Now clip time series data to past two years and assign a depth based on stats
-year.flow2 <- year.flow %>% filter(date >= as.Date(paste0((current.year-2),"-01-01"), "%Y-%m-%d"))
+year.flow2 <- year.flow %>% filter(date >= as.Date(paste0((current.year-2),"-01-01"), "%Y-%m-%d")) #limits data to be only for past two years
 stats2 <- merge(year.flow2[,c("site", "julian", "date", "depth_ft")], stats %>% dplyr::select(-date), by.x=c("site","julian"), by.y=c("site", "julian"), all.x=TRUE) %>% arrange(site, date)
 
 stats2 <- stats2 %>% mutate(status = ifelse(depth_ft <= flow10, "Extremely Wet", 
