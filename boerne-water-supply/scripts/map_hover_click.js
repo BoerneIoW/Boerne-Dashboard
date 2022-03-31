@@ -430,9 +430,9 @@ map.on("click", "precipitation", function (e) {
         }, //end paint
     }); //end add layer
     var pcpRef =
-        "https://www.texmesonet.org/#"
-        pcpID +
-        "&temporal=D target='_blank'>";
+    "https://www.texmesonet.org/#" +
+    pcpID +
+    "&temporal=D target='_blank'>";
     document.getElementById("pcpTitle").innerHTML =
         pcpID + ": <a href=" + pcpRef + precipName + "</a>";
     document.getElementById("pcpMetadata").innterHTML =
