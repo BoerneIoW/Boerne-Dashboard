@@ -430,7 +430,7 @@ map.on("click", "precipitation", function (e) {
         }, //end paint
     }); //end add layer
     var pcpRef =
-        "https://climate.ncsu.edu/cronos/?station=" +
+        "https://www.texmesonet.org/#"
         pcpID +
         "&temporal=D target='_blank'>";
     document.getElementById("pcpTitle").innerHTML =
