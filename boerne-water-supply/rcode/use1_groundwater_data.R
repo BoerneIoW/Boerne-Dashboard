@@ -244,7 +244,9 @@ recent.flow <- year.flow %>% group_by(site) %>% filter(date >= max(as.Date(paste
 stats.merge <- stats %>% mutate(date3 = date2, date2 = date) %>% dplyr::select(-date)
 current.stat2 <- merge(recent.flow, stats.merge, by.x=c("site","julian"), by.y=c("site","julian"), all.y=TRUE);
 
-current.stat2 <- current.stat2 %>% mutate(month = my.month.name(as.numeric(substr(date,6,7)))) %>% mutate(date = date2, date2 = date3) %>% dplyr::select(-date3);  #okay to have NA for date because want chart to end there
+current.stat2 <- current.stat2 %>% mutate(month = my.month.name(as.numeric(substr(date,6,7)))) %>% dplyr::select(-date3, -year)  #okay to have NA for date because want chart to end there
+#rename columns for consistency 
+current.stat2 <- rename(current.stat2, date2 = date, date = date2)
 current.stat2 <- current.stat2[with(current.stat2, order(site, date)),]
 
 write.csv(current.stat2, paste0(swd_data, "gw/all_boerne_gw_stats.csv"), row.names=FALSE)
