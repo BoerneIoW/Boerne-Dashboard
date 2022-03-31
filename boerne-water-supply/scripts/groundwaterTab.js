@@ -230,7 +230,7 @@ d3.csv("data/gw/all_boerne_gw_annual.csv").then(function(gwAnnual){
             d.year = +d.year;
        });
 
-  var selGWAnnual = gwAnnual.filter(function(d){return d.site === gwID; });
+  var selGWAnnual = gwAnnual.filter(function(d){return d.site === gwID.toString(); });
   var xYear = selGWAnnual.map(function(d) {return d.year; });
   var yDepth = selGWAnnual.map(function(d) {return d.flow; });
   var minVal = Math.max(yDepth);
