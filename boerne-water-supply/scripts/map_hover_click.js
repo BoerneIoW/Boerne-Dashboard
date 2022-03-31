@@ -176,8 +176,8 @@ map.on("mousemove", "precipitation", function (e) {
         "<br>last measured (" +
         now_date +
         ")" +
-        "<br>agency: " +
-        e.features[0].properties.agency;
+        "<br>Network: " +
+        e.features[0].properties.network;
 
     // Ensure that if the map is zoomed out such that multiple copies of the feature are visible, the popup appears over the copy being pointed to.
     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
