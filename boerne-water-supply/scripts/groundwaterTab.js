@@ -43,7 +43,7 @@ d3.csv("data/gw/all_boerne_gw_stats.csv").then(function(gwStats){
             d.end_yr = +d.endYr;
             d.date = parseDate(d.date2);
        });
-console.log(gwStats)
+//console.log(gwStats)
 var filterData = gwStats.filter(function(d){return d.site === gwID.toString(); });
 console.log(filterData)
 var todayGW = filterData.filter(function(d){ return d.julian === recentDate; });
@@ -59,7 +59,7 @@ var Y25per = filterData.map(function(d) {return d.flow25; });
 var Y75per = filterData.map(function(d) {return d.flow75; });
 var Y90per = filterData.map(function(d) {return d.flow90; });
 var Yflow= filterData.map(function(d) {return d.flow; });
-//console.log(filterData); console.log(Ymed);
+console.log(filterData); console.log(Ymed);
 
 var rd2 = todayGW[0].end_yr + "-" + todayGW[0].date2.substring(5,10);
 
@@ -135,7 +135,7 @@ if(gwPlotType === "on"){
   x_axis_format =  '%b-%d';
   data2 = [trace10, trace25, trace50, trace75, trace90, traceThisYear];
 }
-
+console.log(data2)
 //#####################################################################################
 //         PLOT BY STATUS AS MARKERS
 //#####################################################################################//
