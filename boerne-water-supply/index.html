@@ -180,6 +180,7 @@ function setSystemThis(target){
     <ul id="tabs" class="nav nav-pills" data-tabs="tabs">
         <li class = "active"><a href="#about" data-toggle="tab">My <br> Utility</a></li>
         <li><a href="#demand" data-toggle="tab">Demand <br> Data</a></li>
+        <li><a href="#pop" data-toggle="tab">Population <br> Data</a></li>
         <li><a href="#waterSupplyStatus" data-toggle="tab">Surface <br> Water</a></li>
         <li><a href="#pcpDrought" data-toggle="tab">Rain &<br>Drought</a></li>
         <li><a href="#groundwater" data-toggle="tab">Ground-<br>water</a></li>
@@ -285,20 +286,11 @@ function setSystemThis(target){
       </div>
         <div class = "row">
           <div class = "col-sm-9" id = "demandPlot" style="padding: 0;">
-            <img class = "chart-holder-icon" src="img/pcp_chart_icon.png">
+            <img class = "chart-holder-icon" src="img/demand_chart_icon.png">
           </div>
           <div class = "col-sm-9" id = "demandCumPlot" ></div>
         </div>
-    </div>
-  </div> <!-- end demand pane-->
-      
-     <!-- <div class = "row">
-        <div class = "col-sm-9" id="demandPlot" style="padding: 0;">
-          <img class="chart-holder-icon" src="img/demand_chart_icon.png">
-      </div>
-      <div class = "col-sm-9" id = "demandCumPlot" ></div>
-    </div>
-   
+       
         <div class = "row" style="margin-left: 10px;">
           <p> The City of Boerne has three main sources of water, of which its contract allocation is the following</p>
             <ul style="list-style-type:square">                             
@@ -307,9 +299,41 @@ function setSystemThis(target){
               <li> Boerne Lake: 271.4 million gallons per year</li>
             </ul>
       </div>
+    </div>
   </div> <!-- end demand pane-->
 
-
+<!--#######################################################################################################
+                                      POPULATION Tab
+######################################################################################################-->
+   <div class="tab-pane" id="pop">
+      <!--Info Tab-->
+       <img class="help-icon" id="ppopHelp" src="img/info_icon.png">
+      <div class="row" id="pop_tab_info" style="margin: 5px; display: none; z-index: 8;">
+            <img src="img/demand-tab.png" style="width: 95%; display: inline-block;">
+      </div>
+      
+      <h4 class="chartTitles" id = "popTitle">Select a utility to see population growth</h4> 
+     <!-- PLOTS -->
+      <div class="metadata" id="selectpopMetadata">  </div>
+      <div class="row">
+        <div class = "col-sm-2" style="padding-top: 20px;">Select to Highlight
+        <form style="color: black; font-size: 14px;">
+            <input onclick="createTracePop(this.value)" name="checkPopType" value="CityLimits" type="checkbox"> CLB<br>  
+          <input onclick="createTracePop(this.value)" name="checkPopYear" value="WaterServiceBoundary" type="checkbox"> WSB<br>  
+        </form>
+      </div>
+        <div class = "row">
+          <div class = "col-sm-9" id = "popPlot" style="padding: 0;">
+            <img class = "chart-holder-icon" src="img/demand_chart_icon.png">
+          </div>
+        </div>
+       
+        <div class = "row" style="margin-left: 10px;">
+          <p><br> CLB represents the population within a city limit boundary. WSB represents the population serviced by the utility.<br></p>
+      </div>
+    </div>
+  </div> <!-- end demand pane-->
+  
 <!--#######################################################################################################
                                       GROUND WATER Tab
       ######################################################################################################-->
@@ -446,7 +470,8 @@ function setSystemThis(target){
     jQuery(document).ready(function(){
        jQuery('#utilityHelp').on('click', function(event) { jQuery('#utility_tab_info').toggle('show');  });  
        jQuery('#surfaceHelp').on('click', function(event) { jQuery('#surface_tab_info').toggle('show');  });  
-       jQuery('#demandHelp').on('click', function(event) { jQuery('#demand_tab_info').toggle('show');  });  
+       jQuery('#demandHelp').on('click', function(event) { jQuery('#demand_tab_info').toggle('show');  });
+       jQuery('#popHelp').on('click', function(event) { jQuery('#pop_tab_info').toggle('show');  });
        jQuery('#pcpHelp').on('click', function(event) { jQuery('#pcp_tab_info').toggle('show');  });  
        jQuery('#gwHelp').on('click', function(event) { jQuery('#gw_tab_info').toggle('show');  });  
     });
@@ -716,6 +741,7 @@ function setSystemThis(target){
 <script type="text/javascript" src="scripts/map_hover_click.js"></script> <!--needs to be asyn-->
 <script type="text/javascript" src="scripts/stream_stats.js" defer></script>
 <script type="text/javascript" src="scripts/demandTab.js" defer></script>
+<script type="text/javascript" src="scripts/popTab.js" defer></script>  
 <script type="text/javascript" src="scripts/groundwaterTab.js" defer></script>
 <script type="text/javascript" src="scripts/droughtPlot.js" defer></script>
 <script type="text/javascript" src="scripts/precipPlots.js" defer></script>
