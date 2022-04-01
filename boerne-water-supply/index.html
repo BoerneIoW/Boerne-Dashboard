@@ -286,7 +286,7 @@ function setSystemThis(target){
       </div>
         <div class = "row">
           <div class = "col-sm-9" id = "demandPlot" style="padding: 0;">
-            <img class = "chart-holder-icon" src="img/pcp_chart_icon.png">
+            <img class = "chart-holder-icon" src="img/demand_chart_icon.png">
           </div>
           <div class = "col-sm-9" id = "demandCumPlot" ></div>
         </div>
@@ -301,25 +301,44 @@ function setSystemThis(target){
       </div>
     </div>
   </div> <!-- end demand pane-->
+
+<!--#######################################################################################################
+                                      POPULATION Tab
+      ######################################################################################################-->
+   <div class="tab-pane" id="pop">
+      <!--Info Tab-->
+       <img class="help-icon" id="popHelp" src="img/info_icon.png">
+      <div class="row" id="pop_tab_info" style="margin: 5px; display: none; z-index: 8;">
+            <img src="img/demand-tab.png" style="width: 95%; display: inline-block;">
+      </div>
       
-     <!-- <div class = "row">
-        <div class = "col-sm-9" id="demandPlot" style="padding: 0;">
-          <img class="chart-holder-icon" src="img/demand_chart_icon.png">
+      <h4 class="chartTitles" id = "demandTitle">Select a utility to see population growth</h4> 
+     <!-- PLOTS -->
+      <div class="metadata" id="selectPopMetadata">  </div>
+      <div class="row">
+        <div class = "col-sm-2" style="padding-top: 20px;">Select to Highlight
+        <form style="color: black; font-size: 14px;">
+            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2011" type="checkbox"> 2011<br>  
+            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2012" type="checkbox"> 2012<br>  
+            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2013" type="checkbox"> 2013<br>  
+            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2014" type="checkbox"> 2014<br>  
+            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2015" type="checkbox"> 2015<br>
+            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2016" type="checkbox"> 2016<br>  
+            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2017" type="checkbox"> 2017<br>  
+            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2018" type="checkbox"> 2018<br>
+            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2019" type="checkbox"> 2019<br>
+            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2020" type="checkbox"> 2020<br>
+            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2021" type="checkbox"> 2021<br><input onclick="createPopDemand(this.value)" name="checkPopYear" value="2022" type="checkbox" checked> 2022<br>  
+        </form>
       </div>
-      <div class = "col-sm-9" id = "demandCumPlot" ></div>
+        <div class = "row">
+          <div class = "col-sm-9" id = "popPlot" style="padding: 0;">
+            <img class = "chart-holder-icon" src="img/demand_chart_icon.png.png">
+          </div>
+        </div>
     </div>
-   
-        <div class = "row" style="margin-left: 10px;">
-          <p> The City of Boerne has three main sources of water, of which its contract allocation is the following</p>
-            <ul style="list-style-type:square">                             
-              <li> Canyon Lake Reservoir: 1,176.6 million gallons per year</li>
-              <li> Groundwater wells from Trinity Aquifers: 325.9 - 602.8 million gallons per year</li>
-              <li> Boerne Lake: 271.4 million gallons per year</li>
-            </ul>
-      </div>
-  </div> <!-- end demand pane-->
-
-
+  </div> <!-- end pop pane-->
+     
 <!--#######################################################################################################
                                       GROUND WATER Tab
       ######################################################################################################-->
@@ -456,7 +475,8 @@ function setSystemThis(target){
     jQuery(document).ready(function(){
        jQuery('#utilityHelp').on('click', function(event) { jQuery('#utility_tab_info').toggle('show');  });  
        jQuery('#surfaceHelp').on('click', function(event) { jQuery('#surface_tab_info').toggle('show');  });  
-       jQuery('#demandHelp').on('click', function(event) { jQuery('#demand_tab_info').toggle('show');  });  
+       jQuery('#demandHelp').on('click', function(event) { jQuery('#demand_tab_info').toggle('show');  });
+       jQuery('#popHelp').on('click', function(event) { jQuery('#pop_tab_info').toggle('show');  });
        jQuery('#pcpHelp').on('click', function(event) { jQuery('#pcp_tab_info').toggle('show');  });  
        jQuery('#gwHelp').on('click', function(event) { jQuery('#gw_tab_info').toggle('show');  });  
     });
