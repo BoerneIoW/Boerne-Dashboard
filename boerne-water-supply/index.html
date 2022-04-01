@@ -305,39 +305,26 @@ function setSystemThis(target){
 <!--#######################################################################################################
                                       POPULATION Tab
       ######################################################################################################-->
-   <div class="tab-pane" id="pop">
-      <!--Info Tab-->
-       <img class="help-icon" id="popHelp" src="img/info_icon.png">
-      <div class="row" id="pop_tab_info" style="margin: 5px; display: none; z-index: 8;">
-            <img src="img/demand-tab.png" style="width: 95%; display: inline-block;">
-      </div>
-      
-      <h4 class="chartTitles" id = "demandTitle">Select a utility to see population growth</h4> 
-     <!-- PLOTS -->
-      <div class="metadata" id="selectPopMetadata">  </div>
-      <div class="row">
-        <div class = "col-sm-2" style="padding-top: 20px;">Select to Highlight
-        <form style="color: black; font-size: 14px;">
-            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2011" type="checkbox"> 2011<br>  
-            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2012" type="checkbox"> 2012<br>  
-            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2013" type="checkbox"> 2013<br>  
-            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2014" type="checkbox"> 2014<br>  
-            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2015" type="checkbox"> 2015<br>
-            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2016" type="checkbox"> 2016<br>  
-            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2017" type="checkbox"> 2017<br>  
-            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2018" type="checkbox"> 2018<br>
-            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2019" type="checkbox"> 2019<br>
-            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2020" type="checkbox"> 2020<br>
-            <input onclick="createTracePop(this.value)" name="checkPopYear" value="2021" type="checkbox"> 2021<br><input onclick="createPopDemand(this.value)" name="checkPopYear" value="2022" type="checkbox" checked> 2022<br>  
+   <h4 class="chartTitles" id="popTitle">Select a utility to see population data</h4> 
+    <p class = "metadata" id = "popMetadata"></p>
+     <div class="row">
+        <div class = "col-sm-2">Select to Highlight
+        <form>
+          <input onclick="createTracePOP(this.value)" name="checkPopType" value="CityLimits" type="checkbox"> CoB<br>  
+          <input onclick="createTracePOP(this.value)" name="checkPopYear" value="WaterServiceBoundary" type="checkbox"> WSB<br> 
         </form>
       </div>
         <div class = "row">
-          <div class = "col-sm-9" id = "popPlot" style="padding: 0;">
-            <img class = "chart-holder-icon" src="img/demand_chart_icon.png.png">
+          <div class = "col-sm-9" id = "popYearPlot" style="padding: 0;">
+            <img class = "chart-holder-icon" src="img/demand_chart_icon.png">
           </div>
+          <div class = "col-sm-9" id = "popCumPlot" ></div>
         </div>
+       <div class = "row" style="margin-left: 10px;">
+        <p><br> CoB represents the population of the City of Boerne within its jurisdictional boundaries. WSB represents the population serviced by the utility.<br></p>
+      </div>
     </div>
-  </div> <!-- end pop pane-->
+  </div> <!-- end demand pane-->
      
 <!--#######################################################################################################
                                       GROUND WATER Tab
