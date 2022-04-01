@@ -1,29 +1,34 @@
+
+
+
+
+
 //##################################################################################################################
 //               DEMAND DATA
 //##################################################################################################################
-function createTraceDemand(target) {
-    checkedDemand = [];
-    $("input[name='checkDemandYear']:checked").each(function () {
-        checkedDemand.push($(this).val());
+function createTracePop(target) {
+    checkedPop = [];
+    $("input[name='checkPopYear']:checked").each(function () {
+        checkedPop.push($(this).val());
     });
 
-    Plotly.purge("demandPlot");
-    createDemandInfo(myUtilityID, checkedDemand);
-    return checkedDemand;
+    Plotly.purge("popPlot");
+    plotPopulation(myUtilityID, checkedPop);
+    return checkedPop;
 }
 
 //##################################################################################################################
-//               READ IN TIME SERIES DEMAND DATA
+//               READ IN TIME SERIES POPULATION DATA
 //##################################################################################################################
-function createDemandInfo(myUtilityID, checkedDemand) {
+function plotPopulation(myUtilityID, checkedDemand) {
     //parse date to scale axis
     parseDate = d3.timeParse("%Y-%m-%d");
 
-    //console.log(checkedDemand);
-    //read in stream stats
-    d3.csv("data/demand/all_boerne_total_demand.csv").then(function (demandData) {
-        demandData.forEach(function (d) {
-            d.date3 = parseDate("2021-" + d.date2.substring(5, d.date2.length));
+    //console.log(checkedPop);
+    //read in pop data
+    d3.csv("data/demand/all_boerne_pop.csv").then(function (popData) {
+        popData.forEach(function (d) {
+            d.date = parseDate("2021-" + d.date.substring(5, d.date.length));
             d.mean_demand = +d.mean_demand;
             d.month = +d.month;
             d.year = +d.year;

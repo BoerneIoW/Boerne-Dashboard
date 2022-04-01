@@ -161,7 +161,7 @@ all_city_data <- read_sheet("https://docs.google.com/spreadsheets/d/1BKb9Q6UFEBN
 all_pop_data <- all_city_data[,c("...1", "...10", "...11")]
 
 #rename columns
-pop_data <- rename(all_pop_data, date = "...1", cob_pop = "...10", cwus_pop = "...11")
+pop_data <- rename(all_pop_data, date = "...1", clb_pop = "...10", wsb_pop = "...11")
 pop_data <- as.data.frame(pop_data)
 
 #remove na's
@@ -184,6 +184,9 @@ pop_data <- nxx
 pop_data = pop_data %>% 
   mutate(date = ymd(date)) %>% 
   mutate_at(vars(date), funs(year, month, day))
+
+#include pwsid
+pop_data$pwsid <- "TX300001"
 
 new_pop_data <- pop_data %>% filter(year >= 2022)
 

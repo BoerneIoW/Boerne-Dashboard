@@ -339,12 +339,6 @@ function createDemandInfo(myUtilityID, checkedDemand) {
                 return d.date;
             });
 
-            colorLine = colorLineAll[i];
-            if (tempSelect === 2002) { colorLine = "red"; } // highlight drought years
-            if (tempSelect === 2007) { colorLine = "darkred"; } // highlight drought years
-            if (tempSelect === 2008) { colorLine = "orange"; } // highlight drought years
-            //if (tempSelect === 2003 || tempSelect === 2018){ colorLine = "blue"; } // highlight wettest years on record
-
             selectTraces = {
                 x: xJulian,
                 y: selectYears,
@@ -358,7 +352,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
             cumdata.push(selectTraces);
         }
 
-        //draw 2020 year
+        //draw current year
         var yCurrent = seldemand
             .filter(function (d) {
                 return d.year === currentYear;

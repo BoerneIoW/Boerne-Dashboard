@@ -103,9 +103,9 @@ function plotPrecipitation(pcpID, checked) {
                 });
             tempName = "%{y:.1f} inches in %{x}, " + tempSelect;
             colorLine = colorLineAll[i];
-            if (tempSelect === 2002) { colorLine = "red"; } // highlight drought years
-            if (tempSelect === 2007) { colorLine = "darkred"; } // highlight drought years
-            if (tempSelect === 2008) { colorLine = "orange"; } // highlight drought years
+            if (tempSelect === 2011) { colorLine = "red"; } // highlight drought years
+            //if (tempSelect === 2007) { colorLine = "darkred"; } // highlight drought years
+            //if (tempSelect === 2008) { colorLine = "orange"; } // highlight drought years
             //if (tempSelect === 2003 || tempSelect === 2018){ colorLine = "blue"; } // highlight wettest years on record
 
             selectTraces = {
@@ -274,9 +274,9 @@ function plotPrecipitation(pcpID, checked) {
             });
 
             colorLine = colorLineAll[i];
-            if (tempSelect === 2002) { colorLine = "red"; } // highlight drought years
-            if (tempSelect === 2007) { colorLine = "darkred"; } // highlight drought years
-            if (tempSelect === 2008) { colorLine = "orange"; } // highlight drought years
+            if (tempSelect === 2011) { colorLine = "red"; } // highlight drought years
+            //if (tempSelect === 2007) { colorLine = "darkred"; } // highlight drought years
+            //if (tempSelect === 2008) { colorLine = "orange"; } // highlight drought years
             //if (tempSelect === 2003 || tempSelect === 2018){ colorLine = "blue"; } // highlight wettest years on record
 
             selectTraces = {
