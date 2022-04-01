@@ -596,7 +596,7 @@ function setSystemThis(target){
     utilities.features.forEach(function(d){
       if (d3.geoContains(d, addressReturn)) {
         myUtility = d.properties.utility_name;
-        myUtilityID = d.properties.ncpwsid;
+        myUtilityID = d.properties.pwsid;
         myUtilityData = d.properties.data;
       }
     }); // end forEach
