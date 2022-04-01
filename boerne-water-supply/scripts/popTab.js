@@ -1,10 +1,5 @@
-
-
-
-
-
 //##################################################################################################################
-//               DEMAND DATA
+//               POPULATION DATA
 //##################################################################################################################
 function createTracePop(target) {
     checkedPop = [];
@@ -20,7 +15,7 @@ function createTracePop(target) {
 //##################################################################################################################
 //               READ IN TIME SERIES POPULATION DATA
 //##################################################################################################################
-function plotPopulation(myUtilityID, checkedDemand) {
+function plotPopulation(myUtilityID, checkedPop) {
     //parse date to scale axis
     parseDate = d3.timeParse("%Y-%m-%d");
 
@@ -28,39 +23,39 @@ function plotPopulation(myUtilityID, checkedDemand) {
     //read in pop data
     d3.csv("data/demand/all_boerne_pop.csv").then(function (popData) {
         popData.forEach(function (d) {
-            d.date = parseDate("2021-" + d.date.substring(5, d.date.length));
-            d.mean_demand = +d.mean_demand;
+            d.date = parseDate(d.date);
+            d.clb_pop = +d.clb_pop;
+            d.wsb_pop = +d.wsb_pop;
             d.month = +d.month;
             d.year = +d.year;
-            d.peak_demand = +d.peak_demand;
         });
 
-        var selDemand = demandData.filter(function (d) {
-            return d.pwsid === myUtilityID.toLowerCase() && d.year >= 1997;
+        var selPop = popData.filter(function (d) {
+            return d.pwsid === myUtilityID && d.year >= 1997;
         });
-        //console.log(selDemand)
+        //console.log(selPop)
 
-        if (selDemand.length <= 0) {
+        if (selPop.length <= 0) {
             console.log("no utility");
-            //Plotly.purge('demandPlot');
+            //Plotly.purge('popPlot');
             document.getElementById("demandTitle").innerHTML =
-                "Select a utility with data to see demand";
+                "Select a utility with data to see population growth";
             document.getElementById("demandPlot").innerHTML =
                 '<img src="img/demand_chart_icon.png" style="width: 350px; height: 350px; display: block; margin-left: auto; margin-right: auto;">';
         }
 
-        if (selDemand.length > 0) {
-            document.getElementById("demandPlot").innerHTML = ""; //set blank plot
+        if (selpop.length > 0) {
+            document.getElementById("popPlot").innerHTML = ""; //set blank plot
             var maxYValue = (
-                d3.max(selDemand, function (d) {
-                    return d.peak_demand;
+                d3.max(selPop, function (d) {
+                    return d.clb_pop;
                 }) * 1.1
             ).toFixed(0);
             //console.log(maxYValue);
             //create multiple traces
             var data = [];
-            var xMonths = selDemand.map(function (d) {
-                return d.date2;
+            var xMonths = selPop.map(function (d) {
+                return d.date;
             });
             let xMonth = xMonths.filter(
                 (item, i, ar) => ar.indexOf(item) === i
@@ -77,13 +72,13 @@ function plotPopulation(myUtilityID, checkedDemand) {
 
             for (i = 0; i < xYears.length - 1; i++) {
                 tempSelect = xYears[i];
-                temp = selDemand.filter(function (d) {
+                temp = selPop.filter(function (d) {
                     return d.year === tempSelect;
                 });
-                tempName = "%{y:.1f} mgd in " + tempSelect;
+                tempName = "%{y:.1f} thousands in " + tempSelect;
                 //xDate = temp.map(function(d){ return d.date; });
                 yOther = temp.map(function (d) {
-                    return d.mean_demand;
+                    return d.clb_pop;
                 });
                 //create individual trace
                 var showLegVal = true;
@@ -128,30 +123,24 @@ function plotPopulation(myUtilityID, checkedDemand) {
             ];
             var colorLine;
 
-            for (i = 0; i < checkedDemand.length; i++) {
-                tempSelect = Number(checkedDemand[i]);
-                selectYears = selDemand
+            for (i = 0; i < checkedPop.length; i++) {
+                tempSelect = Number(checkedPop[i]);
+                selectYears = selPop
                     .filter(function (d) {
                         return d.year === tempSelect;
                     })
                     .map(function (d) {
-                        return d.mean_demand;
+                        return d.clb_pop;
                     });
-                tempName = "%{y:.1f} mgd in %{x}, " + tempSelect;
+                tempName = "%{y:.1f} thousands in %{x}, " + tempSelect;
                 colorLine = colorLineAll[i];
-                if (tempSelect === 2002) {
-                    colorLine = "red";
-                }
-                if (tempSelect === 2007) {
-                    colorLine = "darkred";
-                }
 
                 selectTraces = {
                     x: xMonth,
                     y: selectYears,
                     mode: "lines",
                     type: "scatter",
-                    hovertemplate: "%{y:.1f} mgd in %{x}, " + tempSelect,
+                    hovertemplate: "%{y:.1f} thousands in %{x}, " + tempSelect,
                     opacity: 1,
                     line: { color: colorLine, width: 2 },
                     name: tempSelect,
@@ -161,11 +150,11 @@ function plotPopulation(myUtilityID, checkedDemand) {
             }
 
             //draw median and selected year
-            selDemandNow = selDemand.filter(function (d) {
+            selPopNow = selPop.filter(function (d) {
                 return d.year === currentYear;
             });
-            var ySelect = selDemandNow.map(function (d) {
-                return d.mean_demand;
+            var ySelect = selPopNow.map(function (d) {
+                return d.clb_pop;
             });
 
             //PLOTLY
@@ -181,12 +170,12 @@ function plotPopulation(myUtilityID, checkedDemand) {
                 type: "scatter",
                 name: "2021",
                 showlegend: true,
-                hovertemplate: "%{y:.1f} mgd in %{x}",
+                hovertemplate: "%{y:.1f} thousands in %{x}",
             };
 
             var layout = {
                 yaxis: {
-                    title: "Daily Demand (MGD)",
+                    title: "Yearly Population",
                     titlefont: { color: "rgb(0, 0, 0)", size: 14 },
                     tickfont: { color: "rgb(0, 0, 0)", size: 12 },
                     showline: false,
@@ -211,39 +200,8 @@ function plotPopulation(myUtilityID, checkedDemand) {
             };
 
             data.push(seltrace);
-            Plotly.newPlot("demandPlot", data, layout, config);
+            Plotly.newPlot("popPlot", data, layout, config);
 
-            //load document names
-            if (myUtility === "none") {
-                document.getElementById("demandTitle").innerHTML =
-                    "Select a utility on the map to learn more";
-            }
-
-            if (myUtility !== "none") {
-                var selCurDemand = selDemand.map(function (d) {
-                    return d.mean_demand;
-                });
-                var thisWeekDemand = selCurDemand[selCurDemand.length - 1];
-                var lastWeekDemand = selCurDemand[selCurDemand.length - 8];
-
-                //now how does this compare to last week?
-                var demandTrajectory;
-                if (thisWeekDemand > lastWeekDemand) {
-                    demandTrajectory = "higher";
-                }
-                if (thisWeekDemand < lastWeekDemand) {
-                    demandTrajectory = "lower";
-                }
-                if (thisWeekDemand.toFixed(1) === lastWeekDemand.toFixed(1)) {
-                    demandTrajectory = "equal";
-                }
-
-                document.getElementById("demandTitle").innerHTML =
-                    myUtility +
-                    " has " +
-                    demandTrajectory +
-                    " demand than last week";
-            }
         } //end if we have utility data for selectect utility
     }); // end D3
 } //END CREATE CHART FUNCTION ##########################################################

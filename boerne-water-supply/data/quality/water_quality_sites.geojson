@@ -1,0 +1,17 @@
+{
+"type": "FeatureCollection",
+"name": "water_quality_sites",
+"features": [
+{ "type": "Feature", "properties": { "site_id": 12600.0, "name": "Canyon Lake Mid-Lake South Of Potter'S Creek Park @ West End Of Park", "basin": "Guadalupe", "county": "Comal", "latitude": 29.89583, "longitude": -98.2825 }, "geometry": { "type": "Point", "coordinates": [ -98.2825, 29.89583 ] } },
+{ "type": "Feature", "properties": { "site_id": 15126.0, "name": "Cibolo Creek @ Menger Creek", "basin": "San Antonio", "county": "Kendall", "latitude": 29.775, "longitude": -98.70917 }, "geometry": { "type": "Point", "coordinates": [ -98.70917, 29.775 ] } },
+{ "type": "Feature", "properties": { "site_id": 20823.0, "name": "Upper Cibolo Creek @ River Road Park", "basin": "San Antonio", "county": "Kendall", "latitude": 29.78931, "longitude": -98.72455 }, "geometry": { "type": "Point", "coordinates": [ -98.72455, 29.78931 ] } },
+{ "type": "Feature", "properties": { "site_id": 80186.0, "name": "Cibolo Nature Center Marsh", "basin": "San Antonio", "county": "Kendall", "latitude": 29.78418, "longitude": -98.70562 }, "geometry": { "type": "Point", "coordinates": [ -98.70562, 29.78418 ] } },
+{ "type": "Feature", "properties": { "site_id": 80230.0, "name": "Guadalupe River Immediately Below Canyon Lake Dam", "basin": "Guadalupe", "county": "Comal", "latitude": 29.87, "longitude": -98.19306 }, "geometry": { "type": "Point", "coordinates": [ -98.19306, 29.87 ] } },
+{ "type": "Feature", "properties": { "site_id": 80904.0, "name": "Cibolo Creek Upstream Of Boerne Lake", "basin": "San Antonio", "county": "Kendall", "latitude": 29.82676, "longitude": -98.80061 }, "geometry": { "type": "Point", "coordinates": [ -98.80061, 29.82676 ] } },
+{ "type": "Feature", "properties": { "site_id": 80966.0, "name": "Currey Creek @ Boerne Wwtp Effluent Outfall", "basin": "San Antonio", "county": "Kendall", "latitude": 29.78837, "longitude": -98.71394 }, "geometry": { "type": "Point", "coordinates": [ -98.71394, 29.78837 ] } },
+{ "type": "Feature", "properties": { "site_id": 81596.0, "name": "Menger Creek Bridge @ Herff Road Near Main Street", "basin": "San Antonio", "county": "Kendall", "latitude": 29.77626, "longitude": -98.72302 }, "geometry": { "type": "Point", "coordinates": [ -98.72302, 29.77626 ] } },
+{ "type": "Feature", "properties": { "site_id": 81641.0, "name": "Cibolo Nature Center Along Cibolo Creek", "basin": "San Antonio", "county": "Kendall", "latitude": 29.78208, "longitude": -98.71321 }, "geometry": { "type": "Point", "coordinates": [ -98.71321, 29.78208 ] } },
+{ "type": "Feature", "properties": { "site_id": 81671.0, "name": "Guadalupe River Below Canyon Dam", "basin": "Guadalupe", "county": "Comal", "latitude": 29.867726, "longitude": -98.183154 }, "geometry": { "type": "Point", "coordinates": [ -98.183154, 29.867726 ] } },
+{ "type": "Feature", "properties": { "site_id": 81672.0, "name": "Guadalupe River 4Th Crossing", "basin": "Guadalupe", "county": "Comal", "latitude": 29.842724, "longitude": -98.168049 }, "geometry": { "type": "Point", "coordinates": [ -98.168049, 29.842724 ] } }
+]
+}

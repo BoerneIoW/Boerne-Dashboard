@@ -132,12 +132,12 @@ function createDemandInfo(myUtilityID, checkedDemand) {
                     });
                 tempName = "%{y:.1f} mgd in %{x}, " + tempSelect;
                 colorLine = colorLineAll[i];
-                if (tempSelect === 2002) {
+                if (tempSelect === 2011) {
                     colorLine = "red";
                 }
-                if (tempSelect === 2007) {
-                    colorLine = "darkred";
-                }
+               // if (tempSelect === 2007) {
+               //     colorLine = "darkred";
+               // }
 
                 selectTraces = {
                     x: xMonth,
