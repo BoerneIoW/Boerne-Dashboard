@@ -221,7 +221,8 @@ old.last.date <- fx2 %>% group_by(NIDID) %>% filter(date == max(date, na.rm=TRUE
    
    #usace changed reporting units so multiply by 1000 for those dates that are not in the same units as previous observations
    canyon.lake <- canyon.lake %>% mutate(storage_AF = ifelse(storage_AF < 1000, storage_AF*1000, storage_AF))
-   
+   #recalculate storage
+   canyon.lake <- canyon.lake %>% mutate(percentStorage = round(storage_AF/OT_AF*100,2))
    write.csv(canyon.lake, paste0(swd_data, "reservoirs/all_canyon_lake.csv"), row.names=FALSE)
     
 ########################################################################################################################################################################################################################
