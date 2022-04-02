@@ -1,60 +1,59 @@
 //##################################################################################################################
-//               POPULATION DATA
+//               RECLAIMED WATER DATA
 //##################################################################################################################
-function createTracePop(target) {
-    checkedPop = [];
-    $("input[name='checkPopYear']:checked").each(function () {
-        checkedPop.push($(this).val());
+function createTraceReclaimed(target) {
+    checkedReclaimed = [];
+    $("input[name='checkReclaimedYear']:checked").each(function () {
+        checkedReclaimed.push($(this).val());
     });
 
-    Plotly.purge("popPlot");
-    plotPopulation(myUtilityID, checkedPop);
-    return checkedPop;
+    Plotly.purge("reclaimedPlot");
+    plotReclaimed(myUtilityID, checkedReclaimed);
+    return checkedReclaimed;
 }
 
 //##################################################################################################################
-//               READ IN TIME SERIES POPULATION DATA
+//               READ IN TIME SERIES RECLAIMED WATER DATA
 //##################################################################################################################
-function plotPopulation(myUtilityID, checkedPop) {
+function plotReclaimed(myUtilityID, checkedReclaimed) {
     //parse date to scale axis
     parseDate = d3.timeParse("%Y-%m-%d");
 
-    //console.log(checkedPop);
-    //read in pop data
-    d3.csv("data/demand/all_boerne_pop.csv").then(function (popData) {
-        popData.forEach(function (d) {
+    //console.log(checkedReclaimed);
+    //read in reclaimed data
+    d3.csv("data/demand/all_boerne_reclaimed_water.csv").then(function (reclaimedData) {
+        reclaimedData.forEach(function (d) {
             d.date = parseDate(d.date);
-            d.clb_pop = +d.clb_pop;
-            d.wsb_pop = +d.wsb_pop;
+            d.reclaimed = +d.reclaimed;
             d.month = +d.month;
             d.year = +d.year;
         });
 
-        var selPop = popData.filter(function (d) {
+        var selReclaimed = reclaimedData.filter(function (d) {
             return d.pwsid === myUtilityID && d.year >= 1997;
         });
-        //console.log(selPop)
+        //console.log(selReclaimed)
 
-        if (selPop.length <= 0) {
+        if (selReclaimed.length <= 0) {
             console.log("no utility");
-            //Plotly.purge('popPlot');
+            //Plotly.purge('reclaimedPlot');
             document.getElementById("demandTitle").innerHTML =
-                "Select a utility with data to see population growth";
-            document.getElementById("demandPlot").innerHTML =
+                "Select a utility with data to see reclaimed water";
+            document.getElementById("reclaimedPlot").innerHTML =
                 '<img src="img/demand_chart_icon.png" style="width: 350px; height: 350px; display: block; margin-left: auto; margin-right: auto;">';
         }
 
-        if (selPop.length > 0) {
-            document.getElementById("popPlot").innerHTML = ""; //set blank plot
+        if (selReclaimed.length > 0) {
+            document.getElementById("reclaimedPlot").innerHTML = ""; //set blank plot
             var maxYValue = (
-                d3.max(selPop, function (d) {
-                    return d.clb_pop;
+                d3.max(selReclaimed, function (d) {
+                    return d.reclaimed;
                 }) * 1.1
             ).toFixed(0);
             //console.log(maxYValue);
             //create multiple traces
             var data = [];
-            var xMonths = selPop.map(function (d) {
+            var xMonths = selReclaimed.map(function (d) {
                 return d.date;
             });
             let xMonth = xMonths.filter(
@@ -72,13 +71,13 @@ function plotPopulation(myUtilityID, checkedPop) {
 
             for (i = 0; i < xYears.length - 1; i++) {
                 tempSelect = xYears[i];
-                temp = selPop.filter(function (d) {
+                temp = selReclaimed.filter(function (d) {
                     return d.year === tempSelect;
                 });
                 tempName = "%{y:.1f} thousands in " + tempSelect;
                 //xDate = temp.map(function(d){ return d.date; });
                 yOther = temp.map(function (d) {
-                    return d.clb_pop;
+                    return d.reclaimed;
                 });
                 //create individual trace
                 var showLegVal = true;
@@ -123,14 +122,14 @@ function plotPopulation(myUtilityID, checkedPop) {
             ];
             var colorLine;
 
-            for (i = 0; i < checkedPop.length; i++) {
-                tempSelect = Number(checkedPop[i]);
-                selectYears = selPop
+            for (i = 0; i < checkedReclaimed.length; i++) {
+                tempSelect = Number(checkedReclaimed[i]);
+                selectYears = selReclaimed
                     .filter(function (d) {
                         return d.year === tempSelect;
                     })
                     .map(function (d) {
-                        return d.clb_pop;
+                        return d.reclaimed;
                     });
                 tempName = "%{y:.1f} thousands in %{x}, " + tempSelect;
                 colorLine = colorLineAll[i];
@@ -150,11 +149,11 @@ function plotPopulation(myUtilityID, checkedPop) {
             }
 
             //draw median and selected year
-            selPopNow = selPop.filter(function (d) {
+            selReclaimedNow = selReclaimed.filter(function (d) {
                 return d.year === currentYear;
             });
-            var ySelect = selPopNow.map(function (d) {
-                return d.clb_pop;
+            var ySelect = selReclaimedNow.map(function (d) {
+                return d.reclaimed;
             });
 
             //PLOTLY
@@ -175,7 +174,7 @@ function plotPopulation(myUtilityID, checkedPop) {
 
             var layout = {
                 yaxis: {
-                    title: "Yearly Population",
+                    title: "Reclaimed Water Produced (MGD)",
                     titlefont: { color: "rgb(0, 0, 0)", size: 14 },
                     tickfont: { color: "rgb(0, 0, 0)", size: 12 },
                     showline: false,
@@ -200,7 +199,7 @@ function plotPopulation(myUtilityID, checkedPop) {
             };
 
             data.push(seltrace);
-            Plotly.newPlot("popPlot", data, layout, config);
+            Plotly.newPlot("reclaimedPlot", data, layout, config);
 
         } //end if we have utility data for selectect utility
     }); // end D3

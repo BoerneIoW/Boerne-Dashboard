@@ -325,8 +325,8 @@ function createDemandInfo(myUtilityID, checkedDemand) {
             "#58381f",
         ];
 
-        for (i = 0; i < checked.length; i++) {
-            tempSelect = Number(checked[i]);
+        for (i = 0; i < checkedDemand.length; i++) {
+            tempSelect = Number(checkedDemand[i]);
             selectYears = seldemand
                 .filter(function (d) {
                     return d.year === tempSelect;
