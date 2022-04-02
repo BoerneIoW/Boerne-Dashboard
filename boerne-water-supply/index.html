@@ -333,7 +333,7 @@ function setSystemThis(target){
           <p><br> CLB represents the population within a city limit boundary. WSB represents the population serviced by the utility.<br></p>
       </div>
     </div>
-  </div> <!-- end demand pane-->
+  </div> <!-- end population pane-->
   
 <!--#######################################################################################################
                                       GROUND WATER Tab
@@ -458,7 +458,41 @@ function setSystemThis(target){
     </div>
   </div> <!-- end PCP And DROUGHT pane-->
 
-   
+<!--#######################################################################################################
+                                      RECLAIMED WATER Tab
+######################################################################################################-->
+   <div class="tab-pane" id="reclaimed">
+      <!--Info Tab-->
+       <img class="help-icon" id="reclaimedHelp" src="img/info_icon.png">
+      <div class="row" id="reclaimed_tab_info" style="margin: 5px; display: none; z-index: 8;">
+            <img src="img/demand-tab.png" style="width: 95%; display: inline-block;">
+      </div>
+      
+      <h4 class="chartTitles" id = "reclaimedTitle">Select a utility to see reclaimed water produced</h4> 
+     <!-- PLOTS -->
+      <div class="metadata" id="selectreclaimedMetadata">  </div>
+      <div class="row">
+        <div class = "col-sm-2" style="padding-top: 20px;">Select to Highlight
+        <form style="color: black; font-size: 14px;">
+          <input onclick="createTraceReclaimed(this.value)" name="checkReclaimedYear" value="2016" type="checkbox"> 2016<br>  
+          <input onclick="createTraceReclaimed(this.value)" name="checkReclaimedYear" value="2017" type="checkbox"> 2017<br>  
+          <input onclick="createTraceReclaimed(this.value)" name="checkReclaimedYear" value="2018" type="checkbox"> 2018<br>  
+          <input onclick="createTraceReclaimed(this.value)" name="checkReclaimedYear" value="2019" type="checkbox"> 2019<br>
+          <input onclick="createTraceReclaimed(this.value)" name="checkReclaimedYear" value="2020" type="checkbox"> 2020<br>
+          <input onclick="createTraceReclaimed(this.value)" name="checkReclaimedYear" value="2021" type="checkbox"> 2021<br>
+          <input onclick="createTraceReclaimed(this.value)" name="checkReclaimedYear" value="2022" type="checkbox" checked> 2022<br>  
+        </form>
+      </div>
+        <div class = "row">
+          <div class = "col-sm-9" id = "reclaimedPlot" style="padding: 0;">
+            <img class = "chart-holder-icon" src="img/demand_chart_icon.png">
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  </div> <!-- end demand pane-->
+     
 <!--#######################################################################################################
                                       endTabs
       ######################################################################################################-->
