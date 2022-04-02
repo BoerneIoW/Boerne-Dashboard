@@ -218,6 +218,10 @@ old.last.date <- fx2 %>% group_by(NIDID) %>% filter(date == max(date, na.rm=TRUE
       
 # filter out reservoir(s) of interest
    canyon.lake <- tx.dams %>% filter(name == "Canyon Lake")
+   
+   #usace changed reporting units so multiply by 1000 for those dates that are not in the same units as previous observations
+   canyon.lake <- canyon.lake %>% mutate(storage_AF = ifelse(storage_AF < 1000, storage_AF*1000, storage_AF))
+   
    write.csv(canyon.lake, paste0(swd_data, "reservoirs/all_canyon_lake.csv"), row.names=FALSE)
     
 ########################################################################################################################################################################################################################
@@ -242,7 +246,7 @@ year.flow  <- as.data.frame(matrix(nrow=0, ncol=10));   colnames(year.flow) <- c
     zt.stats <- fx %>% group_by(NIDID, julian) %>% summarize(Nobs = n(), min=round(min(percentStorage, na.rm=TRUE),4), flow10 = round(quantile(percentStorage, 0.10, na.rm=TRUE),4), flow25 = round(quantile(percentStorage, 0.25, na.rm=TRUE),4),
                                                       flow50 = round(quantile(percentStorage, 0.5, na.rm=TRUE),4), flow75 = round(quantile(percentStorage, 0.75, na.rm=TRUE),4), flow90 = round(quantile(percentStorage, 0.90, na.rm=TRUE),4), 
                                                       max = round(max(percentStorage, na.rm=TRUE),4), .groups="drop")
-    zt.stats <- zt.stats %>% mutate(nidid = as.character(nidid), startYr = min(fx$Year), endYr = max(fx$Year)) 
+    zt.stats <- zt.stats %>% mutate(NIDID = as.character(NIDID), startYr = min(fx$Year), endYr = max(fx$Year)) 
     if(dim(zt.stats)[1] == 366) {zt.stats$date = julian.ref$day_month_leap}
     if(dim(zt.stats)[1] == 365) {zt.stats$date = julian.ref$day_month[c(1:365)]} 
     
@@ -250,7 +254,7 @@ year.flow  <- as.data.frame(matrix(nrow=0, ncol=10));   colnames(year.flow) <- c
     stats <- rbind(stats, zt.stats)
     
     zt <- fx %>% filter(Year>=2017) #%>% select(NIDID, name, date, year, julian, elev_Ft, storage_AF, OT_Ft, OT_AF, percentStorage, jurisdiction);    
-    colnames(zt) <- c("nidid", "name", "date", "year", "day_month", "julian", "elev_ft","storage_af", "target_ft", "target_af", "percent_storage", "month", "monthAbb", "jurisdiction")
+    colnames(zt) <- c("NIDID", "name", "date", "year", "day_month", "julian", "elev_ft","storage_af", "target_ft", "target_af", "percent_storage", "month", "monthAbb", "jurisdiction")
     year.flow <- rbind(year.flow, zt)
     
 #    print(i)
@@ -264,11 +268,17 @@ year.flow  <- as.data.frame(matrix(nrow=0, ncol=10));   colnames(year.flow) <- c
   stats2$endYr <- as.character(stats$endYr)
   stats2$startYr <- as.character(stats$startYr)
   stats2 <- stats2 %>% mutate(date2 = as.Date(paste0(end.year, "-",date)))
-  stats2 <- stats2 %>% mutate(month = mymonths[month])
+  stats2 <- stats2 %>% mutate(month = substr(date,0,2))
+  stats2 <- stats2 %>% mutate(month = ifelse(month == "01", "Jan", month)); stats2 <- stats2 %>% mutate(month = ifelse(month == "07", "Jul", month))
+  stats2 <- stats2 %>% mutate(month = ifelse(month == "02", "Feb", month)); stats2 <- stats2 %>% mutate(month = ifelse(month == "08", "Aug", month))
+  stats2 <- stats2 %>% mutate(month = ifelse(month == "03", "Mar", month)); stats2 <- stats2 %>% mutate(month = ifelse(month == "09", "Sep", month))
+  stats2 <- stats2 %>% mutate(month = ifelse(month == "04", "Apr", month)); stats2 <- stats2 %>% mutate(month = ifelse(month == "10", "Oct", month))
+  stats2 <- stats2 %>% mutate(month = ifelse(month == "05", "May", month)); stats2 <- stats2 %>% mutate(month = ifelse(month == "11", "Nov", month))
+  stats2 <- stats2 %>% mutate(month = ifelse(month == "06", "Jun", month)); stats2 <- stats2 %>% mutate(month = ifelse(month == "12", "Dec", month))
   
   #Now attach most recent value to stream stats for the map
-  recent.flow <- year.flow %>% group_by(nidid) %>% filter(is.na(storage_af) == FALSE) %>% filter(date == max(date)); #do we want to do most recent date or most recent date with data?
-  current.stat <- merge(recent.flow, stats2, by.x=c("nidid","julian"), by.y=c("nidid", "julian"), all.x=TRUE) #%>% rename(date = date.x)
+  recent.flow <- year.flow %>% group_by(NIDID) %>% filter(is.na(storage_af) == FALSE) %>% filter(date == max(date)); #do we want to do most recent date or most recent date with data?
+  current.stat <- merge(recent.flow, stats2, by.x=c("NIDID","julian"), by.y=c("NIDID", "julian"), all.x=TRUE) #%>% rename(date = date.x)
   #clean
   current.stat <- current.stat %>% select(-date.x, -year, -date.y, -elev_ft, -storage_af, -target_af, -target_ft, -month.x, -jurisdiction, -month.y)
   current.stat <- current.stat %>% rename(date = day_month, month = monthAbb)
@@ -281,15 +291,16 @@ year.flow  <- as.data.frame(matrix(nrow=0, ncol=10));   colnames(year.flow) <- c
   
   #merge to sites geojson 
   project.df <- read_sf(paste0(swd_data, "reservoirs/all_canyon_lake_site.geojson"))
-  res.loc <- project.df %>% select(NIDID, Name, Jurisdiction, geometry)
-  canyon.lake.site.stats <- merge(res.loc, current.stat[,c("nidid","status","percent_storage","julian","flow50")], by.x="NIDID", by.y="nidid") #why are there 4 of everything?
+  res.loc <- project.df %>% select(NIDID, Name, Jurisdiction, geometry) #why are there 4 of everything?
+  res.loc <- res.loc %>% slice(1)
+  canyon.lake.site.stats <- merge(res.loc, current.stat[,c("NIDID","status","percent_storage","julian","flow50")], by.x="NIDID", by.y="NIDID") #why are there 4 of everything?
   #mapview::mapview(canyon.lake.site.stats)
   geojson_write(canyon.lake.site.stats, file=paste0(swd_data, "reservoirs/all_canyon_lake_site.geojson"))
 
   #rename nidid to site so can use same code as streamflow - used to make charts
   current.year <- year.flow %>% filter(year == year(max(date)));     last.year <- year.flow %>% filter(year == (year(max(date))-1));     
-  stats.flow <- merge(stats, current.year, by.x=c("nidid","julian"), by.y=c("nidid","julian"), all.x=TRUE) %>% rename(site = nidid, flow = percent_storage)
-  stats.past <- merge(stats, last.year, by.x=c("nidid", "julian"), by.y=c("nidid", "julian"), all.x=TRUE) %>% rename(site = nidid, flow = percent_storage) %>% as.data.frame()
+  stats.flow <- merge(stats, current.year, by.x=c("NIDID","julian"), by.y=c("NIDID","julian"), all.x=TRUE) %>% rename(site = NIDID, flow = percent_storage)
+  stats.past <- merge(stats, last.year, by.x=c("NIDID", "julian"), by.y=c("NIDID", "julian"), all.x=TRUE) %>% rename(site = NIDID, flow = percent_storage) %>% as.data.frame()
   #clean and bind
   stats.flow <- stats.flow %>% select(-date.x, -name, -year, -elev_ft, -storage_af, -target_af, -target_ft, -month, -jurisdiction)
   stats.flow <- stats.flow %>% rename(date = day_month, date2 = date.y, month = monthAbb)
