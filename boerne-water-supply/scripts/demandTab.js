@@ -338,7 +338,13 @@ function createDemandInfo(myUtilityID, checkedDemand) {
             xJulian = temp.map(function (d) {
                 return d.date;
             });
-
+            colorLine = colorLineAll[i];
+            if (tempSelect === 2011) {
+                colorLine = "red";
+            }
+           // if (tempSelect === 2007) {
+           //     colorLine = "darkred";
+           // }
             selectTraces = {
                 x: xJulian,
                 y: selectYears,
