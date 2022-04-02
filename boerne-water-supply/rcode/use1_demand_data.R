@@ -29,6 +29,7 @@ mapview::mapview(utilities)
 #read in old data
 old_total_demand <- read.csv(paste0(swd_data, "demand/boerne_total_demand.csv"))
 old_demand_by_source <- read.csv(paste0(swd_data, "demand/boerne_demand_by_source.csv"))
+old_reclaimed <- read.csv(paste0(swd_data, "demand/boerne_reclaimed_water.csv"))
 old_pop <- read.csv(paste0(swd_data, "demand/boerne_pop.csv"))
 
 #calculate moving average function
@@ -148,6 +149,19 @@ table(foo.cum$pwsid, foo.cum$year)
 foo.cum3 <- foo.cum2 %>% group_by(pwsid, year, julian, date) %>% summarize(demand_mgd = round(mean(demand_mgd, na.rm=TRUE),2), .groups="drop") %>% distinct()
 
 write.csv(foo.cum3, paste0(swd_data, "demand/all_boerne_demand_cum.csv"), row.names=FALSE)
+
+
+######################################################################################################################################################################
+#
+# Read in reclaimed water data from Google spreadsheet
+#
+#####################################################################################################################################################################
+new_reclaimed <- subset(new_demand_by_mgd, select = -c(groundwater,boerne_lake,GBRA))
+
+all_reclaimed <- rbind(old_reclaimed, new_reclaimed)
+
+#write.csv
+write.csv(reclaimed, paste0(swd_data, "demand/all_boerne_reclaimed_water.csv"), row.names=FALSE)
 
 
 ######################################################################################################################################################################

@@ -31,11 +31,11 @@ boerne_data <- as.data.frame(boerne_data)
 boerne_data <- boerne_data %>% arrange(site_id)
 
 # create metadata to generate geojson file
-boerne_sites <- boerne_data %>% slice(1,37,221,313,494,590,639,717,736,737,742) #choose one observation per site to extract metadata from
-boerne_sites <- boerne_sites[-c(7:18)]
-zt <- st_as_sf(boerne_sites, coords = c("longitude", "latitude"), crs = 4326, agr = "constant")
-mapview::mapview(zt)
-
+#boerne_sites <- boerne_data %>% slice(1,37,221,313,494,590,639,717,736,737,742) #choose one observation per site to extract metadata from
+#boerne_sites <- boerne_sites[-c(7:18)]
+#zt <- st_as_sf(boerne_sites, coords = c("longitude", "latitude"), crs = 4326, agr = "constant")
+#mapview::mapview(zt)
+#geojson_write(boerne_sites, file =  paste0(swd_data, "quality/water_quality_sites.geojson"))
 
 ################################################################################################################################################################
 # remove all except for global environment 
