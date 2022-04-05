@@ -36,7 +36,7 @@ d3.csv("data/gw/all_boerne_gw_stats.csv").then(function(gwStats){
             d.flow50 = +d.flow50;
             d.flow75 = +d.flow75;
             d.flow90 = +d.flow90;
-            d.flow = +d.depth_ft;
+            d.flow = +d.mean_depth_ft;
             d.max = +d.max;
             d.Nobs = +d.Nobs;
             d.start_yr = +d.startYr;
@@ -143,7 +143,7 @@ console.log(data2)
 d3.csv("data/gw/all_boerne_gw_status.csv").then(function(gwLevels){
     gwLevels.forEach(function(d){
             d.julian = +d.julian;
-            d.flow = +d.depth_ft;
+            d.flow = +d.mean_depth_ft;
             d.date = parseDate(d.date);
        });
   //console.log(gwLevels)
