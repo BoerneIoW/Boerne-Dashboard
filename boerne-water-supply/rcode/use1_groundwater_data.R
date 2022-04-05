@@ -76,11 +76,11 @@ for(i in 1:length(sheet.number)) {
   boerne_all_gw_levels$site <- unlist(boerne_all_gw_levels$site)
   boerne_all_gw_levels$date <- format(as.Date(boerne_all_gw_levels$date), "%Y-%m-%d")
   boerne_all_gw_levels <- as.data.frame(boerne_all_gw_levels)
-  str(boerne_all_gw_levels)
-
+  #str(boerne_all_gw_levels)
+  
   #add julian indexing
   nx <- boerne_all_gw_levels %>% mutate(year = year(date), day_month = substr(date, 6, 10))
-
+  
   for(i in 1:nrow(nx)) { #computationally slow. There's almost certainly a faster way. But it works. 
   
     if(leap_year(nx$year[i]) == TRUE) {nx$julian[i] <- julian.ref$julian_index_leap[julian.ref$day_month_leap == nx$day_month[i]]}
@@ -92,7 +92,7 @@ for(i in 1:length(sheet.number)) {
   boerne_all_gw_levels <- nx
 
   boerne_all_gw_levels$agency <- "CCGCD" #include agency that collects data
-
+  
   #remove missing data
   boerne_all_gw_levels <- na.omit(boerne_all_gw_levels)
 
@@ -122,21 +122,41 @@ write.csv(all_boerne_gw_depth, paste0(swd_data, "gw/all_boerne_gw_depth.csv"), r
 #####################################################################################################################################################################
 #stats calculations:
 
-#unique sites:
 year.flow <- all_boerne_gw_depth  
 
 #account for any duplicates
 #  year.flow <- year.flow %>% group_by(site, date, julian) %>% summarize(depth_ft = median(depth_ft, na.rm=TRUE), .groups="drop")
 
+#given sparse daily data, aggregate to monthly and get average
+year.flow$date2 <- floor_date(year.flow$date, "month")
+year.flow2 <- year.flow %>% group_by(site, date2) %>% summarize(mean_depth_ft = mean(depth_ft))
+year.flow2 <- year.flow2 %>% mutate(month = substr(date2, 6, 7))
+year.flow <- year.flow2
+year.flow$date2 <- as.character(year.flow$date2)
+year.flow <- rename(year.flow, date = date2)
+
+  #re-add julian indexing
+    nx <- year.flow %>% mutate(year = year(date), day_month = substr(date, 6, 10))
+
+    for(i in 1:nrow(nx)) { #computationally slow. There's almost certainly a faster way. But it works. 
+  
+     if(leap_year(nx$year[i]) == TRUE) {nx$julian[i] <- julian.ref$julian_index_leap[julian.ref$day_month_leap == nx$day_month[i]]}
+      if(leap_year(nx$year[i]) == FALSE) {nx$julian[i] <- julian.ref$julian_index[julian.ref$day_month == nx$day_month[i]]}
+  
+     print(paste(round(i/nrow(nx)*100,2),"% complete"))
+    }
+
+    year.flow <- nx
+
 #Calculate states for all data... this takes a long while to do in tidyverse... like to see it making progress in loop
 unique.sites <- unique(year.flow$site)
-stats <- as.data.frame(matrix(nrow=0,ncol=14));        colnames(stats) <- c("site", "julian", "min", "flow10", "flow25", "flow50", "flow75", "flow90", "max", "Nobs","startYr","endYr","date", "date2"); 
+stats <- as.data.frame(matrix(nrow=0,ncol=14)); colnames(stats) <- c("site", "julian", "min", "flow10", "flow25", "flow50", "flow75", "flow90", "max", "Nobs","startYr","endYr","date", "date2"); 
 
 for (i in 1:length(unique.sites)){
   zt <- year.flow %>% filter(site==unique.sites[i]) %>% mutate(year = year(date))
-  zt.stats <- zt %>% group_by(site, julian) %>% summarize(Nobs = n(), min=round(min(depth_ft, na.rm=TRUE),4), flow10 = round(quantile(depth_ft, 0.10, na.rm=TRUE),4), flow25 = round(quantile(depth_ft, 0.25, na.rm=TRUE),4),
-                                                          flow50 = round(quantile(depth_ft, 0.5, na.rm=TRUE),4), flow75 = round(quantile(depth_ft, 0.75, na.rm=TRUE),4), flow90 = round(quantile(depth_ft, 0.90, na.rm=TRUE),4), 
-                                                          max = round(max(depth_ft, na.rm=TRUE),4), .groups="drop")
+  zt.stats <- zt %>% group_by(site, julian) %>% summarize(Nobs = n(), min=round(min(mean_depth_ft, na.rm=TRUE),4), flow10 = round(quantile(mean_depth_ft, 0.10, na.rm=TRUE),4), flow25 = round(quantile(mean_depth_ft, 0.25, na.rm=TRUE),4),
+                                                          flow50 = round(quantile(mean_depth_ft, 0.5, na.rm=TRUE),4), flow75 = round(quantile(mean_depth_ft, 0.75, na.rm=TRUE),4), flow90 = round(quantile(mean_depth_ft, 0.90, na.rm=TRUE),4), 
+                                                          max = round(max(mean_depth_ft, na.rm=TRUE),4), .groups="drop")
   
   zt.stats <- zt.stats %>% mutate(startYr = min(zt$year), endYr = max(zt$year)) %>% dplyr::select(site, julian, min, flow10, flow25, flow50, flow75, flow90, max, Nobs, startYr, endYr)
   
@@ -170,36 +190,36 @@ max(stats$endYr)
 #
 #####################################################################################################################################################################
 #Now attach MOST recent value to stream stats
-recent.flow <- all_boerne_gw_depth %>% group_by(site) %>% filter(date == max(date)) #%>% rename(flow = depth_below_surface_ft)
-current.stat <- merge(recent.flow[,c("site", "julian", "depth_ft")], stats, by.x=c("site","julian"), by.y=c("site","julian"), all.x=TRUE) 
+recent.flow <- year.flow %>% group_by(site) %>% filter(date == max(date)) #%>% rename(flow = depth_below_surface_ft)
+current.stat <- merge(recent.flow[,c("site", "julian", "mean_depth_ft")], stats, by.x=c("site","julian"), by.y=c("site","julian"), all.x=TRUE) 
 current.stat <- current.stat %>% arrange(site, date2)
 
 #if else for this year and last years flow...
-current.stat <- current.stat %>% mutate(status = ifelse(depth_ft <= flow10, "Extremely Wet", 
-                                                        ifelse(depth_ft > flow10 & depth_ft <= flow25, "Very Wet", 
-                                                               ifelse(depth_ft >= flow25 & depth_ft < flow50, "Moderately Wet", 
-                                                                      ifelse(depth_ft >= flow50 & depth_ft < flow75, "Moderately Dry", 
-                                                                             ifelse(depth_ft >= flow75 & depth_ft < flow90, "Very Dry", 
-                                                                                    ifelse(depth_ft >= flow90, "Extremely Dry", "Unknown")))))))
+current.stat <- current.stat %>% mutate(status = ifelse(mean_depth_ft <= flow10, "Extremely Wet", 
+                                                        ifelse(mean_depth_ft > flow10 & mean_depth_ft <= flow25, "Very Wet", 
+                                                               ifelse(mean_depth_ft >= flow25 & mean_depth_ft < flow50, "Moderately Wet", 
+                                                                      ifelse(mean_depth_ft >= flow50 & mean_depth_ft < flow75, "Moderately Dry", 
+                                                                             ifelse(mean_depth_ft >= flow75 & mean_depth_ft < flow90, "Very Dry", 
+                                                                                    ifelse(mean_depth_ft >= flow90, "Extremely Dry", "Unknown")))))))
 current.stat$status <- ifelse(is.na(current.stat$status), "unknown", current.stat$status)
 table(current.stat$status)
 
 #set those that are not collecting data to unknown
-max.julian <- current.stat %>% filter(endYr == current.year) %>% summarize(maxJ = max(julian, na.rm=TRUE))
-current.stat <- current.stat %>% mutate(status = ifelse(endYr < current.year & julian > 30, "unknown", 
-                                                        ifelse(endYr < (current.year-1), "unknown", 
-                                                               ifelse(endYr==current.year & julian < (max.julian$maxJ-30), "unknown", status))))
-table(current.stat$status, useNA="ifany") # A lot of 'unknown' due to infrequency of data. 
+#max.julian <- current.stat %>% filter(endYr == current.year) %>% summarize(maxJ = max(julian, na.rm=TRUE))
+#current.stat <- current.stat %>% mutate(status = ifelse(endYr < current.year & julian > 30, "unknown", 
+#                                                        ifelse(endYr < (current.year-1), "unknown", 
+#                                                               ifelse(endYr==current.year & julian < (max.julian$maxJ-30), "unknown", status))))
+#table(current.stat$status, useNA="ifany") # A lot of 'unknown' due to infrequency of data. 
 
 
 #merge to sites geojson
 boerne.sites  <- boerne.sites %>% rename(site = state_id) 
-boerne.sites2 <- merge(boerne.sites, current.stat[,c("site","status","depth_ft","julian","date","flow50")], by.x="site", by.y="site")
+boerne.sites2 <- merge(boerne.sites, current.stat[,c("site","status","mean_depth_ft","julian","date","flow50")], by.x="site", by.y="site")
 #convert to sf
 boerne.sites2 <- st_as_sf(boerne.sites2, coords = c("dec_long_va", "dec_lat_va"), crs = 4326);
 boerne.sites2 <- merge(boerne.sites2 %>% dplyr::select(-date), recent.flow[,c("site","date")], by.x="site", by.y="site", all.x=TRUE)
 #Save out
-boerne.sites2 <- boerne.sites2 %>% dplyr::select(agency, site, location, elevation, total_depth, aquifer, status, depth_ft, julian, flow50, date, geometry)
+boerne.sites2 <- boerne.sites2 %>% dplyr::select(agency, site, location, elevation, total_depth, aquifer, status, mean_depth_ft, julian, flow50, date, geometry)
 boerne.sites2 <- rename(boerne.sites2, AgencyCd = agency, SiteName = location, WellDepth = total_depth, LocalAquiferName = aquifer)
 geojson_write(boerne.sites2, file=paste0(swd_data, "gw/all_boerne_gw_sites.geojson"))
 mapview::mapview(boerne.sites2)
@@ -217,14 +237,14 @@ mapview::mapview(boerne.sites2)
 
 #Now clip time series data to past two years and assign a depth based on stats
 year.flow2 <- year.flow %>% filter(date >= as.Date(paste0((current.year-2),"-01-01"), "%Y-%m-%d")) #limits data to be only for past two years
-stats2 <- merge(year.flow2[,c("site", "julian", "date", "depth_ft")], stats %>% dplyr::select(-date), by.x=c("site","julian"), by.y=c("site", "julian"), all.x=TRUE) %>% arrange(site, date)
+stats2 <- merge(year.flow2[,c("site", "julian", "date", "mean_depth_ft")], stats %>% dplyr::select(-date), by.x=c("site","julian"), by.y=c("site", "julian"), all.x=TRUE) %>% arrange(site, date)
 
-stats2 <- stats2 %>% mutate(status = ifelse(depth_ft <= flow10, "Extremely Wet", 
-                                            ifelse(depth_ft > flow10 & depth_ft <= flow25, "Very Wet", 
-                                                   ifelse(depth_ft >= flow25 & depth_ft < flow50, "Moderately Wet", 
-                                                          ifelse(depth_ft >= flow50 & depth_ft < flow75, "Moderately Dry", 
-                                                                 ifelse(depth_ft >= flow75 & depth_ft < flow90, "Very Dry", 
-                                                                        ifelse(depth_ft >= flow90, "Extremely Dry", "Unknown")))))))
+stats2 <- stats2 %>% mutate(status = ifelse(mean_depth_ft <= flow10, "Extremely Wet", 
+                                            ifelse(mean_depth_ft > flow10 & mean_depth_ft <= flow25, "Very Wet", 
+                                                   ifelse(mean_depth_ft >= flow25 & mean_depth_ft < flow50, "Moderately Wet", 
+                                                          ifelse(mean_depth_ft >= flow50 & mean_depth_ft < flow75, "Moderately Dry", 
+                                                                 ifelse(mean_depth_ft >= flow75 & mean_depth_ft < flow90, "Very Dry", 
+                                                                        ifelse(mean_depth_ft >= flow90, "Extremely Dry", "Unknown")))))))
 stats2$status <- ifelse(is.na(stats2$status), "unknown", stats2$status)
 table(stats2$status, useNA="ifany")
 stats2 <- stats2 %>% mutate(colorStatus = ifelse(status=="Extremely Dry", "darkred", 
@@ -233,7 +253,7 @@ stats2 <- stats2 %>% mutate(colorStatus = ifelse(status=="Extremely Dry", "darkr
                                                                ifelse(status=="Moderately Wet", "cornflowerblue",
                                                                       ifelse(status=="Very Wet", "blue", 
                                                                              ifelse(status=="Extremely Wet", "navy", "gray")))))))
-stats2 <- stats2 %>% dplyr::select(site, julian, date, depth_ft, status, colorStatus)
+stats2 <- stats2 %>% dplyr::select(site, julian, date, mean_depth_ft, status, colorStatus)
 stats2 <- stats2[with(stats2, order(site, date)),]
 write.csv(stats2, paste0(swd_data, "gw/all_boerne_gw_status.csv"), row.names=FALSE)
 
@@ -253,7 +273,7 @@ write.csv(current.stat2, paste0(swd_data, "gw/all_boerne_gw_stats.csv"), row.nam
 
 
 #let's do annual trends
-gw.annual <- year.flow %>% mutate(year = year(date)) %>% group_by(site, year) %>% summarize(medianDepth = median(depth_ft, na.rm=TRUE), nobsv = n(), .groups="drop")
+gw.annual <- year.flow %>% mutate(year = year(date)) %>% group_by(site, year) %>% summarize(medianDepth = median(mean_depth_ft, na.rm=TRUE), nobsv = n(), .groups="drop")
 write.csv(gw.annual, paste0(swd_data, "gw/all_boerne_gw_annual.csv"), row.names=FALSE)
 
   

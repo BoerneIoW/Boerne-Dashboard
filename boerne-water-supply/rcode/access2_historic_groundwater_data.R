@@ -119,6 +119,9 @@ write.csv(boerne_all_well_metadata, paste0(swd_data, "gw/boerne_well_metadata.cs
 
   boerne_all_gw_levels$agency <- "CCGCD" #include agency that collects data
 
+  #limit data to 2000 and onward (earlier data is too sparse)
+  boerne_all_gw_levels <- boerne_all_gw_levels %>% filter(year >= 2000)
+  
   #remove missing data
   boerne_all_gw_levels <- na.omit(boerne_all_gw_levels)
 
@@ -132,23 +135,23 @@ write.csv(boerne_all_well_metadata, paste0(swd_data, "gw/boerne_well_metadata.cs
 write.csv(boerne_all_gw_levels, paste0(swd_data, "gw/boerne_gw_levels.csv"), row.names = FALSE)
 
 #data frame w/o elevation
-boerne_gw_depth <- select(boerne_all_gw_levels, c(1, 2, 4, 5,7))
+boerne_gw_depth <- select(boerne_all_gw_levels, c(1, 2, 4, 5, 7))
 
 write.csv(boerne_gw_depth, paste0(swd_data, "gw/boerne_gw_depth.csv"), row.names=FALSE)
 
 ######################################################################################################################################################################
 # mapview of the sites
-zt <- st_as_sf(boerne_all_well_metadata, coords = c("dec_long_va", "dec_lat_va"), crs = 4326, agr = "constant")
-mapview::mapview(zt)
+#zt <- st_as_sf(boerne_all_well_metadata, coords = c("dec_long_va", "dec_lat_va"), crs = 4326, agr = "constant")
+#mapview::mapview(zt)
 
 #visual check - temp
-print(ggplot(boerne_all_gw_levels, aes(x = as.Date(date, format = "%Y-%m-%d"), y = -1*depth_ft)) +
-        geom_line(color = "steel blue") + geom_point(color = "navy blue") + ggtitle(paste0("Index number: ", i)) +
-        xlab("date") + scale_x_date(date_labels = "%Y-%m") +
-        ylab("depth below surface (ft)") + ylim(-1.1*max(boerne_all_gw_levels$depth_ft), 0))
+#print(ggplot(boerne_all_gw_levels, aes(x = as.Date(date, format = "%Y-%m-%d"), y = -1*depth_ft)) +
+#        geom_line(color = "steel blue") + geom_point(color = "navy blue") + ggtitle(paste0("Index number: ", i)) +
+#        xlab("date") + scale_x_date(date_labels = "%Y-%m") +
+#        ylab("depth below surface (ft)") + ylim(-1.1*max(boerne_all_gw_levels$depth_ft), 0))
 
 
-rm(all.well.metadata, all.well.data, gw.i.metadata, gw.i.data, boerne_all_gw_levels, boerne_all_well_metadata, boerne_gw_depth, zt, nx)
+#rm(all.well.metadata, all.well.data, gw.i.metadata, gw.i.data, boerne_all_gw_levels, boerne_all_well_metadata, boerne_gw_depth, zt, nx)
 ######################################################################################################################################################################
 #
 #   RUN STATS: NOT NEEDED TO BE SAVED OUT
