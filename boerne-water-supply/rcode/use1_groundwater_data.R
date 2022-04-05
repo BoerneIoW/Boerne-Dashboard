@@ -151,7 +151,7 @@ for (i in 1:length(unique.sites)){
     zt.stats <- merge(zt.stats, sub.jul, by.x = "julian", by.y = "julian_index", all.x = TRUE) %>%
       rename(date2 = day_month) %>% select(site, julian, min, flow10, flow25, flow50, flow75, flow90, max, Nobs,startYr,endYr, date2)
   }
-  zt.stats$date <- format(zt.stats$date2, format = "%B-%d") #this isn't doing what it's supposed to.... 
+  zt.stats$date <- format(zt.stats$date2, format = "%B-%d")
   
   stats <- rbind(stats, zt.stats)
   print(paste(i, "is ", round(i/length(unique.sites)*100,2), "percent done"))
@@ -174,7 +174,7 @@ recent.flow <- all_boerne_gw_depth %>% group_by(site) %>% filter(date == max(dat
 current.stat <- merge(recent.flow[,c("site", "julian", "depth_ft")], stats, by.x=c("site","julian"), by.y=c("site","julian"), all.x=TRUE) 
 current.stat <- current.stat %>% arrange(site, date2)
 
-#if else for this year and last years flow... I think flip this for gw
+#if else for this year and last years flow...
 current.stat <- current.stat %>% mutate(status = ifelse(depth_ft <= flow10, "Extremely Wet", 
                                                         ifelse(depth_ft > flow10 & depth_ft <= flow25, "Very Wet", 
                                                                ifelse(depth_ft >= flow25 & depth_ft < flow50, "Moderately Wet", 
