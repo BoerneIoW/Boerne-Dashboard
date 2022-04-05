@@ -273,7 +273,7 @@ write.csv(current.stat2, paste0(swd_data, "gw/all_boerne_gw_stats.csv"), row.nam
 
 
 #let's do annual trends
-gw.annual <- year.flow %>% mutate(year = year(date)) %>% group_by(site, year) %>% summarize(medianDepth = median(mean_depth_ft, na.rm=TRUE), nobsv = n(), .groups="drop")
+gw.annual <- all_boerne_gw_depth %>% mutate(year = year(date)) %>% group_by(site, year) %>% summarize(medianDepth = median(depth_ft, na.rm=TRUE), nobsv = n(), .groups="drop")
 write.csv(gw.annual, paste0(swd_data, "gw/all_boerne_gw_annual.csv"), row.names=FALSE)
 
   
