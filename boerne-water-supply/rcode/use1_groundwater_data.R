@@ -148,6 +148,11 @@ year.flow <- rename(year.flow, date = date2)
 
     year.flow <- nx
 
+#fix variable type to save out monthly averages
+year.flow$month <- as.numeric(year.flow$month)
+all_boerne_monthly_avg <- select(year.flow, c(1, 3, 4, 5, 7))   
+write.csv(all_boerne_monthly_avg, paste0(swd_data, "gw/all_boerne_monthly_avg.csv"), row.names=FALSE)
+    
 #Calculate states for all data... this takes a long while to do in tidyverse... like to see it making progress in loop
 unique.sites <- unique(year.flow$site)
 stats <- as.data.frame(matrix(nrow=0,ncol=14)); colnames(stats) <- c("site", "julian", "min", "flow10", "flow25", "flow50", "flow75", "flow90", "max", "Nobs","startYr","endYr","date", "date2"); 
