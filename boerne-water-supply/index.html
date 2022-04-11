@@ -306,16 +306,28 @@ function setSystemThis(target){
 <!--#######################################################################################################
                                       POPULATION Tab
 ######################################################################################################-->
-   <div class="tab-pane" id="pop">
+   <div class="tab-pane" id="pop"></div>  
+   
+   <script>
+     function getData() {
+       return Math.random();
+     }
+     
+     Plotly.plot('chart',[{
+       y:[getData()],
+       type: 'bar'
+     ]});  
+   </script>  
+   <!--<div class="tab-pane" id="pop">
       <!--Info Tab-->
-       <img class="help-icon" id="ppopHelp" src="img/info_icon.png">
+       <!--<img class="help-icon" id="popHelp" src="img/info_icon.png">
       <div class="row" id="pop_tab_info" style="margin: 5px; display: none; z-index: 8;">
             <img src="img/demand-tab.png" style="width: 95%; display: inline-block;">
       </div>
       
       <h4 class="chartTitles" id = "popTitle">Select a utility to see population growth</h4> 
      <!-- PLOTS -->
-      <div class="metadata" id="selectpopMetadata">  </div>
+      <!--<div class="metadata" id="selectpopMetadata">  </div>
       <div class="row">
         <div class = "col-sm-2" style="padding-top: 20px;">Select to Highlight
         <form style="color: black; font-size: 14px;">
