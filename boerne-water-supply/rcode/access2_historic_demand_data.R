@@ -18,7 +18,7 @@
 utilities <- read_sf(paste0(swd_data, "boerne_utility.geojson"))
 pwsid.list <- unique(utilities$pwsid) #Boerne is the utility of interest
 mymonths <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"); #used below to convert numbers to abbrev
-mapview::mapview(utilities)
+#mapview::mapview(utilities)
 
 #calculate moving average function
 ma <- function(x,n=7){stats::filter(x,rep(1/n,n), sides=1)}
@@ -31,7 +31,7 @@ ma <- function(x,n=7){stats::filter(x,rep(1/n,n), sides=1)}
 gs4_auth()
 1
 
-demand_data <- read_sheet("https://docs.google.com/spreadsheets/d/1BKb9Q6UFEBNsGrLZhjdq2kKX5t1GqPFCWF553afUKUg/edit#gid=2030520898", sheet = 1, range = "A229:H", col_names = FALSE)
+demand_data <- read_sheet("https://docs.google.com/spreadsheets/d/1BKb9Q6UFEBNsGrLZhjdq2kKX5t1GqPFCWF553afUKUg/edit#gid=2030520898", sheet = 1, range = "A229:H", col_names = FALSE, col_types = "Dnnnnnnn")
 demand_by_source <- demand_data[, c("...1", "...2", "...3", "...6", "...7", "...8")]
 
 #rename columns
@@ -93,14 +93,11 @@ write.csv(demand2, paste0(swd_data, "demand/boerne_total_demand.csv"), row.names
 
 ######################################################################################################################################################################
 #
-# Read in reclaimed water data from Google spreadsheet
+# Reclaimed water data
 #
 #####################################################################################################################################################################
-reclaimed <- subset(demand_by_mgd, select = -c(groundwater,boerne_lake,GBRA))
+reclaimed <- subset(demand_by_mgd, select = -c(total,groundwater,boerne_lake,GBRA))
 
-reclaimed <- reclaimed %>% filter(year <= 2021)
-
-#write.csv
 write.csv(reclaimed, paste0(swd_data, "demand/boerne_reclaimed_water.csv"), row.names=FALSE)
 
 ######################################################################################################################################################################

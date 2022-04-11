@@ -21,10 +21,7 @@
 utilities <- read_sf(paste0(swd_data, "boerne_utility.geojson")); 
 pwsid.list <- unique(utilities$pwsid) #Boerne is the utility of interest
 mymonths <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"); #used below to convert numbers to abbrev
-mapview::mapview(utilities)
-
-#read in basic data
-#con.status <- read.csv(paste0(swd_html, "basic_info.csv"))
+#mapview::mapview(utilities)
 
 #read in old data
 old_total_demand <- read.csv(paste0(swd_data, "demand/boerne_total_demand.csv"))
@@ -36,19 +33,6 @@ old_pop <- read.csv(paste0(swd_data, "demand/boerne_pop.csv"))
 ma <- function(x,n=7){stats::filter(x,rep(1/n,n), sides=1)}
 
 
-
-
-#For pulling in conservation stage descriptions
-
-
-#so the idea is you use the whats in the yellow tab to populate /Datastream('NC0332010-ShortageStage') properties
-# and pulls the most recent "Observation" of that datatstream to populate or highlight the table of use restrictions in the dashboard
-#The Observation s within that Datastream will have result of the particular status/stage
-#and resultTime of the activation date of that status
-
-
-
-
 ######################################################################################################################################################################
 #
 # Read in new water demand data
@@ -57,7 +41,7 @@ ma <- function(x,n=7){stats::filter(x,rep(1/n,n), sides=1)}
 gs4_auth()
 1
 
-demand_data <- read_sheet("https://docs.google.com/spreadsheets/d/1BKb9Q6UFEBNsGrLZhjdq2kKX5t1GqPFCWF553afUKUg/edit#gid=2030520898", sheet = 1, range = "A229:H", col_names = FALSE)
+demand_data <- read_sheet("https://docs.google.com/spreadsheets/d/1BKb9Q6UFEBNsGrLZhjdq2kKX5t1GqPFCWF553afUKUg/edit#gid=2030520898", sheet = 1, range = "A229:H", col_names = FALSE,col_types = "Dnnnnnnn")
 demand_by_source <- demand_data[, c("...1", "...2", "...3", "...6", "...7", "...8")]
 
 #rename columns
@@ -153,16 +137,32 @@ write.csv(foo.cum3, paste0(swd_data, "demand/all_boerne_demand_cum.csv"), row.na
 
 ######################################################################################################################################################################
 #
-# Read in reclaimed water data from Google spreadsheet
+# Reclaimed water data
 #
 #####################################################################################################################################################################
-new_reclaimed <- subset(new_demand_by_mgd, select = -c(groundwater,boerne_lake,GBRA))
+new_reclaimed <- subset(new_demand_by_mgd, select = -c(total,groundwater,boerne_lake,GBRA))
 
 all_reclaimed <- rbind(old_reclaimed, new_reclaimed)
 
-#write.csv
-write.csv(reclaimed, paste0(swd_data, "demand/all_boerne_reclaimed_water.csv"), row.names=FALSE)
+#include month abbreviations
+all_reclaimed2 <- all_reclaimed %>% group_by(pwsid) %>% mutate(julian = as.numeric(strftime(date, format = "%j")), month = month(date), monthAbb = mymonths[month], year = year(date))
 
+#calculate mean demand
+all_reclaimed2 <- all_reclaimed2 %>% mutate(date = as.Date(substr(date,1,10),format='%Y-%m-%d')) 
+all_reclaimed3 <- all_reclaimed2 %>% group_by(pwsid) %>% arrange(date) %>% mutate(timeDays = as.numeric(date - lag(date)))
+all_reclaimed4 <- all_reclaimed3 %>% group_by(pwsid) %>% mutate(mean_reclaimed = ifelse(timeDays <= 3, round(as.numeric(ma(reclaimed)),2), reclaimed), 
+                                                  julian = as.numeric(strftime(date, format = "%j")), month = month(date), monthAbb = mymonths[month], year = year(date))
+all_reclaimed5 <- all_reclaimed4 %>% mutate(reclaimed = round(reclaimed,2), mean_reclaimed = ifelse(is.na(mean_reclaimed)==TRUE, reclaimed, mean_reclaimed))
+
+#calculate monthly peak
+all_reclaimed6 <- all_reclaimed5 %>% group_by(pwsid, month, year) %>% mutate(peak_reclaimed = round(quantile(reclaimed, 0.98),1)); #took the 98% to omit outliers
+
+#provide julian date
+all_reclaimed7 <- all_reclaimed6 %>% mutate(date2 = date, date = paste0(monthAbb,"-",day(date2))) %>% select(-timeDays)
+
+#write.csv
+all_reclaimed8 <- subset(all_reclaimed7, select = c(pwsid, date, reclaimed, mean_reclaimed, julian, month, monthAbb, year, peak_reclaimed, date2))
+write.csv(all_reclaimed8, paste0(swd_data, "demand/all_boerne_reclaimed_water.csv"), row.names=FALSE)
 
 ######################################################################################################################################################################
 #
