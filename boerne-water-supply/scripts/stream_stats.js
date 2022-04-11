@@ -45,7 +45,7 @@ createBlankSummary();
 
 //Load Data and get correct########################################################
 function createCurrentSummary(myUtility){
-   d3.csv("data_state/boerne_link_pwsid_watershed.csv").then(function(pwsid_huc){
+   d3.csv("data/boerne_link_pwsid_watershed.csv").then(function(pwsid_huc){
     var selectedHucs = pwsid_huc.filter(function(d){return d.utility_name === myUtility; });
     var filterHucName = selectedHucs.map(function(d){return d.ws_watershed; });
     
