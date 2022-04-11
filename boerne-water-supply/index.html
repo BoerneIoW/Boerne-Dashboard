@@ -749,6 +749,23 @@ function setSystemThis(target){
 
   }
 
+  if(target==”#reclaimed”){
+    plotReclaimed(myUtilityID, checkedReclaimed);  
+    
+    //turn off other layers
+    //if (map.getLayoutProperty('streamgauge-layer', 'visibility') !== "none"){
+      //document.getElementById('menuStreamGages').click();
+    //}
+    //if (map.getLayoutProperty('reservoirs', 'visibility') !== "none"){
+      //document.getElementById('menuReservoirs').click();
+    //}
+    //if (map.getLayoutProperty('groundwater', 'visibility') !== "none"){
+      //document.getElementById('menuGroundwater').click();
+    //}
+    //if (map.getLayoutProperty('precipitation', 'visibility') !== "none"){
+      //document.getElementById('menuPrecipitation').click();
+    //}
+  } 
     
   if(target=="#groundwater"){
     visibility = map.getLayoutProperty('groundwater', 'visibility');
