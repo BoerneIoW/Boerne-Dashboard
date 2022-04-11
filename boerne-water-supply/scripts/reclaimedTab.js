@@ -74,7 +74,7 @@ function plotReclaimed(myUtilityID, checkedReclaimed) {
                 temp = selReclaimed.filter(function (d) {
                     return d.year === tempSelect;
                 });
-                tempName = "%{y:.1f} thousands in " + tempSelect;
+                tempName = "%{y:.1f} mgd in " + tempSelect;
                 //xDate = temp.map(function(d){ return d.date; });
                 yOther = temp.map(function (d) {
                     return d.reclaimed;
@@ -131,7 +131,7 @@ function plotReclaimed(myUtilityID, checkedReclaimed) {
                     .map(function (d) {
                         return d.reclaimed;
                     });
-                tempName = "%{y:.1f} thousands in %{x}, " + tempSelect;
+                tempName = "%{y:.1f} mgd in %{x}, " + tempSelect;
                 colorLine = colorLineAll[i];
 
                 selectTraces = {
@@ -139,7 +139,7 @@ function plotReclaimed(myUtilityID, checkedReclaimed) {
                     y: selectYears,
                     mode: "lines",
                     type: "scatter",
-                    hovertemplate: "%{y:.1f} thousands in %{x}, " + tempSelect,
+                    hovertemplate: "%{y:.1f} mgd in %{x}, " + tempSelect,
                     opacity: 1,
                     line: { color: colorLine, width: 2 },
                     name: tempSelect,
@@ -169,7 +169,7 @@ function plotReclaimed(myUtilityID, checkedReclaimed) {
                 type: "scatter",
                 name: "2021",
                 showlegend: true,
-                hovertemplate: "%{y:.1f} thousands in %{x}",
+                hovertemplate: "%{y:.1f} mgd in %{x}",
             };
 
             var layout = {
