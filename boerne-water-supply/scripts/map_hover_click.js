@@ -51,7 +51,7 @@ map.on("mouseleave", "utilities-layer", function () {
 map.on("mousemove", "no-utilities-layer", function (e) {
     map.getCanvas().style.cursor = "pointer";
     //check if feature exist
-    if (e.features.length > 0) {
+    if (e.features.length <= 0) {
         document.getElementById("map_hover_box").innerHTML =
             "<p><strong>Utility Information <br><br></strong>" +
             e.features[0].properties.utility_name +
