@@ -1,57 +1,57 @@
-function createTraceDemand(target) {
-    checkedDemand = [];
-    $("input[name='checkDemandYear']:checked").each(function () {
-        checkedDemand.push($(this).val());
+function createTraceReclaimed(target) {
+    checkedReclaimed = [];
+    $("input[name='checkReclaimedYear']:checked").each(function () {
+        checkedReclaimed.push($(this).val());
     });
 
     Plotly.purge("reclaimedPlot");
-    createDemandInfo(myUtilityID, checkedDemand);
-    return checkedDemand;
+    createReclaimedInfo(myUtilityID, checkedReclaimed);
+    return checkedReclaimed;
 }
 
 //##################################################################################################################
 //               READ IN TIME SERIES
 //##################################################################################################################
-function createDemandInfo(myUtilityID, checkedDemand) {
+function createReclaimedInfo(myUtilityID, checkedReclaimed) {
     //parse date to scale axis
     parseDate = d3.timeParse("%Y-%m-%d");
 
-    //console.log(checkedDemand);
-    //read in demand data
-    d3.csv("data/demand/all_boerne_total_demand.csv").then(function (demandData) {
-        demandData.forEach(function (d) {
+    //console.log(checkedReclaimed);
+    //read in reclaimed data
+    d3.csv("data/demand/all_boerne_reclaimed_water.csv").then(function (reclaimedData) {
+        reclaimedData.forEach(function (d) {
             d.date3 = parseDate("2022-" + d.date2.substring(5, d.date2.length));
-            d.demand_mgd = +d.demand_mgd;
+            d.reclaimed = +d.reclaimed;
             d.month = +d.month;
             d.year = +d.year;
-            d.peak_demand = +d.peak_demand;
+            d.peak_reclaimed = +d.peak_reclaimed;
         });
 
-        var selDemand = demandData.filter(function (d) {
+        var selReclaimed = reclaimedData.filter(function (d) {
             return d.pwsid === myUtilityID && d.year >= 1997;
         });
-        //console.log(selDemand)
+        //console.log(selReclaimed)
 
-        if (selDemand.length <= 0) {
+        if (selReclaimed.length <= 0) {
             console.log("no utility");
             //Plotly.purge('reclaimedPlot');
-            document.getElementById("demandTitle").innerHTML =
-                "Select a utility with data to see demand";
+            document.getElementById("reclaimedTitle").innerHTML =
+                "Select a utility with data to see reclaimed water produced";
             document.getElementById("reclaimedPlot").innerHTML =
                 '<img src="img/demand_chart_icon.png" style="width: 350px; height: 350px; display: block; margin-left: auto; margin-right: auto;">';
         }
 
-        if (selDemand.length > 0) {
+        if (selReclaimed.length > 0) {
             document.getElementById("reclaimedPlot").innerHTML = ""; //set blank plot
             var maxYValue = (
-                d3.max(selDemand, function (d) {
-                    return d.peak_demand;
+                d3.max(selReclaimed, function (d) {
+                    return d.peak_reclaimed;
                 }) * 1.1
             ).toFixed(0);
             //console.log(maxYValue);
             //create multiple traces
             var data = [];
-            var xMonths = selDemand.map(function (d) {
+            var xMonths = selReclaimed.map(function (d) {
                 return d.date2;
             });
             let xMonth = xMonths.filter(
@@ -69,13 +69,13 @@ function createDemandInfo(myUtilityID, checkedDemand) {
 
             for (i = 0; i < xYears.length - 1; i++) {
                 tempSelect = xYears[i];
-                temp = selDemand.filter(function (d) {
+                temp = selReclaimed.filter(function (d) {
                     return d.year === tempSelect;
                 });
                 tempName = "%{y:.1f} mgd in " + tempSelect;
                 //xDate = temp.map(function(d){ return d.date; });
                 yOther = temp.map(function (d) {
-                    return d.demand_mgd;
+                    return d.reclaimed;
                 });
                 //create individual trace
                 var showLegVal = true;
@@ -120,14 +120,14 @@ function createDemandInfo(myUtilityID, checkedDemand) {
             ];
             var colorLine;
 
-            for (i = 0; i < checkedDemand.length; i++) {
-                tempSelect = Number(checkedDemand[i]);
-                selectYears = selDemand
+            for (i = 0; i < checkedReclaimed.length; i++) {
+                tempSelect = Number(checkedReclaimed[i]);
+                selectYears = selReclaimed
                     .filter(function (d) {
                         return d.year === tempSelect;
                     })
                     .map(function (d) {
-                        return d.demand_mgd;
+                        return d.reclaimed;
                     });
                 tempName = "%{y:.1f} mgd in %{x}, " + tempSelect;
                 colorLine = colorLineAll[i];
@@ -153,11 +153,11 @@ function createDemandInfo(myUtilityID, checkedDemand) {
             }
 
             //draw median and selected year
-            selDemandNow = selDemand.filter(function (d) {
+            selReclaimed = selReclaimed.filter(function (d) {
                 return d.year === currentYear;
             });
-            var ySelect = selDemandNow.map(function (d) {
-                return d.demand_mgd;
+            var ySelect = selReclaimedNow.map(function (d) {
+                return d.reclaimed;
             });
 
             //PLOTLY
@@ -178,7 +178,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
 
             var layout = {
                 yaxis: {
-                    title: "Daily Demand (MGD)",
+                    title: "Daily Reclaimed Water Produced (MGD)",
                     titlefont: { color: "rgb(0, 0, 0)", size: 14 },
                     tickfont: { color: "rgb(0, 0, 0)", size: 12 },
                     showline: false,
@@ -207,34 +207,34 @@ function createDemandInfo(myUtilityID, checkedDemand) {
 
             //load document names
             if (myUtility === "none") {
-                document.getElementById("demandTitle").innerHTML =
+                document.getElementById("reclaimedTitle").innerHTML =
                     "Select a utility on the map to learn more";
             }
 
             if (myUtility !== "none") {
-                var selCurDemand = selDemand.map(function (d) {
-                    return d.demand_mgd;
+                var selCurReclaimed = selReclaimed.map(function (d) {
+                    return d.reclaimed;
                 });
-                var thisWeekDemand = selCurDemand[selCurDemand.length - 1];
-                var lastWeekDemand = selCurDemand[selCurDemand.length - 8];
+                var thisWeekReclaimed = selCurReclaimed[selCurReclaimed.length - 1];
+                var lastWeekReclaimed = selCurReclaimed[selCurReclaimed.length - 8];
 
                 //now how does this compare to last week?
-                var demandTrajectory;
-                if (thisWeekDemand > lastWeekDemand) {
-                    demandTrajectory = "higher";
+                var reclaimedTrajectory;
+                if (thisWeekReclaimed > lastWeekReclaimed) {
+                    reclaimedTrajectory = "higher";
                 }
-                if (thisWeekDemand < lastWeekDemand) {
-                    demandTrajectory = "lower";
+                if (thisWeekReclaimed < lastWeekReclaimed) {
+                    reclaimedTrajectory = "lower";
                 }
-                if (thisWeekDemand.toFixed(1) === lastWeekDemand.toFixed(1)) {
-                    demandTrajectory = "equal";
+                if (thisWeekReclaimed.toFixed(1) === lastWeekReclaimed.toFixed(1)) {
+                    reclaimedTrajectory = "equal";
                 }
 
-                document.getElementById("demandTitle").innerHTML =
+                document.getElementById("reclaimedTitle").innerHTML =
                     myUtility +
                     " has " +
-                    demandTrajectory +
-                    " demand than last week";
+                    reclaimedTrajectory +
+                    " reclaimed than last week";
             }
         } //end if we have utility data for selectect utility
     }); // end D3
