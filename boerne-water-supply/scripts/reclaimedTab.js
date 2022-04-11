@@ -153,7 +153,7 @@ function createReclaimedInfo(myUtilityID, checkedReclaimed) {
             }
 
             //draw median and selected year
-            selReclaimed = selReclaimed.filter(function (d) {
+            selReclaimedNow = selReclaimed.filter(function (d) {
                 return d.year === currentYear;
             });
             var ySelect = selReclaimedNow.map(function (d) {
