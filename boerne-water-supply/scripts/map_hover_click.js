@@ -300,6 +300,7 @@ map.on("click", "utilities-layer", function (e) {
     myUtilityInfo(myUtility);
     createCurrentSummary(myUtility);
     createDemandInfo(myUtilityID, checkedDemand);
+    plotReclaimed(myUtilityID, checkedReclaimed)
     return myUtilityID;
 });
 
