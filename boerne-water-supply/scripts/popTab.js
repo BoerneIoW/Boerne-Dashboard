@@ -51,6 +51,4 @@ d3.csv("data/demand/all_boerne_pop.csv").then(function(popAnnual){
 };
 var data = [traceAnnual];
 Plotly.newPlot('popPlot', data, poplayout, config);
-  });//end D3
-
-} //END CREATE CHART FUNCTION ##########################################################
+});//end D3

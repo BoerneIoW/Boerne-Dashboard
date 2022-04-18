@@ -595,6 +595,7 @@ function setSystemThis(target){
   var streamID = "none";  var gwID = "none"; var pcpID = "none";
   var checked = ['2021']; 
   var checkedDemand= [currentYear-1];
+  var checkedReclaimed= [currentYear-1];
   var fileName;
   var streamPlotType = "off";
   var gwPlotType = "off";
@@ -751,7 +752,7 @@ function setSystemThis(target){
   }
 
   if(target=="#reclaimed"){
-    plotReclaimed(myUtilityID, checkedReclaimed);  
+    createReclaimedInfo(myUtilityID, checkedReclaimed);  
     
     //turn off other layers
     //if (map.getLayoutProperty('streamgauge-layer', 'visibility') !== "none"){

@@ -11,7 +11,7 @@
 
 ######################################################################################################################################################################
 #
-#   ACCESS GROUNDWATER DATA FROM GOOGLE SPREADSHEET
+#   ACCESS GROUNDWATER DATA FROM GOOGLE SPREADSHEET: CCGCD
 #
 ######################################################################################################################################################################
 
@@ -140,66 +140,31 @@ boerne_gw_depth <- select(boerne_all_gw_levels, c(1, 2, 4, 5, 7))
 write.csv(boerne_gw_depth, paste0(swd_data, "gw/boerne_gw_depth.csv"), row.names=FALSE)
 
 ######################################################################################################################################################################
-# mapview of the sites
-#zt <- st_as_sf(boerne_all_well_metadata, coords = c("dec_long_va", "dec_lat_va"), crs = 4326, agr = "constant")
-#mapview::mapview(zt)
-
-#visual check - temp
-#print(ggplot(boerne_all_gw_levels, aes(x = as.Date(date, format = "%Y-%m-%d"), y = -1*depth_ft)) +
-#        geom_line(color = "steel blue") + geom_point(color = "navy blue") + ggtitle(paste0("Index number: ", i)) +
-#        xlab("date") + scale_x_date(date_labels = "%Y-%m") +
-#        ylab("depth below surface (ft)") + ylim(-1.1*max(boerne_all_gw_levels$depth_ft), 0))
-
-
-#rm(all.well.metadata, all.well.data, gw.i.metadata, gw.i.data, boerne_all_gw_levels, boerne_all_well_metadata, boerne_gw_depth, zt, nx)
-######################################################################################################################################################################
 #
-#   RUN STATS: NOT NEEDED TO BE SAVED OUT
+#   ACCESS GROUNDWATER DATA FROM GOOGLE SPREADSHEET: CITY DATA
 #
 ######################################################################################################################################################################
-#unique sites:
-#unique.sites <- unique(boerne_all_gw_levels$site) #42 unique sites.
+city_well_data <- read_sheet("https://docs.google.com/spreadsheets/d/1Mne3oTY8OUe_h_sXmBalG1CdWhFzsd7qje6SfwdcFLg/edit#gid=0", sheet = 1, range = "A3:J", col_names = FALSE)
 
-#set up data frame for stats and include year
-#stats <- as.data.frame(matrix(nrow=0,ncol=13));        colnames(stats) <- c("site", "julian", "min", "flow10", "flow25", "flow50", "flow75", "flow90", "max", "Nobs","startYr","endYr","date"); 
-#year.flow  <- as.data.frame(matrix(nrow=0, ncol=6));    colnames(year.flow) <- c("site", "agency", "date", "julian", "depth_ft")
+#rename columns
+city_well_data <- rename(city_well_data, date = "...1", well_1 = "...2", well_2 = "...3",
+                         well_4 = "...4", well_6 = "...5", well_9 = "...6", well_10 = "...7",
+                         well_11 = "...8", well_13 = "...9", well_14 = "...10")
+#reformat
+well_1 <- select(city_well_data, c(1, 2)); well_1$well_num <- "well 1"; well_1 <- rename(well_1, depth_ft = "well_1")
+well_2 <- select(city_well_data, c(1, 3)); well_2$well_num <- "well 2"; well_2 <- rename(well_2, depth_ft = "well_2")
+well_4 <- select(city_well_data, c(1, 4)); well_4$well_num <- "well 4"; well_4 <- rename(well_4, depth_ft = "well_4")
+well_6 <- select(city_well_data, c(1, 5)); well_6$well_num <- "well 6"; well_6 <- rename(well_6, depth_ft = "well_6")
+well_9 <- select(city_well_data, c(1, 6)); well_9$well_num <- "well 9"; well_9 <- rename(well_9, depth_ft = "well_9")
+well_10 <- select(city_well_data, c(1, 7)); well_10$well_num <- "well 10"; well_10 <- rename(well_10, depth_ft = "well_10")
+well_11 <- select(city_well_data, c(1, 8)); well_11$well_num <- "well 11"; well_11 <- rename(well_11, depth_ft = "well_11")
+well_13 <- select(city_well_data, c(1, 9)); well_13$well_num <- "well 13"; well_13 <- rename(well_13, depth_ft = "well_13")
+well_14 <- select(city_well_data, c(1, 10)); well_14$well_num <- "well 14"; well_14 <- rename(well_14, depth_ft = "well_14")
 
-#loop through and calculate stats - takes around 20 minutes
-#for (i in 1:length(unique.sites)) {
-#  zt <- boerne_all_gw_levels %>% filter(site == unique.sites[i]) #one site at a time
-  #if (nrow(zt) < 365) {next} #skips over sites with less than a year of data on record - these break the stats & loop. Should only remove 1 site - "304013095220101" 
-  
-  #summarize by julian
-#  zt.stats <- zt %>% group_by(julian) %>% summarize(Nobs = n(), min=round(min(depth_ft, na.rm=TRUE),4), flow10 = round(quantile(depth_ft, 0.10, na.rm=TRUE),4), flow25 = round(quantile(depth_ft, 0.25, na.rm=TRUE),4),
-#                                                    flow50 = round(quantile(depth_ft, 0.5, na.rm=TRUE),4), flow75 = round(quantile(depth_ft, 0.75, na.rm=TRUE),4), flow90 = round(quantile(depth_ft, 0.90, na.rm=TRUE),4), 
-#                                                    max = round(max(depth_ft, na.rm=TRUE),4),
-#                                                    .groups="keep")
-#  zt.stats <- zt.stats %>% mutate(site = as.character(unique.sites[i]), startYr = min(zt$year), endYr = max(zt$year)) %>% select(site, julian, min, flow10, flow25, flow50, flow75, flow90, max, Nobs, startYr, endYr)
-  
-#  if(dim(zt.stats)[1] == 366) {zt.stats$date2 = julian.ref$day_month_leap} #leap year indexing
-#  if(dim(zt.stats)[1] < 366) { #non-leap year indexing. Robust against irregular data dates.
-#    sub.jul <- julian.ref %>% filter(julian_index %in% zt.stats$julian) %>% select(day_month, julian_index)
-#    zt.stats <- merge(zt.stats, sub.jul, by.x = "julian", by.y = "julian_index", all.x = TRUE) %>%
-#      rename(date2 = day_month) %>% select(site, julian, min, flow10, flow25, flow50, flow75, flow90, max, Nobs,startYr,endYr, date2)
-#  }
-#  zt.stats$date <- format(zt.stats$date2, format="%b-%d")
-  
-  #fill dataframe
-#  stats <- rbind(stats, zt.stats)
-#  zt <- zt %>% select(site, agency, date, julian, depth_ft);    colnames(zt) <- c("site", "agency", "date", "julian", "depth_ft")
-#  zt <- zt %>% group_by(site, date, julian) %>% summarize(depth_ft = median(depth_ft, na.rm=TRUE), .groups="drop")
-#  year.flow <- rbind(year.flow, zt)
-  
-#  print(paste0(round(100*i/length(unique.sites),2),"% complete"))
-#}
+city_well_data <- rbind (well_1, well_2, well_4, well_6, well_9, well_10, well_11, well_13, well_14)
 
-#summary(stats) 
-#summary(year.flow)
-
-
-#year.flow <- year.flow %>% filter(year(as.Date(date, format="%Y-%m-%d")) >= year(start.date))
-#write.csv(year.flow, paste0(swd_data, "gw/boerne_gw_depth2.csv"), row.names=FALSE) # file doesn't have julian
-
+#remove missing data
+city_well_data <- na.omit(city_well_data) # went from 85482 obs to 7849 (the majority were NA since every day is listed)
 ################################################################################################################################################################
 # remove all except for global environment 
 rm(list= ls()[!(ls() %in% c('julian.ref','update.date', 'current.month', 'current.year', 'end.date', 'end.year', 
