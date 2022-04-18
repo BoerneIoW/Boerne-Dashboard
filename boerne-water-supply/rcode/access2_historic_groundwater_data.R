@@ -165,6 +165,35 @@ city_well_data <- rbind (well_1, well_2, well_4, well_6, well_9, well_10, well_1
 
 #remove missing data
 city_well_data <- na.omit(city_well_data) # went from 85482 obs to 7849 (the majority were NA since every day is listed)
+
+#add julian indexing
+nx <- city_well_data %>% mutate(year = year(date), day_month = substr(date, 6, 10))
+
+for(i in 1:nrow(nx)) { #computationally slow. There's almost certainly a faster way. But it works. 
+  
+  if(leap_year(nx$year[i]) == TRUE) {nx$julian[i] <- julian.ref$julian_index_leap[julian.ref$day_month_leap == nx$day_month[i]]}
+  if(leap_year(nx$year[i]) == FALSE) {nx$julian[i] <- julian.ref$julian_index[julian.ref$day_month == nx$day_month[i]]}
+  
+  print(paste(round(i/nrow(nx)*100,2),"% complete"))
+}
+
+city_well_data <- nx
+
+#limit data to 2000 and onward (earlier data is too sparse)
+city_well_data <- city_well_data %>% filter(year >= 2000)
+
+# filter data up to 2021
+city_well_data <- city_well_data %>% filter(year <= 2021)
+
+check.last.date <- city_well_data %>% filter(date == max(date)) %>% dplyr::select(date)
+table(check.last.date$date)
+
+################################################################################################################################################################
+# combine CCGCD and City data
+
+both_datasets <- rbind(city_well_data, boerne_gw_depth)
+
+write.csv(both_datasets, paste0(swd_data, "gw/boerne_gw_depth.csv"), row.names=FALSE)
 ################################################################################################################################################################
 # remove all except for global environment 
 rm(list= ls()[!(ls() %in% c('julian.ref','update.date', 'current.month', 'current.year', 'end.date', 'end.year', 
