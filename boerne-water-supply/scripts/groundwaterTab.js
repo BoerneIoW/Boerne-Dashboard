@@ -22,11 +22,12 @@ function toggleGWStats(target){
 function createGWTab(gwID, recentDate, gwPlotType) {
   document.getElementById('gwPlot2').innerHTML = "";
   document.getElementById('relGWTitle').innerHTML = "Groundwater Levels Relative to Historic Levels";
+  document.getElementById('monthlyGWTitle').innerHTML = "Long-term Monthly Trends";
   document.getElementById('longGWTitle').innerHTML = "Long-term Annual Trends";
 //parse date to scale axis
 parseDate = d3.timeParse("%Y-%m-%d");
 
-//read in stream stats
+//read in gw stats
 d3.csv("data/gw/all_boerne_gw_stats.csv").then(function(gwStats){
     gwStats.forEach(function(d){
             d.julian = +d.julian;
@@ -61,7 +62,7 @@ var Y90per = filterData.map(function(d) {return d.flow90; });
 var Yflow= filterData.map(function(d) {return d.flow; });
 console.log(filterData); console.log(Ymed);
 
-var rd2 = todayGW[0].end_yr + "-" + todayGW[0].date2.substring(5,10);
+var rd2 = todayGW[0].end_Yr + "-" + todayGW[0].date2.substring(5,10);
 
 document.getElementById("selectGWMetadata").innerHTML = "Data from: " + filterData[0].start_yr + "-" + 
          filterData[0].end_yr + " (~" + d3.median(filterData, function(d) { return d.Nobs; }) + " years with observations) <br><span style='color: rgb(26,131,130);'>The last measurement was taken on " + 
@@ -215,17 +216,9 @@ Plotly.newPlot('gwPlot2', data2, gwlayout2, config);
 });//end D3
 });//end D3
 
-// create plot for average monthly observations
-function createTraceGW(target) {
-  checked = [];
-  $("input[name='checkGWYear']:checked").each(function () {
-      checked.push($(this).val());
-  });
-
-  Plotly.purge("gwMonthPlot");
-  plotGroundwater(gwID, checked);
-  return checked;
-}
+//#####################################################################################
+//         create plot for average monthly observations
+//#####################################################################################//
 
 function plotGroundwater(gwID, checked) {
   document.getElementById("gwMonthPlot").innerHTML = ""; //set blank plot
