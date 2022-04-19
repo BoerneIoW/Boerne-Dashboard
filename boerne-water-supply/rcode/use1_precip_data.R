@@ -7,8 +7,8 @@
 # FEBRUARY 2021
 #
 # Sample code for accessing TexMesonet API data for Boerne, TX (Kendall County)
-# Created Sophia Bryson @ THE INTERNET OF WATER. 
-# Updated by Vianey Rueda
+# Created by Vianey Rueda
+# Updated by Sophia Bryson @ THE INTERNET OF WATER.
 # February 2022
 #
 ########################################################################################################################################################
@@ -18,20 +18,25 @@
 #                      UPDATE THE DROUGHT MAPS AND CREATE TABLE FOR PERCENT IN DROUGHT BY BASIN
 #
 ################################################################################################################################################
-#download spatial data
-#drought <- file_to_geojson(input="https://droughtmonitor.unl.edu/data/kmz/usdm_current.kmz", method='web', output=paste0(swd_data, 'drought\\current_drought'))
-#9/24/2021: Causing problems. Lauren's been having trouble with this, too. 
-#drought <- read_sf(paste0(swd_data, "drought/current_drought.geojson")) %>%  st_transform(drought, crs = 4326) %>% select(Name, geometry); #already in correct projection
-
 # current drought
-download.file("https://droughtmonitor.unl.edu/data/shapefiles_m/USDM_current_M.zip", destfile="..\\temp\\temp.zip")
+setwd(swd_data)
+download.file("https://droughtmonitor.unl.edu/data/shapefiles_m/USDM_current_M.zip", destfile="temp.zip")
+
 # Unzip this file. You can do it with R (as below), or clicking on the object you downloaded.
-unzip("..\\temp\\temp.zip", files=NULL, exdir="..\\temp")
+unzip("temp.zip", files=NULL, exdir="temp")
+
 #get day
 d <- today(); prev.days <- seq(d-7,d,by='day');  d <- prev.days[weekdays(prev.days)=='Tuesday'][1] %>% str_remove_all("[-]");
-current_drought <- readOGR(paste0("..\\temp"), paste0("USDM_",d)) %>% st_as_sf() %>% st_transform(crs = 4326) %>% rename(Name = DM) %>% select(Name, geometry) %>% mutate(Name = as.character(Name))
+current_drought <- readOGR(paste0("temp"), paste0("USDM_",d)) %>% st_as_sf() %>% st_transform(crs = 4326) %>% rename(Name = DM) %>% select(Name, geometry) %>% mutate(Name = as.character(Name))
 mapview::mapview(current_drought, zcol = "Name", col.regions = c("lightyellow", "yellow", "orange", "red", "darkred"))
 geojson_write(current_drought, file = paste0(swd_data,"drought/current_drought.geojson"))
+
+#delete temp files
+fold = ("temp")
+# get all files in the directories, recursively
+f <- list.files(fold, include.dirs = F, full.names = T, recursive = T)
+# remove the files
+file.remove(f)
 
 #download tables for HUCS of interest 
 huc8 <- read_sf(paste0(swd_data, "huc8.geojson"))
@@ -168,18 +173,22 @@ rm(zt, zt1, zt4, pol, pol2, zt1.proj, zt4.proj)
 
 
 ###################################################################################################################################
-#          ERROR: HAVENT GOTTEN THIS TO WORK BUT FILES ALREADY EXIST
+#     
 #          6-10 day precipitation and temperature outlooks
 #
 ####################################################################################################################################
-#there is a one day lag
-day.url <- day(Sys.Date())-1
-if(nchar(day.url)==1) { day.url = paste0("0", day.url) }
+end_date_prcp <- as.POSIXct(today)-1 #there is a one day lag time
+end_date_prcp <- as.character(end_date_prcp)
+end_date_prcp <- gsub('\\s+', '', end_date_prcp)
+end_date_prcp <- gsub('-', '', end_date_prcp)
+end_date_prcp <- gsub(':', '', end_date_prcp)
+end_date_prcp <- substr(end_date_prcp, 1,8)
 
-#read in pcp data
-#file_to_geojson(input=paste0("ftp://ftp.cpc.ncep.noaa.gov/GIS/us_tempprcpfcst/610prcp_",year.url,month.url,day.url,".kmz"), method='web', output=paste0(swd_data, 'pcp/pcp610forecast'))
-pcp <- read_sf(paste0(swd_data, 'pcp/pcp610forecast.geojson')) %>% dplyr::select(Name, geometry) %>% st_transform(crs = 4326)
-pcp <- pcp %>% mutate(percentage = as.numeric(trimws(substr(Name,0,3))), direction = trimws(substr(Name, (nchar(Name)-12), (nchar(Name)-7)),"both"))
+download.file(paste0("https://ftp.cpc.ncep.noaa.gov/GIS/us_tempprcpfcst/610prcp_",end_date_prcp,".zip"), destfile="temp.zip")
+# Unzip this file. You can do it with R (as below), or clicking on the object you downloaded.
+unzip("temp.zip", files=NULL, exdir="temp")
+#get data
+pcp <- readOGR(paste0("temp"), paste0("610prcp_",end_date_prcp)) %>% st_as_sf() %>% st_transform(crs = 4326) %>% select(Prob, Cat, geometry) %>% rename(percentage = Prob, direction = Cat)
 pcp <- pcp %>% mutate(colorVal = ifelse(percentage < 33, "white", "black")) %>% mutate(colorVal = ifelse(direction == "Above" & percentage >= 33 & percentage < 40, "#d4f8d4", colorVal)) %>% 
    mutate(colorVal = ifelse(direction == "Above" & percentage >= 40 & percentage < 50, "#90ee90", ifelse(direction == "Above" & percentage >= 50 & percentage < 60, "#4ce44c", 
                                                                                                          ifelse(direction == "Above" & percentage >= 60 & percentage < 70, "#1ec31e", ifelse(direction == "Above" & percentage >= 70 & percentage < 80, "#169016", 
@@ -191,18 +200,33 @@ pcp <- pcp %>% mutate(colorVal = ifelse(direction == "Below" & percentage >= 33 
 pcp <- pcp %>% mutate(colorVal = ifelse(direction == "Normal", "white", colorVal))
 pcp <- st_zm(pcp)
 table(pcp$colorVal)
+pcp <- pcp %>% mutate(Name = ifelse(direction != "Normal", paste0(percentage, "% chance of precipitation being ", direction, " Normal"), paste0(percentage, "% chance of precipitation being ", direction)))
+
 leaflet() %>%  addProviderTiles("Stamen.TonerLite") %>% addPolygons(data = pcp, fillOpacity= 0.75, fillColor = pcp$colorVal, color="black", weight=0)
 geojson_write(pcp, file =  paste0(swd_data, "pcp/pcp610forecast.geojson"))
 
-#repeat for temperature------------------------
+#delete temp files
+fold = ("temp")
+# get all files in the directories, recursively
+f <- list.files(fold, include.dirs = F, full.names = T, recursive = T)
+# remove the files
+file.remove(f)
 
-#download.file(paste0("https://ftp.cpc.ncep.noaa.gov/GIS/us_tempprcpfcst/610temp_",year.url,month.url,day.url,".zip"), destfile="..\\temp\\temp.zip")
-download.file(("https://ftp.cpc.ncep.noaa.gov/GIS/us_tempprcpfcst/610temp_20220418.zip"), destfile="..\\temp\\temp.zip")
+######################### REPEAT FOR TEMPERATURE FORECAST #########################
+end_date_temp <- as.POSIXct(today)-1 #there is a one day lag time
+end_date_temp <- as.character(end_date_temp)
+end_date_temp <- gsub('\\s+', '', end_date_temp)
+end_date_temp <- gsub('-', '', end_date_temp)
+end_date_temp <- gsub(':', '', end_date_temp)
+end_date_temp <- substr(end_date_temp, 1,8)
+
+download.file(paste0("https://ftp.cpc.ncep.noaa.gov/GIS/us_tempprcpfcst/610temp_",end_date_temp,".zip"), destfile="temp.zip")
 
 # Unzip this file. You can do it with R (as below), or clicking on the object you downloaded.
-unzip("..\\temp\\temp.zip", files=NULL, exdir="..\\temp")
+unzip("temp.zip", files=NULL, exdir="temp")
+
 #get data
-pcp <- readOGR(paste0("..\\temp"), ("610temp_20220418.zip")) %>% st_as_sf() %>% st_transform(crs = 4326) %>% select(Prob, Cat, geometry) %>% rename(percentage = Prob, direction = Cat)
+pcp <- readOGR(paste0("temp"), paste0("610temp_", end_date_temp)) %>% st_as_sf() %>% st_transform(crs = 4326) %>% select(Prob, Cat, geometry) %>% rename(percentage = Prob, direction = Cat)
 pcp <- pcp %>% mutate(colorVal = ifelse(percentage < 33, "white", "black")) %>% mutate(colorVal = ifelse(direction == "Above" & percentage >= 33 & percentage < 40, "#ffc4c4", colorVal)) %>% 
    mutate(colorVal = ifelse(direction == "Above" & percentage >= 40 & percentage < 50, "#ff7676", ifelse(direction == "Above" & percentage >= 50 & percentage < 60, "#ff2727", 
                                                                                                          ifelse(direction == "Above" & percentage >= 60 & percentage < 70, "#eb0000", ifelse(direction == "Above" & percentage >= 70 & percentage < 80, "#b10000", 
@@ -215,13 +239,12 @@ pcp <- pcp %>% mutate(colorVal = ifelse(direction == "Normal", "white", colorVal
 pcp <- st_zm(pcp)
 table(pcp$colorVal)
 pcp <- pcp %>% mutate(Name = ifelse(direction != "Normal", paste0(percentage, "% chance of temperature being ", direction, " Normal"), paste0(percentage, "% chance of temperature being ", direction)))
-####----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 leaflet() %>%  addProviderTiles("Stamen.TonerLite") %>% addPolygons(data = pcp, fillOpacity= 0.6, fillColor = pcp$colorVal, color="black", weight=0)
-geojson_write(pcp, file =  paste0(swd_html, "pcp\\temp610forecast.geojson"))
+geojson_write(pcp, file =  paste0(swd_data, "pcp/temp610forecast.geojson"))
 
 #delete temp files
-fold = ("..\\temp")
+fold = ("temp")
 # get all files in the directories, recursively
 f <- list.files(fold, include.dirs = F, full.names = T, recursive = T)
 # remove the files
@@ -229,27 +252,6 @@ file.remove(f)
 
 rm(pcp)
 
-
-
-file_to_geojson(input=paste0("ftp://ftp.cpc.ncep.noaa.gov/GIS/us_tempprcpfcst/610temp_",year.url,month.url,day.url,".kmz"), method='web', output=paste0(swd_data, 'pcp\\temp610forecast'))
-#this was set to swd_html, i switched it to swd_data... ok?
-pcp <- read_sf(paste0(swd_data, 'pcp/temp610forecast.geojson')) %>% dplyr::select(Name, geometry) %>% st_transform(crs = 4326)
-pcp <- pcp %>% mutate(percentage = as.numeric(trimws(substr(Name,0,3))), direction = trimws(substr(Name, (nchar(Name)-12), (nchar(Name)-7)),"both"))
-pcp <- pcp %>% mutate(colorVal = ifelse(percentage < 33, "white", "black")) %>% mutate(colorVal = ifelse(direction == "Above" & percentage >= 33 & percentage < 40, "#ffc4c4", colorVal)) %>% 
-   mutate(colorVal = ifelse(direction == "Above" & percentage >= 40 & percentage < 50, "#ff7676", ifelse(direction == "Above" & percentage >= 50 & percentage < 60, "#ff2727", 
-                                                                                                         ifelse(direction == "Above" & percentage >= 60 & percentage < 70, "#eb0000", ifelse(direction == "Above" & percentage >= 70 & percentage < 80, "#b10000", 
-                                                                                                                                                                                             ifelse(direction == "Above" & percentage >= 80 & percentage <= 100, "#760000", colorVal))))))
-
-pcp <- pcp %>% mutate(colorVal = ifelse(direction == "Below" & percentage >= 33 & percentage < 40, "#d8d8ff", ifelse(direction == "Below" & percentage >= 40 & percentage < 50, "#9d9dff", 
-                                                                                                                     ifelse(direction == "Below" & percentage >= 50 & percentage < 60, "#4e4eff", ifelse(direction == "Below" & percentage >= 60 & percentage < 70, "#1414ff", 
-                                                                                                                                                                                                         ifelse(direction == "Below" & percentage >= 70 & percentage < 80, "#0000d8", ifelse(direction == "Below" & percentage >= 80 & percentage <= 100, "#00009d", colorVal)))))))
-pcp <- pcp %>% mutate(colorVal = ifelse(direction == "Normal", "white", colorVal))
-pcp <- st_zm(pcp)
-table(pcp$colorVal)
-leaflet() %>%  addProviderTiles("Stamen.TonerLite") %>% addPolygons(data = pcp, fillOpacity= 0.6, fillColor = pcp$colorVal, color="black", weight=0)
-geojson_write(pcp, file =  paste0(swd_data, "pcp/temp610forecast.geojson"))
-
-rm(pcp)
 
 ###################################################################################################################################
 #
