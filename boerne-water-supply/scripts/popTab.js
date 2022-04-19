@@ -5,7 +5,7 @@ function createTracePop(target) {
     });
 
     Plotly.purge("popPlot");
-    createDemandInfo(myUtilityID, checkedPop);
+    createPopInfo(myUtilityID, checkedPop);
     return checkedPop;
 }
 

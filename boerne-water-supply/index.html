@@ -596,6 +596,7 @@ function setSystemThis(target){
   var checked = ['2021']; 
   var checkedDemand= [currentYear-1];
   var checkedReclaimed= [currentYear-1];
+  var checkedPop= [currentYear-1];
   var fileName;
   var streamPlotType = "off";
   var gwPlotType = "off";
@@ -753,6 +754,24 @@ function setSystemThis(target){
 
   if(target=="#reclaimed"){
     createReclaimedInfo(myUtilityID, checkedReclaimed);  
+    
+    //turn off other layers
+    //if (map.getLayoutProperty('streamgauge-layer', 'visibility') !== "none"){
+      //document.getElementById('menuStreamGages').click();
+    //}
+    //if (map.getLayoutProperty('reservoirs', 'visibility') !== "none"){
+      //document.getElementById('menuReservoirs').click();
+    //}
+    //if (map.getLayoutProperty('groundwater', 'visibility') !== "none"){
+      //document.getElementById('menuGroundwater').click();
+    //}
+    //if (map.getLayoutProperty('precipitation', 'visibility') !== "none"){
+      //document.getElementById('menuPrecipitation').click();
+    //}
+  } 
+
+  if(target=="#pop"){
+    createPopInfo(myUtilityID, checkedPop);  
     
     //turn off other layers
     //if (map.getLayoutProperty('streamgauge-layer', 'visibility') !== "none"){

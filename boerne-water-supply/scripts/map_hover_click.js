@@ -301,6 +301,7 @@ map.on("click", "utilities-layer", function (e) {
     createCurrentSummary(myUtility);
     createDemandInfo(myUtilityID, checkedDemand);
     createReclaimedInfo(myUtilityID, checkedReclaimed)
+    createReclaimedPop(myUtilityID, checkedPop)
     return myUtilityID;
 });
 

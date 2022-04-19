@@ -62,7 +62,7 @@ var Y90per = filterData.map(function(d) {return d.flow90; });
 var Yflow= filterData.map(function(d) {return d.flow; });
 console.log(filterData); console.log(Ymed);
 
-var rd2 = todayGW[0].end_Yr + "-" + todayGW[0].date2.substring(5,10);
+var rd2 = todayGW[0].end_yr + "-" + todayGW[0].date2.substring(5,10);
 
 document.getElementById("selectGWMetadata").innerHTML = "Data from: " + filterData[0].start_yr + "-" + 
          filterData[0].end_yr + " (~" + d3.median(filterData, function(d) { return d.Nobs; }) + " years with observations) <br><span style='color: rgb(26,131,130);'>The last measurement was taken on " + 
