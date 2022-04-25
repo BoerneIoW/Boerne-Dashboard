@@ -314,22 +314,21 @@ function setSystemThis(target){
             <img src="img/demand-tab.png" style="width: 95%; display: inline-block;">
       </div>
       
-      <h4 class="chartTitles" id = "popTitle">Select a utility to see population growth</h4> 
+      <h4 class = "chartTitles" id = "longPopTitle"></h5>
+      <div class="row chart-row" id = "popPlot"></div>
+
      <!-- PLOTS -->
       <div class="metadata" id="selectpopMetadata">  </div>
       <div class="row">
-        <div class = "col-sm-2" style="padding-top: 20px;">Select to Highlight
-        <form style="color: black; font-size: 14px;">
-          <input onclick="createTracePop(this.value)" name="checkPopType" value="CityLimits" type="checkbox"> CLB<br>  
-          <input onclick="createTracePop(this.value)" name="checkPopYear" value="WaterServiceBoundary" type="checkbox"> WSB<br>  
-        </form>
+        <div class = "col-sm-2" style="padding-top: 20px;">
+        
       </div>
         <div class = "row">
           <div class = "col-sm-9" id = "popPlot" style="padding: 0;">
-            <img class = "chart-holder-icon" src="img/demand_chart_icon.png">
+            
           </div>
         </div>
-       
+
         <div class = "row" style="margin-left: 10px;">
           <p><br> CLB represents the population within a city limit boundary. WSB represents the population serviced by the utility.<br></p>
       </div>

@@ -9,6 +9,7 @@ function createTracePop(target) {
     return checkedPop;
 }
 
+document.getElementById('longPopTitle').innerHTML = "Long-term Annual Population Trends";
 
 function createPopInfo(myUtilityID, checkedPop) {
     //parse date to scale axis
@@ -21,21 +22,34 @@ function createPopInfo(myUtilityID, checkedPop) {
             d.year = +d.year;
         });
 
-        var selPopAnnual = popAnnual.filter(function(d){return d.pwsid === popID.toString(); });
+        var selPopAnnual = popAnnual.filter(function(d){return d.pwsid === "TX300001"; });
         var xYear = selPopAnnual.map(function(d) {return d.year; });
         var yPop = selPopAnnual.map(function(d) {return d.clb_pop; });
+        var yPopW = selPopAnnual.map(function(d) {return d.wsb_pop; });
         var minVal = Math.max(yPop);
 
-        traceAnnual = {
+        traceAnnualPop1 = {
             type: 'scatter',
-            x: xYear,  y: yPop,
-            text: "yearly Pop",
+            x: xYear,  y: yPop, yPopW,
+            text: "CLB Pop",
             mode: 'lines+markers',
             name: 'Yearly CLB Population',
-            marker: { color: "black", size: 5, opacity: 0.8},
-            line: { color: 'gray',  width: 1},
+            marker: { color: "purple", size: 7, opacity: 0.8},
+            line: { color: 'purple',  width: 2},
             hovertemplate:
-                    "Yearly Pop: %{y:.2f} in %{x}"
+                    "Pop: %{y:.2f} in %{x}"
+        };
+
+        traceAnnualPop2 = {
+            type: 'scatter',
+            x: xYear,  y: yPopW,
+            text: "WSB Pop",
+            mode: 'lines+markers',
+            name: 'Yearly WSB Population',
+            marker: { color: "blue", size: 7, opacity: 0.8},
+            line: { dash: 'dot', color: 'blue',  width: 2},
+            hovertemplate:
+                    "Pop: %{y:.2f} in %{x}"
         };
 
         var poplayout = {
@@ -65,7 +79,7 @@ function createPopInfo(myUtilityID, checkedPop) {
             
         };
 
-        var data = [traceAnnual];
+        var data = [traceAnnualPop1, traceAnnualPop2];
         Plotly.newPlot('popPlot', data, poplayout, config);
     });//end D3
 } //END CREATE CHART FUNCTION ##########################################################    
