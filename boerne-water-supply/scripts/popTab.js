@@ -74,7 +74,7 @@ function createPopInfo(myUtilityID, checkedPop) {
             shapes: [{
             type: 'line', xref: 'paper', yref: 'y',
             x0: 0, x1: 1, y0:0, y1: 0,
-            line: {color: "#745508", width: "2"}
+            line: {color: "#745508", width: "0.5"}
             }],
             
         };
