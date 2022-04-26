@@ -391,8 +391,8 @@ function drawMap(){
         'symbol-placement': "point"
     },
     paint: {
-        "text-color": "black",
-        "text-halo-color": "#fff",
+        "text-color": "white",
+        "text-halo-color": "#000000",
         "text-halo-width": 4,
         "text-halo-blur": 0,
     }
