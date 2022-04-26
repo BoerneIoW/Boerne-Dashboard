@@ -356,7 +356,7 @@ select {
     border: 1px solid darkgray;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    color: #383939;
+    color: #343434;
     font-size: 12px;
     max-width: 240px;
 }
@@ -407,7 +407,7 @@ select {
     border-radius: 5px;
     bottom: 0; /*puts on bottom of div*/
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    color: #383939;
+    color: #343434;
     font-size: 13px;
     /*font: 14px/16px Arial, Helvetica, sans-serif;*/
     margin-bottom: 30px;

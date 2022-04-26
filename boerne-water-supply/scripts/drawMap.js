@@ -367,36 +367,36 @@ function drawMap(){
     }
     });
 
-//GMAs + LABELS----------------------------------------------
-map.addSource('gma', {
-  type: 'geojson',
-  data: 'data/gmas.geojson'
-});
-map.addLayer({
-  'id': 'gma',
-  'type': 'line',
-  'source': 'gma',
-  'layout': {
-    'visibility': 'none',
-  },
-  'paint': {'line-color': 'black', 'line-width': 4}
-});
-map.addLayer({
-id: "GMAnum",
-type: "symbol",
-source: "gma",
-layout: {
-    "visibility": 'none',
-    "text-field": "{name}",
-    'symbol-placement': "point"
-},
-paint: {
-    "text-color": "black",
-    "text-halo-color": "#fff",
-    "text-halo-width": 4,
-    "text-halo-blur": 0,
-}
-});
+    //GMAs + LABELS----------------------------------------------
+    map.addSource('gma', {
+      type: 'geojson',
+      data: 'data/gmas.geojson'
+    });
+    map.addLayer({
+      'id': 'gma',
+      'type': 'line',
+      'source': 'gma',
+      'layout': {
+        'visibility': 'none',
+      },
+      'paint': {'line-color': 'black', 'line-width': 4}
+    });
+    map.addLayer({
+    id: "GMAnum",
+    type: "symbol",
+    source: "gma",
+    layout: {
+        "visibility": 'none',
+        "text-field": "{GMAnum}",
+        'symbol-placement': "point"
+    },
+    paint: {
+        "text-color": "black",
+        "text-halo-color": "#fff",
+        "text-halo-width": 4,
+        "text-halo-blur": 0,
+    }
+    });
 
     //RIVER BASINS: HUC6 + LABELS----------------------------------------------
     map.addSource('riverbasins', {
@@ -686,8 +686,8 @@ $('button').on('click', function(){
                document.getElementById("moreForecastInfo").style.display = "block";
               }
             }
-          this.style.backgroundColor = '#3f97a8';
-          this.style.color = "white";
+          this.style.backgroundColor = '#6c019c';
+          this.style.color = "gold";
         }
 
 
