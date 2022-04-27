@@ -135,7 +135,7 @@ write.csv(boerne_all_well_metadata, paste0(swd_data, "gw/boerne_well_metadata.cs
 write.csv(boerne_all_gw_levels, paste0(swd_data, "gw/boerne_gw_levels.csv"), row.names = FALSE)
 
 #data frame w/o elevation
-boerne_gw_depth <- select(boerne_all_gw_levels, c(1, 2, 4, 5, 7))
+boerne_gw_depth <- select(boerne_all_gw_levels, c(1, 2, 4, 7))
 
 write.csv(boerne_gw_depth, paste0(swd_data, "gw/boerne_gw_depth.csv"), row.names=FALSE)
 

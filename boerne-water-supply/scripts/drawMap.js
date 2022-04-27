@@ -92,7 +92,7 @@ function drawMap(){
   //console.log(myUtilityID);
     map.addSource('water_supply', {
       type: 'geojson',
-      data: 'data/canyon_lake_reservoir.geojson'
+      data: 'data/huc6.geojson'
     });
     map.addLayer({
       'id': 'water_supply',
@@ -478,7 +478,7 @@ function drawMap(){
     layout: {
         "visibility": 'none',
         "text-field": "{SEG_NAME}",
-        //"text-size": 10,
+        "text-size": 10,
         'symbol-placement': "line"
     },
     paint: {
