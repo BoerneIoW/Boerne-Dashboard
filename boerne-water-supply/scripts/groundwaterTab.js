@@ -46,7 +46,7 @@ d3.csv("data/gw/all_boerne_gw_stats.csv").then(function(gwStats){
 
 var filterData = gwStats.filter(function(d){return d.site === gwID; });
 var todayGW = filterData.filter(function(d){ return d.julian === recentDate; });
-//console.log(filterData);
+console.log(filterData);
 //Fill arrays  
 var XJulian = filterData.map(function(d) {return d.date; });
 var Ymin = filterData.map(function(d) {return d.min; });
@@ -57,9 +57,10 @@ var Y25per = filterData.map(function(d) {return d.flow25; });
 var Y75per = filterData.map(function(d) {return d.flow75; });
 var Y90per = filterData.map(function(d) {return d.flow90; });
 var Yflow= filterData.map(function(d) {return d.flow; });
-//console.log(filterData); console.log(Ymed);
+console.log(filterData); console.log(Ymed);
 
 var rd2 = todayGW[0].end_yr + "-" + todayGW[0].date2.substring(5,10);
+console.log(rd2)
 
 document.getElementById("selectGWMetadata").innerHTML = "Data from: " + filterData[0].start_yr + "-" + 
          filterData[0].end_yr + " (~" + d3.median(filterData, function(d) { return d.Nobs; }) + " years with observations) <br><span style='color: rgb(26,131,130);'>The last measurement was taken on " + 

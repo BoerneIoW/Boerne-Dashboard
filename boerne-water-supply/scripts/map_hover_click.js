@@ -408,6 +408,7 @@ map.on("click", "groundwater", function (e) {
         e.features[0].properties.AgencyCd +
         " " +
         gwID +
+        " " +
         gwName +
         "</h4>";
     createGWTab(gwID, recentDate, gwPlotType);
