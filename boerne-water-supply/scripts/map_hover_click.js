@@ -137,18 +137,17 @@ map.on("mousemove", "groundwater", function (e) {
     var coordinates = e.features[0].geometry.coordinates.slice();
     var site_name = e.features[0].properties.SiteName;
     var now_date = e.features[0].properties.date;
-    var aquifer =
-        e.features[0].properties.NatAqfrDesc +
-        " (" +
-        e.features[0].properties.AquiferType +
-        ")";
+    var aquifer = e.features[0].properties.LocalAquiferName 
+    var agency = e.features[0].properties.AgencyCd 
     var depth = e.features[0].properties.WellDepth + " feet";
     var description =
         site_name +
         ": last measured (" +
         now_date +
-        ")<br>Aquifer: " +
+        ")<br>Aquifer Name: " +
         aquifer +
+        "<br>Agency: " +
+        agency +
         "<br>Well Depth: " +
         depth;
 
