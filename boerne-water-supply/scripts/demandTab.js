@@ -408,7 +408,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
             hovermode: "closest",
             height: 300,
             showlegend: false,
-            margin: { t: 30, b: 50, r: 10, l: 35 },
+            margin: { t: 30, b: 50, r: 10, l: 50 },
 
             shapes: [
                 {
