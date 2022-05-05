@@ -263,11 +263,8 @@ function createReclaimedInfo(myUtilityID, checkedReclaimed) {
 
         if (selReclaimedPercent.length > 0) {
             document.getElementById("percentoftotalPlot").innerHTML = ""; //set blank plot
-            var maxYValue = (
-                d3.max(selReclaimedPercent, function (d) {
-                    return d.peak_reclaimed;
-                }) * 1.1
-            ).toFixed(0);
+            var maxYValue = 100
+                
             //console.log(maxYValue);
             //create multiple traces
             var datapercent = [];
@@ -292,7 +289,7 @@ function createReclaimedInfo(myUtilityID, checkedReclaimed) {
                 temp = selReclaimedPercent.filter(function (d) {
                     return d.year === tempSelect;
                 });
-                tempName = "%{y:.1f} % of total in " + tempSelect;
+                tempName = "%{y:.1f}% of total in " + tempSelect;
                 //xDate = temp.map(function(d){ return d.date; });
                 yOther = temp.map(function (d) {
                     return d.percent_of_total;
@@ -349,7 +346,7 @@ function createReclaimedInfo(myUtilityID, checkedReclaimed) {
                     .map(function (d) {
                         return d.percent_of_total;
                     });
-                tempName = "%{y:.1f} % of total in %{x}, " + tempSelect;
+                tempName = "%{y:.1f}% of total in %{x}, " + tempSelect;
                 colorLine = colorLineAll[i];
                 if (tempSelect === 2011) {
                     colorLine = "red";
@@ -363,7 +360,7 @@ function createReclaimedInfo(myUtilityID, checkedReclaimed) {
                     y: selectYears,
                     mode: "lines",
                     type: "scatter",
-                    hovertemplate: "%{y:.1f} % of total inn %{x}, " + tempSelect,
+                    hovertemplate: "%{y:.1f}% of total in %{x}, " + tempSelect,
                     opacity: 1,
                     line: { color: colorLine, width: 2 },
                     name: tempSelect,
@@ -393,7 +390,7 @@ function createReclaimedInfo(myUtilityID, checkedReclaimed) {
                 type: "scatter",
                 name: "2022",
                 showlegend: true,
-                hovertemplate: "%{y:.1f} % of total in %{x}",
+                hovertemplate: "%{y:.1f}% of total in %{x}",
             };
 
             var layout = {

@@ -285,14 +285,14 @@ function setSystemThis(target){
             <input onclick="createTraceDemand(this.value)" name="checkDemandYear" value="2021" type="checkbox" checked> 2021<br>
         </form>
       </div>
-        <div class = "row">
+        <div class = "row chart-row">
           <div class = "col-sm-9" id = "demandPlot" style="padding: 0;">
             <img class = "chart-holder-icon" src="img/demand_chart_icon.png">
           </div>
           <div class = "col-sm-9" id = "demandCumPlot" style="padding: 0;"></div>
         </div>
        
-        <div class = "row" style="margin-left: 10px;">
+        <div class = "row chart-row" style="margin-left: 10px;">
           <p> The City of Boerne has three main sources of water, of which its contract allocation is the following</p>
             <ul style="list-style-type:square">                             
               <li> Canyon Lake Reservoir: 1,176.6 million gallons per year</li>
@@ -485,13 +485,11 @@ function setSystemThis(target){
           <input onclick="createTraceReclaimed(this.value)" name="checkReclaimedYear" value="2021" type="checkbox" checked> 2021<br>
         </form>
       </div>
-        <div class = "row">
-          <div class = "col-sm-9" id = "reclaimedPlot" style="padding: 0;">
-            <img class = "chart-holder-icon" src="img/demand_chart_icon.png">
-          </div>
-          <div class = "col-sm-9" id = "percentoftotalPlot" style="padding: 0;"></div>
+      <div class = "row chart-row">
+        <div class = "col-sm-9" id = "reclaimedPlot" style="padding: 0;">
+          <img class = "chart-holder-icon" src="img/demand_chart_icon.png">
         </div>
-       
+        <div class = "col-sm-9" id = "percentoftotalPlot" style="margin-left: 120px;"></div>
       </div>
     </div>
   </div> <!-- end demand pane-->
