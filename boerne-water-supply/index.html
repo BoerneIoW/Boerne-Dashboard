@@ -358,37 +358,10 @@ function setSystemThis(target){
        <div class="row chart-row" id = "gwPlot2">
             <img class="chart-holder-icon" src="img/gw_chart_icon.png">
        </div>
+
       <h5 class="chartTitles" id="monthlyGWTitle"></h5> 
-      <div class="row chart-row" id = "gwMonthPlot"></div>
-          <div class="row">
-            <div class = "col-sm-2">Select to Highlight
-              <form>
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2000" type="checkbox"> 2000<br>  
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2001" type="checkbox"> 2001<br> 
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2002" type="checkbox"> 2002<br>  
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2003" type="checkbox"> 2003<br> 
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2004" type="checkbox"> 2004<br>  
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2005" type="checkbox"> 2005<br>  
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2006" type="checkbox"> 2005<br>  
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2007" type="checkbox"> 2007<br>  
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2008" type="checkbox"> 2008<br> 
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2009" type="checkbox"> 2009<br>  
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2010" type="checkbox"> 2010<br>  
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2011" type="checkbox"> 2011<br>
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2012" type="checkbox"> 2012<br>
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2013" type="checkbox"> 2013<br>
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2014" type="checkbox"> 2014<br>
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2015" type="checkbox"> 2015<br>
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2016" type="checkbox"> 2016<br>  
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2017" type="checkbox"> 2017<br>  
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2018" type="checkbox"> 2018<br>  
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2019" type="checkbox"> 2019<br>
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2020" type="checkbox"> 2020<br>
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2021" type="checkbox"> 2021<br>
-                <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2022" type="checkbox" checked> 2022<br>  
-              </form>
-            </div>
-          </div> 
+      <div class="row chart-row" id = "gwPlot4"></div> 
+
       <h5 class = "chartTitles" id = "longGWTitle"></h5>
       <div class="row chart-row" id = "gwPlot3"></div>
     
@@ -516,6 +489,7 @@ function setSystemThis(target){
           <div class = "col-sm-9" id = "reclaimedPlot" style="padding: 0;">
             <img class = "chart-holder-icon" src="img/demand_chart_icon.png">
           </div>
+          <div class = "col-sm-9" id = "percentoftotalPlot" style="padding: 0;"></div>
         </div>
        
       </div>
