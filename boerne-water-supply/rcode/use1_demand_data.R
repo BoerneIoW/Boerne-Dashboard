@@ -164,6 +164,15 @@ all_reclaimed7 <- all_reclaimed6 %>% mutate(date2 = date, date = paste0(monthAbb
 all_reclaimed8 <- subset(all_reclaimed7, select = c(pwsid, date, reclaimed, mean_reclaimed, julian, month, monthAbb, year, peak_reclaimed, date2))
 write.csv(all_reclaimed8, paste0(swd_data, "demand/all_boerne_reclaimed_water.csv"), row.names=FALSE)
 
+#calculate percent of total
+all_reclaimed9 <- all_reclaimed8
+all_reclaimed9$total <- all_demand_by_mgd$total
+all_reclaimed9$percent_of_total <- (all_reclaimed9$reclaimed/all_reclaimed9$total)*100
+
+#write.csv
+write.csv(all_reclaimed9, paste0(swd_data, "demand/all_boerne_reclaimed_percent_of_total.csv"), row.names=FALSE)
+
+
 ######################################################################################################################################################################
 #
 # Read in new pop data

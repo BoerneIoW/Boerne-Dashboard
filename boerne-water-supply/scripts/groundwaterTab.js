@@ -289,12 +289,13 @@ Plotly.newPlot('gwPlot3', data3, gwlayout3, config);
 
 
 d3.csv("data/gw/all_boerne_monthly_avg.csv").then(function(gwMonthly){
+  
   gwMonthly.forEach(function(d){
           d.monthlyflow = +d.median_depth_ft;
           d.month = +d.month;
      });
 
-var selGWMonthly = gwMonthly.filter(function(d){return d.site === gwID; });
+var selGWMonthly = gwMonthly.filter(function(d){return d.site === gwID.toString(); });
 var xMonth = selGWMonthly.map(function(d) {return d.month; });
 var yDepth = selGWMonthly.map(function(d) {return d.monthlyflow; });
 var minVal = Math.max(yDepth);
