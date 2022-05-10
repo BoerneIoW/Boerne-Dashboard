@@ -591,6 +591,7 @@ function setSystemThis(target){
   var checkedDemand= [currentYear-1];
   var checkedReclaimed= [currentYear-1];
   var checkedPop= [currentYear-1];
+  var checkedGW= [currentYear-1];
   var fileName;
   var streamPlotType = "off";
   var gwPlotType = "off";
@@ -790,7 +791,7 @@ function setSystemThis(target){
     if (gwID !== "none"){
       createGWTab(gwID, recentDate);
     }
-
+    createGWInfo(gwID, checkedGW)
     //turn off other layers
     if (map.getLayoutProperty('streamgauge-layer', 'visibility') !== "none"){
       document.getElementById('menuStreamGages').click();

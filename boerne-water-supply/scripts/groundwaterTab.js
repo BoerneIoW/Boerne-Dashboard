@@ -65,7 +65,7 @@ var rd2 = todayGW[0].end_yr + "-" + todayGW[0].date2.substring(5,10);
 //console.log(rd2)
 
 document.getElementById("selectGWMetadata").innerHTML = "Data from: " + filterData[0].start_yr + "-" + 
-         filterData[0].end_yr + " (~" + d3.median(filterData, function(d) { return d.Nobs; }) + " years with observations) <br><span style='color: rgb(26,131,130);'>The last measurement was taken on " + 
+         filterData[0].end_yr + " <br><span style='color: rgb(26,131,130);'>The last measurement was taken on " + 
          parseDate(rd2).toLocaleDateString("en-US") + ".</span><br><br>";
 
 /*#####################################################################################
@@ -292,7 +292,7 @@ Plotly.newPlot('gwPlot3', data3, gwlayout3, config);
 d3.csv("data/gw/all_boerne_monthly_avg.csv").then(function(gwMonthly){
   
   gwMonthly.forEach(function(d){
-          d.monthlyflow = +d.median_depth_ft;
+          d.monthlyflow = +d.mean_depth_ft;
           d.month = +d.month;
      });
 
