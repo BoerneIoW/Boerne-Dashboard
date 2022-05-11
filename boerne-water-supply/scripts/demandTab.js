@@ -66,7 +66,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
             }
 
             var yOther = [];
-            var otherYearTrace;
+            var OtherYearTrace;
 
             for (i = 0; i < xYears.length - 1; i++) {
                 tempSelect = xYears[i];
