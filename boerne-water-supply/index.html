@@ -790,7 +790,7 @@ function setSystemThis(target){
       document.getElementById('menuGroundwater').click();
     }
     if (gwID !== "none"){
-      createGWTab(gwID, recentDate);
+      createGWTab(gwID, recentDate,);
     }
     //turn off other layers
     if (map.getLayoutProperty('streamgauge-layer', 'visibility') !== "none"){
@@ -810,24 +810,6 @@ function setSystemThis(target){
     }
 
 
-  }
-
-  if(target=="#groundwater"){
-    createGWInfo(gwID, checkedGW);  
-    
-    //turn off other layers
-    //if (map.getLayoutProperty('streamgauge-layer', 'visibility') !== "none"){
-      //document.getElementById('menuStreamGages').click();
-    //}
-    //if (map.getLayoutProperty('reservoirs', 'visibility') !== "none"){
-      //document.getElementById('menuReservoirs').click();
-    //}
-    //if (map.getLayoutProperty('groundwater', 'visibility') !== "none"){
-      //document.getElementById('menuGroundwater').click();
-    //}
-    //if (map.getLayoutProperty('precipitation', 'visibility') !== "none"){
-      //document.getElementById('menuPrecipitation').click();
-    //}
   }
 
   if(target=="#pcpDrought"){
@@ -864,7 +846,6 @@ function setSystemThis(target){
 <script type="text/javascript" src="scripts/demandTab.js" defer></script>
 <script type="text/javascript" src="scripts/popTab.js" defer></script>  
 <script type="text/javascript" src="scripts/groundwaterTab.js" defer></script>
-<script type="text/javascript" src="scripts/groundwaterTab_copy2.js.js" defer></script>
 <script type="text/javascript" src="scripts/droughtPlot.js" defer></script>
 <script type="text/javascript" src="scripts/precipPlots.js" defer></script>
 <script type="text/javascript" src="scripts/reclaimedTab.js" defer></script>

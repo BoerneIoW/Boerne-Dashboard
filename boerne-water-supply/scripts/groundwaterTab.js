@@ -65,8 +65,8 @@ var rd2 = todayGW[0].end_yr + "-" + todayGW[0].date2.substring(5,10);
 //console.log(rd2)
 
 document.getElementById("selectGWMetadata").innerHTML = "Data from: " + filterData[0].start_yr + "-" + 
-         filterData[0].end_yr + " <br><span style='color: rgb(26,131,130);'>The last measurement was taken on " + 
-         parseDate(rd2).toLocaleDateString("en-US") + ".</span><br><br>";
+  filterData[0].end_yr + " <br><span style='color: rgb(26,131,130);'>The last measurement was taken on " + 
+  parseDate(rd2).toLocaleDateString("en-US") + ".</span><br><br>";
 
 /*#####################################################################################
          PLOT BY STATUS AS MARKERS
@@ -284,6 +284,73 @@ var data3 = [traceAnnual];
 Plotly.newPlot('gwPlot3', data3, gwlayout3, config);
 });//end D3
 
+//#####################################################################################
+//         create plot for average monthly observations
+//#####################################################################################//
+
+
+d3.csv("data/gw/all_boerne_monthly_avg.csv").then(function(gwMonthly){
+  
+  gwMonthly.forEach(function(d){
+    d.monthlyflow = +d.mean_depth_ft;
+    d.month = +d.month;
+  });
+
+  var selGWMonthly = gwMonthly.filter(function(d){return d.site === gwID.toString(); });
+  var xMonth = selGWMonthly.map(function(d) {return d.month; });
+  var yDepth = selGWMonthly.map(function(d) {return d.monthlyflow; });
+  var minVal = Math.max(yDepth);
+
+  traceMonthly = {
+    type: 'scatter',
+    x: xMonth,  y: yDepth,
+    text: "median Depth",
+    mode: 'lines+markers',
+    name: 'Median Monthly Water Levels',
+    marker: { color: "black", size: 5, opacity: 0.8},
+    line: { color: 'gray',  width: 1},
+    hovertemplate:
+    "Median Depth (ft): %{y:.2f} in %{x}"
+  };
+  var gwlayout4 = {
+    yaxis: {
+      title: "Feet below surface (ft)",
+      titlefont: {color: 'rgb(0, 0, 0)', size: 14},
+      tickfont: {color: 'rgb(0, 0, 0)', size: 12},
+      showline: true,
+      showgrid: false,
+      range: [0, minVal],
+      autorange: "reversed"
+    },
+    xaxis: {
+      showline: true,
+      title: '',
+      titlefont: {color: 'rgb(0, 0, 0)', size: 14},
+      tickfont: {color: 'rgb(0, 0, 0)', size: 12},
+    },
+    height: 300,
+    showlegend: true,
+    legend: {x: 0, y: 0.95, xanchor: 'left', yanchor: 'right'},
+    margin: {t: 30, b: 30, r: 30, l: 50 },
+    shapes: [{
+      type: 'line', xref: 'paper', yref: 'y',
+      x0: 0, x1: 1, y0:0, y1: 0,
+      line: {color: "#745508", width: "2"}
+    }],
+    annotations: [
+      //above ground
+      { xref: 'paper', yref: 'paper', //ref is assigned to x values
+        x: 0.6, y: 1,
+        xanchor: 'left', yanchor: 'top',
+        text: "Land Surface", 
+        font: {family: 'verdana', size: 11, color: '#745508'},
+        showarrow: false,
+      }
+    ]
+  };
+  var data4 = [traceMonthly];
+  Plotly.newPlot('gwPlot4', data4, gwlayout4, config);
+    });//end D3
 
 } //END CREATE CHART FUNCTION ##########################################################
 
