@@ -317,27 +317,27 @@ function plotGroundwater(gwID, checkedGW) {
     var selGWMonthly = gwMonthly.filter(function(d){
       return d.site === gwID.toString(); 
     });
-    //console.log(selGWMonthly)
+    console.log(selGWMonthly)
 
     // create a trace for each year
     var data4 = [];
-    //var xMonth = selGWMonthly.map(function(d) {return d.month; });
-    var xMonth = [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-    ];
+    var xMonth = selGWMonthly.map(function(d) {return d.month; });
+    //var xMonth = [
+      //"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    //];
 
     var yOther = [];
     var OtherYearTrace;
 
     //draw the traces for all years but current
-    var xYear = [];
+    var xYear2 = [];
     var minYear = d3.min(selGWMonthly.map(function (d) {  return d.year; }) );
     for (var i = minYear; i <= 2022; i++) {
-      xYear.push(i);
+      xYear2.push(i);
     }
     var showLegVal = true;
-    for (i = 0; i < xYear.length - 1; i++) {
-      tempSelect = xYear[i];
+    for (i = 0; i < xYear2.length - 1; i++) {
+      tempSelect = xYear2[i];
       temp = selGWMonthly.filter(function (d) {
         return d.year === tempSelect;
       });
@@ -422,8 +422,8 @@ function plotGroundwater(gwID, checkedGW) {
       });
     var trace2022 = {
       x: xMonth,
-     y: yCurrent,
-     mode: "lines+markers",
+      y: yCurrent,
+      mode: "lines+markers",
       type: "scatter",
       hovertemplate: "%{y:.1f} ft in %{x}, " + currentYear,
       opacity: 1,
