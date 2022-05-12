@@ -352,6 +352,6 @@ d3.csv("data/gw/all_boerne_monthly_avg.csv").then(function(gwMonthly){
   Plotly.newPlot('gwPlot4', data4, gwlayout4, config);
     });//end D3
 
-} //END CREATE CHART FUNCTION ##########################################################
+} //END CREATE OVERALL GROUNDWATER FUNCTION ##########################################################
 
 

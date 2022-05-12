@@ -29,31 +29,31 @@ function plotGroundwater(gwID, checkedGW) {
     var selGWMonthly = gwMonthly.filter(function(d){
       return d.site === gwID.toString(); 
     });
-    //console.log(selGWMonthly)
+    console.log(selGWMonthly)
 
     // create a trace for each year
-    var data4 = [];
-    //var xMonth = selGWMonthly.map(function(d) {return d.month; });
-    var xMonth = [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-    ];
+    var data = [];
+    var xMonth = selGWMonthly.map(function(d) {return d.month; });
+    //var xMonth = [
+      //"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    //];
 
     var yOther = [];
     var OtherYearTrace;
 
     //draw the traces for all years but current
-    var xYear = [];
+    var xYear2 = [];
     var minYear = d3.min(selGWMonthly.map(function (d) {  return d.year; }) );
     for (var i = minYear; i <= 2022; i++) {
-      xYear.push(i);
+      xYear2.push(i);
     }
     var showLegVal = true;
-    for (i = 0; i < xYear.length - 1; i++) {
-      tempSelect = xYear[i];
+    for (i = 0; i < xYear2.length - 1; i++) {
+      tempSelect = xYear2[i];
       temp = selGWMonthly.filter(function (d) {
         return d.year === tempSelect;
       });
-      tempName = "%{y:.1f} ft in " + tempSelect;
+      tempName = "Median Depth (ft): %{y:.2f} in %{x} " + tempSelect;
       yOther = temp.map(function (d) {
         return d.mean_depth_ft;
       });
@@ -73,7 +73,7 @@ function plotGroundwater(gwID, checkedGW) {
         showlegend: showLegVal,
       };
       //push trace
-      data4.push(OtherYearTrace); 
+      data.push(OtherYearTrace); 
     }// end for loop
 
     //draw other selected years
@@ -105,7 +105,7 @@ function plotGroundwater(gwID, checkedGW) {
         .map(function (d) {
           return d.mean_depth_ft;
         });
-      tempName = "%{y:.1f} ft in %{x}, " + tempSelect;
+      tempName = "Median Depth (ft): %{y:.2f} in %{x}, " + tempSelect;
       colorLine = colorLineAll[i];
       if (tempSelect === 2011) { colorLine = "red"; } // highlight drought years
 
@@ -114,14 +114,14 @@ function plotGroundwater(gwID, checkedGW) {
         y: selectYears,
         mode: "lines+markers",
         type: "scatter",
-        hovertemplate: "%{y:.1f} ft in %{x}, " + tempSelect,
+        hovertemplate: "Median Depth (ft): %{y:.2f} in %{x}, " + tempSelect,
         opacity: 1,
         marker: { color: colorLine, size: 6 },
         line: { color: colorLine, width: 2 },
         name: tempSelect,
         showlegend: true,
       };
-      data4.push(selectTraces);
+      data.push(selectTraces);
     }
 
     //draw 2022 year
@@ -134,17 +134,17 @@ function plotGroundwater(gwID, checkedGW) {
       });
     var trace2022 = {
       x: xMonth,
-     y: yCurrent,
-     mode: "lines+markers",
+      y: yCurrent,
+      mode: "lines+markers",
       type: "scatter",
-      hovertemplate: "%{y:.1f} ft in %{x}, " + currentYear,
+      hovertemplate: "Median Depth (ft): %{y:.2f} in %{x}, " + currentYear,
       opacity: 1,
       marker: { color: "black", size: 6 },
       line: { color: "black", width: 3 },
       name: currentYear,
       showlegend: true,
     };
-    data4.push(trace2022);
+    data.push(trace2022);
 
     //PLOT CHART
     var gwlayout4 = {
@@ -187,6 +187,10 @@ function plotGroundwater(gwID, checkedGW) {
         }
       ]
     };
-    Plotly.newPlot("gwPlot4", data4, gwlayout4, config);
+    Plotly.newPlot("gwPlot4", data, gwlayout4, config);
   }); // end D3
 } //END CREATE MONTHLY CHART FUNCTION ##########################################################
+
+
+
+
