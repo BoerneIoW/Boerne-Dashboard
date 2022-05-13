@@ -23,7 +23,7 @@ function createTraceGW(target) {
       checkedGW.push($(this).val());
   });
 
-  Plotly.purge("gwPlot4");
+  Plotly.purge('gwPlot4');
   plotGroundwater(gwID, checkedGW);
   return checkedGW;
 }
@@ -59,7 +59,7 @@ d3.csv("data/gw/all_boerne_gw_stats.csv").then(function(gwStats){
 
 var filterData = gwStats.filter(function(d){return d.site === gwID.toString(); });
 var todayGW = filterData.filter(function(d){ return d.julian === recentDate; });
-console.log(filterData);
+//console.log(filterData);
 //Fill arrays  
 var XJulian = filterData.map(function(d) {return d.date; });
 var Ymin = filterData.map(function(d) {return d.min; });
@@ -70,8 +70,8 @@ var Y25per = filterData.map(function(d) {return d.flow25; });
 var Y75per = filterData.map(function(d) {return d.flow75; });
 var Y90per = filterData.map(function(d) {return d.flow90; });
 var Yflow= filterData.map(function(d) {return d.flow; });
-console.log(filterData); 
-console.log(Ymed);
+//console.log(filterData); 
+//console.log(Ymed);
 
 var rd2 = todayGW[0].end_yr + "-" + todayGW[0].date2.substring(5,10);
 //console.log(rd2)
@@ -303,7 +303,7 @@ Plotly.newPlot('gwPlot3', data3, gwlayout3, config);
 
 function plotGroundwater(gwID, checkedGW) {
   
-  document.getElementById("gwPlot4").innerHTML = ""; //set blank plot
+  document.getElementById('gwPlot4').innerHTML = ""; //set blank plot
   //parse date to scale axis
   parseDate = d3.timeParse("%Y-%m-%d");
 
@@ -321,7 +321,7 @@ function plotGroundwater(gwID, checkedGW) {
     console.log(selGWMonthly)
 
     // create a trace for each year
-    var data = [];
+    var data4 = [];
     var xMonth = selGWMonthly.map(function(d) {return d.month; });
     //var xMonth = [
       //"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
@@ -362,7 +362,8 @@ function plotGroundwater(gwID, checkedGW) {
         showlegend: showLegVal,
       };
       //push trace
-      data.push(OtherYearTrace); 
+      data4.push(OtherYearTrace); 
+      console.log(OtherYearTrace)
     }// end for loop
 
     //draw other selected years
@@ -410,7 +411,7 @@ function plotGroundwater(gwID, checkedGW) {
         name: tempSelect,
         showlegend: true,
       };
-      data.push(selectTraces);
+      data4.push(selectTraces);
     }
 
     //draw 2022 year
@@ -433,7 +434,7 @@ function plotGroundwater(gwID, checkedGW) {
       name: currentYear,
       showlegend: true,
     };
-    data.push(trace2022);
+    data4.push(trace2022);
 
     //PLOT CHART
     var gwlayout4 = {
@@ -476,7 +477,8 @@ function plotGroundwater(gwID, checkedGW) {
         }
       ]
     };
-    Plotly.newPlot("gwPlot4", data, gwlayout4, config);
+    Plotly.newPlot('gwPlot4', data4, gwlayout4, config);
+    console.log(data4)
   }); // end D3
 } //END CREATE MONTHLY CHART FUNCTION ##########################################################
 
