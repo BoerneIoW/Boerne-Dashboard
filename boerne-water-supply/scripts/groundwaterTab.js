@@ -172,7 +172,7 @@ d3.csv("data/gw/all_boerne_gw_status.csv").then(function(gwLevels){
     x: xDate,  y: yDepth,
     text: streamStatus,
     mode: 'lines+markers',
-    name: 'water<br>level',
+    name: 'water level',
     marker: { color: colorPoints, size: 5, opacity: 0.8},
     line: { color: 'gray',  width: 1},
     hovertemplate:
@@ -203,8 +203,9 @@ d3.csv("data/gw/all_boerne_gw_status.csv").then(function(gwLevels){
       tickfont: {color: 'rgb(0, 0, 0)', size: 12},
       tickformat: x_axis_format,
     },
-    height: 300,
+    height: 350,
     showlegend: true,
+    legend: {x: 0, y: 0.95, xanchor: 'left', yanchor: 'right'},
     margin: {t: 30, b: 30, r: 30, l: 50 },
     shapes: [{
       type: 'line', xref: 'paper', yref: 'y',
