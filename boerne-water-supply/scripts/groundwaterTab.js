@@ -3,6 +3,7 @@
 #
 #
 ##########################################################################################################3*/
+//function to toggle stats on and off
 function toggleGWStats(target){
   var x = document.getElementById("switchGWStats").checked;
   if (x === true) { gwPlotType = "on";}
@@ -15,6 +16,17 @@ function toggleGWStats(target){
   return gwPlotType;
 }
 
+//function to create yearly trace of monthly mean 
+function createTraceGW(target) {
+  checkedGW = [];
+  $("input[name='checkGWYear']:checked").each(function () {
+      checkedGW.push($(this).val());
+  });
+
+  Plotly.purge("gwPlot4");
+  plotGroundwater(gwID, checkedGW);
+  return checkedGW;
+}
 /*########################################################################################################3
 #
 #
@@ -283,23 +295,11 @@ var gwlayout3 = {
 var data3 = [traceAnnual];
 Plotly.newPlot('gwPlot3', data3, gwlayout3, config);
 });//end D3
-
+} //END CREATE GROUNDWATER TAB FUNCTION ##########################################################
 
 //#####################################################################################
 //         create plot for average monthly observations
 //#####################################################################################//
-
-
-function createTraceGW(target) {
-  checkedGW = [];
-  $("input[name='checkGWYear']:checked").each(function () {
-      checkedGW.push($(this).val());
-  });
-
-  Plotly.purge("gwPlot4");
-  plotGroundwater(gwID, checkedGW);
-  return checkedGW;
-}
 
 function plotGroundwater(gwID, checkedGW) {
   
@@ -479,7 +479,5 @@ function plotGroundwater(gwID, checkedGW) {
     Plotly.newPlot("gwPlot4", data, gwlayout4, config);
   }); // end D3
 } //END CREATE MONTHLY CHART FUNCTION ##########################################################
-
-} //END CREATE OVERALL GROUNDWATER FUNCTION ##########################################################
 
 

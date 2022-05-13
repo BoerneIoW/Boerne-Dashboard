@@ -349,14 +349,14 @@ function setSystemThis(target){
       <div class="metadata" id="selectGWMetadata">  </div>
      <!-- PLOTS -->
 
-       <div class="row" id = "switchGWStatsDiv" style= "margin-left: 20px; display: none;">
+      <div class="row" id = "switchGWStatsDiv" style= "margin-left: 20px; display: none;">
           <br>
           <input type="checkbox" id="switchGWStats" onclick="toggleGWStats(this.value)">&nbsp;&nbsp;Turn stats layer on
       </div>
 
       <h5 class = "chartTitles" id = "relGWTitle"></h5>
        <div class="row chart-row" id = "gwPlot2">
-            <img class="chart-holder-icon" src="img/gw_chart_icon.png">
+          <img class="chart-holder-icon" src="img/gw_chart_icon.png">
        </div>
 
       <h5 class="chartTitles" id="monthlyGWTitle"></h5> 
@@ -587,7 +587,7 @@ function setSystemThis(target){
   var streamLegend = document.getElementById('stream-legend');
   var recentDate;
   var streamID = "none";  var gwID = "none"; var pcpID = "none";
-  var checked = ['2022']; 
+  var checked = [currentYear-1]; 
   var checkedDemand= [currentYear-1];
   var checkedReclaimed= [currentYear-1];
   var checkedPop= [currentYear-1];
