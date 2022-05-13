@@ -459,10 +459,10 @@ function plotGroundwater(gwID, checkedGW) {
         tickfont: { color: "rgb(0, 0, 0)", size: 12 },
       },
       hovermode: "closest",
-      height: 300,
+      height: 375,
       showlegend: true,
       legend: {x: 0, y: 0.95, xanchor: 'left', yanchor: 'right'},
-      margin: {t: 30, b: 30, r: 75, l: 150 },
+      margin: {t: 50, b: 30, r: 10, l: 50 },
       shapes: [{
         type: 'line', xref: 'paper', yref: 'y',
         x0: 0, x1: 1, y0:0, y1: 0,
@@ -476,7 +476,7 @@ function plotGroundwater(gwID, checkedGW) {
           text: "Land Surface", 
           font: {family: 'verdana', size: 11, color: '#745508'},
           showarrow: false,
-        }
+        },
       ]
     };
     Plotly.newPlot('gwPlot4', data4, gwlayout4, config);
