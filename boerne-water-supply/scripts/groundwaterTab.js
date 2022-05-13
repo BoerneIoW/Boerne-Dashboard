@@ -34,7 +34,7 @@ function createTraceGW(target) {
 function createGWTab(gwID, recentDate, gwPlotType) {
   document.getElementById('gwPlot2').innerHTML = "";
   document.getElementById('relGWTitle').innerHTML = "Groundwater Levels Relative to Historic Levels";
-  document.getElementById('monthlyGWTitle').innerHTML = "Long-term Monthly Trends";
+  document.getElementById('monthlyGWTitle').innerHTML = "Monthly Mean Trends";
   document.getElementById('longGWTitle').innerHTML = "Long-term Annual Trends";
 //parse date to scale axis
 parseDate = d3.timeParse("%Y-%m-%d");
@@ -322,11 +322,14 @@ function plotGroundwater(gwID, checkedGW) {
 
     // create a trace for each year
     var data4 = [];
-    var xMonth = selGWMonthly.map(function(d) {return d.month; });
-    //var xMonth = [
-      //"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-    //];
+    //var xMonth = selGWMonthly.map(function(d) {return d.month; });
+    var xMonth = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    ];
 
+    var yDepth = selGWMonthly.map(function(d) {return d.mean_depth_ft; });
+    var minVal = Math.max(yDepth);
+    
     var yOther = [];
     var OtherYearTrace;
 
@@ -460,7 +463,7 @@ function plotGroundwater(gwID, checkedGW) {
       height: 300,
       showlegend: true,
       legend: {x: 0, y: 0.95, xanchor: 'left', yanchor: 'right'},
-      margin: {t: 30, b: 30, r: 10, l: 35 },
+      margin: {t: 30, b: 30, r: 75, l: 150 },
       shapes: [{
         type: 'line', xref: 'paper', yref: 'y',
         x0: 0, x1: 1, y0:0, y1: 0,

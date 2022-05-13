@@ -359,7 +359,7 @@ function setSystemThis(target){
           <img class="chart-holder-icon" src="img/gw_chart_icon.png">
        </div>
 
-      <h5 class="chartTitles" id="monthlyGWTitle"></h5> 
+      <h5 class="chartTitles" id="monthlyGWTitle" style= "margin-top: 150px;"></h5> 
         <div class = "col-sm-2">Select to Highlight
           <form>
             <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2000" type="checkbox"> 2000<br>  
@@ -383,8 +383,7 @@ function setSystemThis(target){
             <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2018" type="checkbox"> 2018<br>  
             <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2019" type="checkbox"> 2019<br>
             <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2020" type="checkbox"> 2020<br>
-            <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2021" type="checkbox"> 2021<br>
-            <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2022" type="checkbox" checked> 2022<br>  
+            <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2021" type="checkbox" checked> 2021<br>
           </form>
         </div>
       <div class="row chart-row" id = "gwPlot4"></div> 
@@ -785,6 +784,8 @@ function setSystemThis(target){
   
 
   if(target=="#groundwater"){
+    plotGroundwater(gwID, checkedGW);
+    
     visibility = map.getLayoutProperty('groundwater', 'visibility');
     if (visibility === "none") {
       document.getElementById('menuGroundwater').click();
