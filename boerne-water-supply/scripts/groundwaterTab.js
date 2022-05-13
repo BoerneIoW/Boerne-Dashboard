@@ -205,7 +205,7 @@ d3.csv("data/gw/all_boerne_gw_status.csv").then(function(gwLevels){
     },
     height: 300,
     showlegend: true,
-    margin: {t: 30, b: 30, r: 60, l: 40 },
+    margin: {t: 30, b: 30, r: 30, l: 50 },
     shapes: [{
       type: 'line', xref: 'paper', yref: 'y',
       x0: 0, x1: 1, y0:0, y1: 0,
@@ -318,11 +318,10 @@ function plotGroundwater(gwID, checkedGW) {
     var selGWMonthly = gwMonthly.filter(function(d){
       return d.site === gwID.toString(); 
     });
-    console.log(selGWMonthly)
+    
 
     // create a trace for each year
     var data4 = [];
-    //var xMonth = selGWMonthly.map(function(d) {return d.month; });
     var xMonth = [
       "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
     ];
@@ -345,7 +344,7 @@ function plotGroundwater(gwID, checkedGW) {
       temp = selGWMonthly.filter(function (d) {
         return d.year === tempSelect;
       });
-      tempName = "Median Depth (ft): %{y:.2f} in %{x} " + tempSelect;
+      tempName = "Mean Depth (ft): %{y:.2f} in %{x} " + tempSelect;
       yOther = temp.map(function (d) {
         return d.mean_depth_ft;
       });
@@ -398,7 +397,7 @@ function plotGroundwater(gwID, checkedGW) {
         .map(function (d) {
           return d.mean_depth_ft;
         });
-      tempName = "Median Depth (ft): %{y:.2f} in %{x}, " + tempSelect;
+      tempName = "Mean Depth (ft): %{y:.2f} in %{x}, " + tempSelect;
       colorLine = colorLineAll[i];
       if (tempSelect === 2011) { colorLine = "red"; } // highlight drought years
 
@@ -407,7 +406,7 @@ function plotGroundwater(gwID, checkedGW) {
         y: selectYears,
         mode: "lines+markers",
         type: "scatter",
-        hovertemplate: "Median Depth (ft): %{y:.2f} in %{x}, " + tempSelect,
+        hovertemplate: "Mean Depth (ft): %{y:.2f} in %{x}, " + tempSelect,
         opacity: 1,
         marker: { color: colorLine, size: 6 },
         line: { color: colorLine, width: 2 },
@@ -430,7 +429,7 @@ function plotGroundwater(gwID, checkedGW) {
       y: yCurrent,
       mode: "lines+markers",
       type: "scatter",
-      hovertemplate: "Median Depth (ft): %{y:.2f} in %{x}, " + currentYear,
+      hovertemplate: "Mean Depth (ft): %{y:.2f} in %{x}, " + currentYear,
       opacity: 1,
       marker: { color: "black", size: 6 },
       line: { color: "black", width: 3 },
@@ -451,7 +450,7 @@ function plotGroundwater(gwID, checkedGW) {
         autorange: "reversed"
       },
       xaxis: {
-        showline: false,
+        showline: true,
         showgrid: true,
         showticklabels: true,
         tickformat: "%b-%d",
