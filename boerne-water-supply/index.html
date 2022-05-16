@@ -94,7 +94,7 @@
             <button class="btn" value= "menuGMA" id= "menuGMA">Groundwater Mgmt Area</button>
             <button class="btn" value="menuBasins" id="menuBasins">River Basin</button>
             <button class="btn" value="menuWatershed" id="menuWatershed">Sub-Basin</button>
-            <button class="btn" value= "menuSource" id= "menuSource">Water Source</button>
+            <!--<button class="btn" value= "menuSource" id= "menuSource">Water Source</button>-->
             <button class="btn" value= "menuRivers" id= "menuRivers">Rivers</button>
             <button class="btn" value= "menuStreamGages" id= "menuStreamGages">Stream Gages</button>
             <button class="btn" value= "menuReservoirs" id= "menuReservoirs">Reservoirs</button>
@@ -694,10 +694,10 @@ function setSystemThis(target){
       document.getElementById('menuStreamGages').click();
     }
 
-    visibility = map.getLayoutProperty('water_supply', 'visibility');
-    if (visibility === "none") {
-      document.getElementById('menuSource').click();
-    }
+    //visibility = map.getLayoutProperty('water_supply', 'visibility');
+    //if (visibility === "none") {
+      //document.getElementById('menuSource').click();
+    //}
     
     visibility = map.getLayoutProperty('reservoirs', 'visibility');
     if (visibility === "none") {

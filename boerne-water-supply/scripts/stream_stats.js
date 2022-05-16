@@ -403,7 +403,7 @@ Plotly.newPlot('streamPlot', data, layout, config);
 
 
 document.getElementById("selectMetadata").innerHTML = "<p>Data from: " + filterData[0].startYr + "-" + 
-         filterData[0].endYr + " (" + filterData[0].Nobs + " years of data) <br><span style='color: rgb(26,131,130);'>This site is " + 
+         filterData[0].endYr + " (" + filterData[0].Nobs + " years with recorded observations) <br><span style='color: rgb(26,131,130);'>This site is " + 
          currentStatus + ", spending " + currentPercent + "% of the year to date in this status.</span></p>";
 
 });// end D3
