@@ -1,6 +1,6 @@
 //LOAD A PLACEHOLDER TABLE
 //create table
-function createBlankSummary(){
+/*function createBlankSummary(){
 document.getElementById("summaryTitle").innerHTML = "<br>Select a utility to see streamflow conditions in their water supply watersheds"; 
 
  const initialTableContent = ` 
@@ -146,6 +146,7 @@ if(myUtility === "none"){
       });//end d3 of triangle sites
   });//end d3 of link_pwsid_watershed
 }
+*/
 
 
 
