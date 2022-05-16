@@ -785,8 +785,9 @@ function setSystemThis(target){
       document.getElementById('menuGroundwater').click();
     }
     if (gwID !== "none"){
-      createGWTab(gwID, recentDate,);
+      createGWTab(gwID, recentDate);
     }
+
     //turn off other layers
     if (map.getLayoutProperty('streamgauge-layer', 'visibility') !== "none"){
       document.getElementById('menuStreamGages').click();

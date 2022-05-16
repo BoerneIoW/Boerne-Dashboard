@@ -36,6 +36,7 @@ function createGWTab(gwID, recentDate, gwPlotType) {
   document.getElementById('relGWTitle').innerHTML = "Groundwater Levels Relative to Historic Levels";
   document.getElementById('monthlyGWTitle').innerHTML = "Monthly Mean Trends";
   document.getElementById('longGWTitle').innerHTML = "Long-term Annual Trends";
+  plotGroundwater(gwID, checkedGW);
 //parse date to scale axis
 parseDate = d3.timeParse("%Y-%m-%d");
 
