@@ -1,14 +1,14 @@
 
-r.boerne-water-dashboard.internetofwater.app {
+r.boerne-water-dashboard.com {
    reverse_proxy rstudio:8787
 }
 
-boerne-water-dashboard.internetofwater.app {
+boerne-water-dashboard.com {
      root * /srv 
      file_server
 }
 
-api.boerne-water-dashboard.internetofwater.app { 
+api.boerne-water-dashboard.com { 
      reverse_proxy /FROST-Server/* web:8080 
      uri replace /api/ /FROST-Server/
 }
