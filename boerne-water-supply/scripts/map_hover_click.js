@@ -20,8 +20,8 @@ map.on("mousemove", "utilities-layer", function (e) {
             ")<br>Data Available</p>";
     } // end if hover over map
 
-    //console.log(e.features[0])
-    utilityID = e.features[0].id;
+    console.log(e.features[0])
+    utilityID = e.features[0].properties.pwsid;
     if (utilityID) {
         //console.log(utilityID);
         map.setFeatureState(
