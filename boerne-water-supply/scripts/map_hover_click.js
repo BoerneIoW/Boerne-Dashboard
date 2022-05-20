@@ -20,17 +20,17 @@ map.on("mousemove", "utilities-layer", function (e) {
             ")<br>Data Available</p>";
     } // end if hover over map
 
-    console.log(e.features[0])
-    utilityID = e.features[0].properties.pwsid;
+    //console.log(e.features[0])
+    utilityID = e.features[0].id;
     if (utilityID) {
-        //console.log(utilityID);
+        console.log(utilityID);
         map.setFeatureState(
             { source: "utilities", sourceLayer: "utilities", id: utilityID },
             { hover: true }
         ); //end setFeatureState
     } //end if UtiltiydID
 }); //end map.on
-
+console.log(utilityID)
 map.on("mouseleave", "utilities-layer", function () {
     if (utilityID) {
         map.setFeatureState(
@@ -296,6 +296,7 @@ map.on("click", "utilities-layer", function (e) {
     map.setFilter("water_supply_name", ["in", "drawFile", myUtilityID]);
 
     //run functions
+    console.log(myUtility)
     myUtilityInfo(myUtility);
     createCurrentSummary(myUtility);
     createDemandInfo(myUtilityID, checkedDemand);
