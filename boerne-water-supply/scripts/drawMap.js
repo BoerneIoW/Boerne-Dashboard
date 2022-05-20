@@ -704,12 +704,12 @@ $('button').on('click', function(){
 
       //add label text as needed
       if (mapLayer === "watersheds"){ 
-          if (visibility === 'none') {
+        if (visibility === 'none') {
             map.setLayoutProperty('huc8_name', 'visibility', 'visible');
           } else {
             map.setLayoutProperty('huc8_name', 'visibility', 'none');
           }
-        }//end if mapLaye4
+        }//end if mapLayer
 
         if (mapLayer === "county"){ 
           if (visibility === 'none') {

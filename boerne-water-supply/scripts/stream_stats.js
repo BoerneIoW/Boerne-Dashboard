@@ -145,8 +145,7 @@ if(myUtility === "none"){
 
       });//end d3 of triangle sites
   });//end d3 of link_pwsid_watershed
-}
-*/
+}*/
 
 
 
@@ -363,7 +362,7 @@ var layout = {
         showline: true,
         showgrid: false,
         //range: [0, Math.log(maxVal)],
-        type:'log'
+        //type:'log'
     },
     xaxis: {
       showline: true,
