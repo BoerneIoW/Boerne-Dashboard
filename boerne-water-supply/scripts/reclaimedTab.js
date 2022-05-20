@@ -179,7 +179,7 @@ function createReclaimedInfo(myUtilityID, checkedReclaimed) {
 
             var layout = {
                 yaxis: {
-                    title: "Daily Reclaimed Water Produced (MGD)",
+                    title: "Daily Reclaimed Water Used (MGD)",
                     titlefont: { color: "rgb(0, 0, 0)", size: 14 },
                     tickfont: { color: "rgb(0, 0, 0)", size: 12 },
                     showline: false,

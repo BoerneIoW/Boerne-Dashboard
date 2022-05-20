@@ -43,7 +43,7 @@ function myUtilityInfo(myUtility){
       
      //load data 
      d3.csv("data/basic_info.csv").then(function(dataCSV){
-     var selectData = dataCSV.filter(function(d) {return d.utility_name === myUtility; });
+     var selectData = dataCSV.filter(function(d) {return d.pwsid === myUtilityID; });
      //console.log(dataCSV); console.log(selectData);
      var myUtilityWebsite = selectData[0].utility_website; 
      //var myUtilityDrought = selectData[0].drought_status;
@@ -61,7 +61,7 @@ function myUtilityInfo(myUtility){
 
     //read in data
     d3.csv("data/water_shortage_responses.csv").then(function(shortCSV){
-      shortSelect = shortCSV.filter(function(d){return d.utility_name === myUtility; });
+      shortSelect = shortCSV.filter(function(d){return d.pwsid === myUtilityID; });
       
      //create table --- scroll options on table height, etc are in the css portion
     var myUtilityTable = "<table class='table table-bordered table-striped' style='font-size: 12px; text-align: left;'>";
