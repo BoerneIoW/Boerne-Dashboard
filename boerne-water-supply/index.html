@@ -64,14 +64,15 @@
 ####################################################################################################################-->
 <div class = "row header" style="margin-left: 20px;">
   <p style=" font-size: 14px;"><i><b>Disclaimer:</b> This tool is best viewed in Chrome, Firefox, Microsoft Edge, and Safari.</i></p>
-  <p style="font-size: 16px;"><span style="color: rgb(108,1,156); font-size: 18px"><b>The purpose </b></span> of this dashboard is to provide water-related data to users in one easy to navigate website. As part of the efforts by the City of Boerne 
-    to increase water sustainability and resilience, this dashboard is meant to assist individuals in their decisions as they pertain to water. These efforts tie into a broader Internet of Water, where data can lead to better management. Join the City of Boerne 
-    in expanding these efforts by exploring data below.<br>
+  <p style="font-size: 16px;"><span style="color: rgb(108,1,156); font-size: 18px"><b>Welcome to the Boerne Water Dashboard. </b></span> The purpose of this dashboard is to provide water-related data to users in one easy to navigate website. 
+    As part of the efforts by the City of Boerne to increase water sustainability and resilience, this website is meant to assist individuals in their decisions as they pertain to water. Simply put, we believe this will better help residents of 
+    Boerne and Kendall County better understand where the water they consume every day comes from and how our water resources across the Lone Star State are connected. These efforts tie into a broader Internet of Water, where data can lead to 
+    better management. Join the City of Boerne in expanding these efforts by exploring data below.<br>
   </p>  
   <p style="font-size: 16px;"><span style="color: rgb(108,1,156); font-size: 18px"><b>For a walkthrough of the dashboard,</b></span> please watch this <a href="https://www.youtube.com/watch?v=qurbL8w9JPM" target = "_blank">video</a>.<br>
     <span style="color: rgb(108,1,156); font-size: 18px"><b>To get started,</b></span> select a utility from the map or drop down menu (as this project grows, more utilities will be included). <br>
-    <span style="color: rgb(108,1,156); font-size: 18px"><b>Next,</b></span> select different tabs on the right to learn more about water supply conditions.<br>
-    <span style="color: rgb(108,1,156); font-size: 18px"><b>The help icons</b></span> provide more details to understand each tab.
+    <span style="color: rgb(108,1,156); font-size: 18px"><b>Next,</b></span> users can select different tabs on the right to learn more about water supply conditions.<br>
+    <span style="color: rgb(108,1,156); font-size: 18px"><b>The help icons</b></span> and text descriptions provide more details to understand each tab.
   </p>
   <p style="font-size: 16px;"><span style="color: rgb(108,1,156); font-size: 18px"><b>Note,</b></span> throughout the dashboard you will find underlined text. These are links that can tranfer you to other websites with more information.<br></p>
   <h3 class = "chartTitles" id="dataUpdateNotice" style="padding-top: 20px; left: 50%;"></h3>
@@ -93,7 +94,7 @@
   <div class="col-sm-5" style="padding:0px">
       <div class= "map-layers-row">   
         <h3 class="chartTitles">Turn Map Layers On and Off</h3>
-        <h5 class="chartTitles">For explenations on these layers, scroll to the bottom of the map</h3> 
+        <h5 class="chartTitles">Once a layer is chosen, hover over it for more information. For definitions on these layers, scroll to the bottom of the map</h3> 
         <div class="row" style="text-align: center; display: inline;"> 
             <button class = "btn" value = "menuUtility" id = "menuUtility" style= "background-color: #6c019c; color: gold;">Utility</button>
             <button class="btn" value= "menuCounty" id= "menuCounty" >County</button>
@@ -132,23 +133,33 @@
       </div><!--end map row div-->
       <p> Below are definitions/explenations for the map layers found above</p>
         <ul style="list-style-type:square">                             
-          <li> Utility:</li>
-          <li> County:</li>
-          <li> Groundwater Mgmt Area:</li>
-          <li> River Basin:</li>
-          <li> Sub-Basin:</li>
-          <li> Rivers:</li>
-          <li> Stream Gages:</li>
-          <li> Reservoirs:</li>
-          <li> Wells:</li>
-          <li> Precipitation Stations:</li>
-          <li> Drought:</li>
-          <li> Precip 7-day Observ:</li>
-          <li> Precip 7-day % Normal:</li>
-          <li> QPF 7-day Forecast:</li>
-          <li> Precip 6-10 Day Forecast:</li>
-          <li> Temp 6-10 Day Forecast:</li>
+          <li> <b>Utility:</b> geographic boundary of the utility</li>
+          <li> <b>County:</b> the boundaries of <i>all</i> Texas counties with their names</li>
+          <li> <b>Groundwater Mgmt Area:</b> Groundwater Management Areas were created for the protection of groundwater. There are 16 of these GMAs across Texas, 
+            and this map layers shows those boundaries. Boerne and Kendall County are located in GMA 9.</li>
+          <li> <b>River Basin:</b> a river basin is an area of land where rainfall and other water tributaries, such as creeks, drain into a river and its tributaries. 
+            This layer shows the river basins of Texas with their names. Boerne Utilities is within the San Antonio River Basin, while Canyon Lake is 
+            within the Guadalupe River Basin.</li>
+          <li> <b>Sub-Basin:</b> these sub-basins are found within a major river basin. The San Antonio River Basin has 4 sub-basins (Medina Rive, Upper San Antonio River, 
+            Cibolo Creek, and Lower San Antonio River). This layer shows these sub-basins and their names</li>
+          <li> <b>Rivers:</b> rivers of Texas</li>
+          <li> <b>Stream Gages:</b> a site/location used to monitor a body of water. This layer shows the three sites that are relevant to Boerne (one within the utility 
+            boundary and two at Canyon Lake).</li>
+          <li> <b>Reservoirs:</b> a man-made lake used as a water supply. For Boerne, the reservoir of relevance is Canyon Lake.</li>
+          <li> <b>Wells:</b> groundwater wells are holes drilled into the ground to access groundwater. This layer shows the 42 wells monitored by the Cow Creek Groundwater 
+            Conservation District. Groundwater Conservation Districts (GCDs) have the authority to regulate spacing and/or production of wells. Their color indicates their 
+            status (from extremely wet to extremely dry) based on their historic data of water level (keeping in mind well depth).</li>
+          <li> <b>Precipitation Stations:</b> relevant precipitation stations and their color indicates their status based on historic data of measured precipitation.</li>
+          <li> <b>Drought:</b> stages of drought, from None (no drought) to D4 (exceptional drought), throughout the country.</li>
+          <li> <b>Precip 7-day Observ:</b> the last 7-day totals of observed rainfall at the state level</li>
+          <li> <b>Precip 7-day % Normal:</b> the percent normal for the last seven days of observed rainfall. Percent normal is in reference to the percentage that the observed 
+            period is above or below what is “normal.” Normal is defined by averaging past years of precipitation.</li>
+          <li> <b>*QPF 7-day Forecast:</b> QPF stands for Quantitative Precipitation Forecasts, and they represent the amount of liquid precipitation expected to fall during a 
+            defined period of time, in this case, seven days.</li>
+          <li> <b>*Precip 6-10 Day Forecast:</b> percent chance of precipitation being above or below normal in the next 6-10 days.</li>
+          <li> <b>*Temp 6-10 Day Forecast:</b> percent chance of temperature being above or below normal in the next 6-10 days.</li>
         </ul>
+        <p> * These layers are different in that they are forecasts and not actual observed data points.</p>
   </div> <!--co-sm-5 end Map section-->
 
      

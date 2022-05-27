@@ -63,7 +63,7 @@ function myUtilityInfo(myUtility){
     d3.csv("data/water_shortage_responses.csv").then(function(shortCSV){
       shortSelect = shortCSV.filter(function(d){return d.pwsid === myUtilityID; });
       
-     //create table --- scroll options on table height, etc are in the css portion
+     //create table --- scroll options on table height, etc are in the css portion, line 174
     var myUtilityTable = "<table class='table table-bordered table-striped' style='font-size: 12px; text-align: left;'>";
     
     //create column header

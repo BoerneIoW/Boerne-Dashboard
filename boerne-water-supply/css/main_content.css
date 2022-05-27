@@ -172,7 +172,7 @@ tr {
 }
 
 .my-custom-scrollbar {
-    height: 650px;
+    height: 1200px;
     overflow: auto;
     position: relative;
 }
