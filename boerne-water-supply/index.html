@@ -268,7 +268,11 @@ function setSystemThis(target){
      <!-- PLOTS -->
       <h4 class = "chartTitles" id = "selectDataName">Select a stream gauge or reservoir to see plot</h4>
       <div class="row" id="selectMetadata" style="text-align: center; color: darkgray">  </div>
-      
+      <p>The plot below can show either the streamflow through a stream gauge or the storage of a reservoir. Depending on 
+        the site chosen on the map, stream gauge or reservoir, the y-axis of the plot will differ. For <i>stream gauges</i>, the units 
+        are in Cubic Feet per Second (cfs). For <i>reservoirs</i> the units are a percentage of full capacity. On the x-axis 
+        are the past <i>two</i> years of observed data. The color of each observation represents the status of that observation 
+        as it compares to historical data. The “Turn stats layer on” checkbox allows you to dive into statistics/percentiles.</p>
       <div class="row" id = "switchStatsDiv" style= "margin: 10px 20px; display: none;">
         <input type="checkbox" id="switchStats" onclick="toggleStats(this.value)">&nbsp;&nbsp;Turn stats layer on
       </div>
@@ -294,6 +298,15 @@ function setSystemThis(target){
       </div>
       
       <h4 class="chartTitles" id = "demandTitle">Select a utility to see water demand</h4> 
+      <p>The top plot, <i>Daily Demand</i>, shows how much water was consumed each day for each recorded year and is measured in million(s) 
+        of gallons per day. The bottom plot, <i>Cumulative Demand</i>, shows cumulative water consumption day-by-day for a given year and is 
+        measured in million(s) of gallons. Both of these plots use the checkboxes to highlight different years. </p>
+        <p> The City of Boerne has three main sources of water, of which its contract allocation is the following</p>
+            <ul style="list-style-type:square">                             
+              <li> <b>Canyon Lake Reservoir:</b> 1,176.6 million gallons per year</li>
+              <li> <b>Groundwater wells from Trinity Aquifers:</b> 325.9 - 602.8 million gallons per year</li>
+              <li> <b>Boerne Lake:</b> 271.4 million gallons per year</li>
+            </ul>
      <!-- PLOTS -->
       <div class="metadata" id="selectDemandMetadata">  </div>
       <div class="row">
@@ -327,13 +340,6 @@ function setSystemThis(target){
           </div>
           <div class = "col-sm-9" id = "demandCumPlot" style="padding-bottom: 40px;"></div>
         </div>
-       
-          <p> The City of Boerne has three main sources of water, of which its contract allocation is the following</p>
-            <ul style="list-style-type:square">                             
-              <li> Canyon Lake Reservoir: 1,176.6 million gallons per year</li>
-              <li> Groundwater wells from Trinity Aquifers: 325.9 - 602.8 million gallons per year</li>
-              <li> Boerne Lake: 271.4 million gallons per year</li>
-            </ul>
     </div>
   </div> <!-- end demand pane-->
 
@@ -364,7 +370,9 @@ function setSystemThis(target){
         </div>
 
         <div class = "row" style="margin-left: 10px;">
-          <p><br> CLB represents the population within a city limit boundary. WSB represents the population serviced by the utility.<br></p>
+          <p><b>CLB</b> represents the population within a city limit boundary. <b>WSB</b> represents the population serviced by the utility.</p>
+          <p>This plot represents the number of people utilizing water from Boerne Utilities in two forms. The solid purple line indicates 
+            the City of Boerne population and the dashed blue line shows the total number of water customers.</p>
       </div>
     </div>
   </div> <!-- end population pane-->
@@ -381,6 +389,8 @@ function setSystemThis(target){
       <!-- TABLES -->
       <h4 class="chartTitles" id = "groundwaterTitle">Select a well from the map for more information</h4> 
       <div class="metadata" id="selectGWMetadata">  </div>
+      <p>Each of these plots has a top axis depicting the land surface. This is to illustrate the depth of the well at which 
+        water is observed (i.e., water level). </p>
      <!-- PLOTS -->
 
       <div class="row" id = "switchGWStatsDiv" style= "margin-left: 20px; display: none;">
@@ -388,12 +398,19 @@ function setSystemThis(target){
           <input type="checkbox" id="switchGWStats" onclick="toggleGWStats(this.value)">&nbsp;&nbsp;Turn stats layer on
       </div>
 
-      <h5 class = "chartTitles" id = "relGWTitle"></h5>
+      <h4 class = "chartTitles" id = "relGWTitle"></h4>
+        <p>The x-axis (horizontal line) of this first plot, <i>Groundwater Levels Relative to Historic Levels</i>, includes the past <i>two</i> 
+          years of observed data. The color represents the status of that observation (from very dry to very wet) as it compares to historical data. 
+          It is important to keep in mind the depth of the well when looking at this information. The “Turn stats layer on” checkbox allows a user to 
+          dive into statistics/percentiles. The y-axis (vertical line) is the feet below surface at which the water level is at.</p>
        <div class="row chart-row" id = "gwPlot2">
           <img class="chart-holder-icon" src="img/gw_chart_icon.png">
        </div>
 
-      <h5 class="chartTitles" id="monthlyGWTitle" style= "margin-top: 50px;"></h5> 
+      <h4 class="chartTitles" id="monthlyGWTitle" style= "margin-top: 50px;"></h4> 
+      <p>The y-axis (vertical line) of this plot, <i>Monthly Mean Trends</i>, remains the same as above, but the water level is a monthly average 
+        and shows how far below the surface water was accessible. This is also an indication of higher, lower or average periods of precipitation 
+        or an increase in water consumption. It is normal for levels to drop during the summer. The checkbox allows users to observe monthly trends for any given year.</p>
         <div class = "col-sm-2">Select to Highlight
           <form>  
             <input onclick="createTraceGW(this.value)" name="checkGWYear" value="2005" type="checkbox"> 2005<br>  
@@ -418,7 +435,9 @@ function setSystemThis(target){
           <div class = "row">
             <div class = "col-sm-9" id = "gwPlot4" style="padding: 0;"></div> 
           </div>
-      <h5 class = "chartTitles" id = "longGWTitle"></h5>
+      <h4 class = "chartTitles" id = "longGWTitle"></h4>
+      <p>The y-axis (vertical line) of this plot, <i>Long-term annual trands</i>, remains the same as above, but the water 
+      level is a yearly average.</p>
       <div class="row chart-row" id = "gwPlot3"></div>
     
     </div> <!-- endGroundwater pane-->
@@ -434,7 +453,10 @@ function setSystemThis(target){
             <img src="img/pcp-tab.png" style="width: 95%; display: inline-block;">
       </div>
       <!-- TABLES -->
-      <h4 class = "chartTitles" style="width: 90%">Select a watershed to see how drought changes over time</h4> 
+      <h4 class = "chartTitles" style="width: 90%">Select a sub-basin to see how drought changes over time</h4> 
+      <p>By first selecting a sub-basin from the drop-down menu below, the plot will show historic drought conditions for that watershed 
+        and the category of drought (Zero-D4) throughout the years. The bar under the headline <i>Percent of "sub-basin name" basin by status</i> 
+        represents the most up to date observations of the percentage of area under observed drought.</p>
           <form name="selectSize" style="margin: 20px 0 5px 20px;"> 
               <span><strong>Select Watershed:  </strong></span> &nbsp;
               <select style="width: 280px;" name="setHUC" id="setHUC" onchange="setHUCThis(this);">
@@ -469,6 +491,9 @@ function setSystemThis(target){
 
     <!-- ###################################### PCP INFORMATION -->
     <h4 class="chartTitles" id="pcpTitle">Select a precipitation gauge from the map for more information</h4> 
+    <p>These two plots show first, <i>Monthly Precipitation</i>, and second <i>Cumulative Precipitation</i>. The <i>Monthly Precipitation</i> plot shows how much rain/precipitation 
+      fell each month, in inches, at an observed site. The <i>Cumulative Precipitation</i> plot shows the sum amount of precipitation day-by-day, in inches. The checkboxes can be used to highlight 
+      different years.</p>
     <p class = "metadata" id = "pcpMetadata"></p>
      <div class="row">
         <div class = "col-sm-2">Select to Highlight
@@ -527,6 +552,12 @@ function setSystemThis(target){
       </div>
       
       <h4 class="chartTitles" id = "reclaimedTitle">Select a utility to see reclaimed water produced</h4> 
+      <p>Within the City of Boerne, since 2016 reclaimed water has been a source of water (like Canyon Lake, Boerne Lake, and underground wells), 
+      but it is used strictly for outdoor irrigation. Like demand, these plots use the checkboxes to highlight different years. The first plot, 
+      <i>Daily Reclaimed Water Produced</i>, shows daily observed reclaimed water used for each recorded year and is measured in million(s) of gallons 
+      per day. The second plot, <i>Reclaimed Percent of Total Water</i>, shows the percentage that reclaimed water makes up of the total amount of water 
+      used by the city. In other words, the total is the sum of demand plus reclaimed water use. Therefore, this plot represents the percentage of total 
+      that is reclaimed.</p>
      <!-- PLOTS -->
       <div class="metadata" id="selectreclaimedMetadata">  </div>
       <div class="row">
