@@ -200,8 +200,9 @@ function createDemandInfo(myUtilityID, checkedDemand) {
                 hovermode: "closest",
                 height: 375,
                 //showlegend: true,
-                margin: { t: 20, b: 50, r: 10, l: 40 },
+                margin: { t: 30, b: 50, r: 10, l: 50 },
             };
+
 
             data.push(seltrace);
             Plotly.newPlot("demandPlot", data, layout, config);

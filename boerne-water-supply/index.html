@@ -298,16 +298,19 @@ function setSystemThis(target){
       </div>
       
       <h4 class="chartTitles" id = "demandTitle">Select a utility to see water demand</h4> 
-      <p>The top plot, <i>Daily Demand</i>, shows how much water was consumed each day for each recorded year and is measured in million(s) 
-        of gallons per day. The bottom plot, <i>Cumulative Demand</i>, shows cumulative water consumption day-by-day for a given year and is 
-        measured in million(s) of gallons. Both of these plots use the checkboxes to highlight different years. </p>
-        <p> The City of Boerne has three main sources of water, of which its contract allocation is the following</p>
-        <img src="img/boerne_sources.png" style="width: 810px; height: 510px; padding-top: 10px; display: inline-block;"> </a>
-            <ul style="list-style-type:square">                             
-              <li> <b>Canyon Lake Reservoir:</b> 1,176.6 million gallons per year</li>
-              <li> <b>Groundwater wells from Trinity Aquifers:</b> 325.9 - 602.8 million gallons per year</li>
-              <li> <b>Boerne Lake:</b> 271.4 million gallons per year</li>
-            </ul>
+      <p> The City of Boerne has three main sources of water, of which its contract allocation is the following</p>
+      <img src="img/boerne_sources.png" style="width: 810px; height: 510px; padding-top: 10px; display: inline-block;"> </a>
+        <!--<ul style="list-style-type:square">                             
+          <li> <b>Canyon Lake Reservoir:</b> 1,176.6 million gallons per year</li>
+          <li> <b>Groundwater wells from Trinity Aquifers:</b> 325.9 - 602.8 million gallons per year</li>
+          <li> <b>Boerne Lake:</b> 271.4 million gallons per year</li>
+        </ul>-->
+        <p>The bottom two plots show traces of observed demand. The first plot, <i>Daily Demand</i>, shows how much water was consumed 
+          each day for each recorded year and is measured in million(s) of gallons per day. The second plot, <i>Cumulative Demand</i>, 
+          shows cumulative water consumption day-by-day for a given year and is measured in million(s) of gallons. Both of these plots 
+          use the checkboxes to highlight different years.</p>
+        <h4 class="chartTitles" id = "demandTitle">Daily Demand</h4>
+        
      <!-- PLOTS -->
       <div class="metadata" id="selectDemandMetadata">  </div>
       <div class="row">
@@ -339,7 +342,8 @@ function setSystemThis(target){
           <div class = "col-sm-9" id = "demandPlot" style="padding: 0;">
             <img class = "chart-holder-icon" src="img/demand_chart_icon.png">
           </div>
-          <div class = "col-sm-9" id = "demandCumPlot" style="padding-bottom: 40px;"></div>
+        <h4 class="chartTitles" id = "demandTitle">Cummulative Demand</h4>
+        <div class = "col-sm-9" id = "demandCumPlot" style="padding: 0;"></div>
         </div>
     </div>
   </div> <!-- end demand pane-->
