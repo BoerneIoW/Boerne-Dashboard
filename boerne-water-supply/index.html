@@ -407,17 +407,18 @@ function setSystemThis(target){
         water is observed (i.e., water level). </p>
      <!-- PLOTS -->
 
-      <div class="row" id = "switchGWStatsDiv" style= "margin-left: 20px; display: none;">
-          <br>
-          <input type="checkbox" id="switchGWStats" onclick="toggleGWStats(this.value)">&nbsp;&nbsp;Turn stats layer on
-      </div>
-
       <h4 class = "chartTitles" id = "relGWTitle"></h4>
         <p>The x-axis (horizontal line) of this first plot, <i>Groundwater Levels Relative to Historic Levels</i>, includes the past <i>two</i> 
           years of observed data. The color represents the status of that observation (from very dry to very wet) as it compares to historical data. 
           It is important to keep in mind the depth of the well when looking at this information. The “Turn stats layer on” checkbox allows a user to 
           dive into statistics/percentiles. The y-axis (vertical line) is the feet below surface at which the water level is at.</p>
-       <div class="row chart-row" id = "gwPlot2">
+       
+      <div class="row" id = "switchGWStatsDiv" style= "margin-left: 20px; display: none;">
+          <br>
+          <input type="checkbox" id="switchGWStats" onclick="toggleGWStats(this.value)">&nbsp;&nbsp;Turn stats layer on
+      </div> 
+      
+      <div class="row chart-row" id = "gwPlot2">
           <img class="chart-holder-icon" src="img/gw_chart_icon.png">
        </div>
 
