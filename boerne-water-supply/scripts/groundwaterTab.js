@@ -252,11 +252,11 @@ traceAnnual = {
   x: xYear,  y: yDepth,
   text: "median Depth",
   mode: 'lines+markers',
-  name: 'Median Water Levels',
+  name: 'Mean Water Levels',
   marker: { color: "black", size: 5, opacity: 0.8},
   line: { color: 'gray',  width: 1},
   hovertemplate:
-            "Median Depth (ft): %{y:.2f} in %{x}"
+            "Mean Depth (ft): %{y:.2f} in %{x}"
 };
 var gwlayout3 = {
   yaxis: {
