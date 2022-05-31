@@ -91,7 +91,7 @@
                                     TAB SET UP
     ######################################################################################################-->
 <div class="container">
-  <div class="col-sm-5" style="padding:0px">
+  <div class="col-sm-5" style="padding:0px;">
       <div class= "map-layers-row">   
         <h3 class="chartTitles">Turn Map Layers On and Off</h3>
         <h5 class="chartTitles">Once a layer is chosen, hover over it for more information. For definitions on these layers, scroll to the bottom of the map</h3> 
@@ -131,6 +131,7 @@
            <div class="legend" id="drought-legend" style="display: none;"></div>    
          </div> <!--end map Div-->
       </div><!--end map row div-->
+      <div style="border-right: thin solid rgb(108,1,156); border-bottom: thin solid rgb(108,1,156);">
       <p> Below are definitions/explenations for the map layers found above</p>
         <ul style="list-style-type:square">                             
           <li> <b>Utility:</b> geographic boundary of the utility.</li>
@@ -160,6 +161,7 @@
           <li> <b>*Temp 6-10 Day Forecast:</b> percent chance of temperature being above or below normal in the next 6-10 days.</li>
         </ul>
         <p> * These layers are different in that they are forecasts and not actual observed data points.</p>
+      </div>
   </div> <!--co-sm-5 end Map section-->
 
      
@@ -342,10 +344,17 @@ function setSystemThis(target){
           <div class = "col-sm-9" id = "demandPlot" style="padding: 0;">
             <img class = "chart-holder-icon" src="img/demand_chart_icon.png">
           </div>
-        <h4 class="chartTitles" id = "demandTitle">Cummulative Demand</h4>
-        <div class = "col-sm-9" id = "demandCumPlot" style="padding: 0;"></div>
+          <h4 class="chartTitles" id = "demandTitle">Cummulative Demand</h4>
+          <div class = "col-sm-9" id = "demandCumPlot" style="padding: 0;"></div>
         </div>
     </div>
+    <h4 class="chartTitles"  style="padding-top: 20px" id = "demandTitle">Peak Water Production Capacity</h4>
+        <p>The graphic below depicts how the city manages its sources, specifically to meet peak demand during summer months. As can be seen,
+          water from Canyon Lake Reservoir (GBRA) serves as the city's base load, meeting the majority of demand during non-summer months. Groundwater wells 
+          are affected by rainfall and therefore meet a much smaller load of demand compared to GBRA. The remainder of peak demand during summer months
+          is met by Boerne Lake and reclaimed water, which is primarily used for outdoor irrigation.  
+        </p>
+        <img src="img/boerne_sources_broken.png" style="width: 810px; height: 350px; display: inline-block;"> </a>
   </div> <!-- end demand pane-->
 
 <!--#######################################################################################################
