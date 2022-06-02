@@ -69,19 +69,34 @@
     Boerne and Kendall County better understand where the water they consume every day comes from and how our water resources across the Lone Star State are connected. These efforts tie into a broader Internet of Water, where data can lead to 
     better management. Join the City of Boerne in expanding these efforts by exploring data below.<br>
   </p>  
-  <p style="font-size: 16px;"><span style="color: rgb(108,1,156); font-size: 18px"><b>For a walkthrough of the dashboard,</b></span> please watch this <a href="https://www.youtube.com/watch?v=qurbL8w9JPM" target = "_blank">video</a>.<br>
-    <span style="color: rgb(108,1,156); font-size: 18px"><b>To get started,</b></span> select a utility from the map or drop down menu (as this project grows, more utilities will be included). <br>
+  <!-- <p style="font-size: 16px;"><span style="color: rgb(108,1,156); font-size: 18px"><b>For a walkthrough of the dashboard,</b></span> please watch this <a href="https://www.youtube.com/watch?v=qurbL8w9JPM" target = "_blank">video</a>.<br> -->
+
+  <p style="font-size: 16px;"><span style="color: rgb(108,1,156); font-size: 18px"><b>To get started,</b></span> select a utility from the map or drop down menu (as this project grows, more utilities will be included). <br>
     <span style="color: rgb(108,1,156); font-size: 18px"><b>Next,</b></span> users can select different tabs on the right to learn more about water supply conditions.<br>
     <span style="color: rgb(108,1,156); font-size: 18px"><b>The help icons</b></span> and text descriptions provide more details to understand each tab.
   </p>
-  <p style="font-size: 16px;"><span style="color: rgb(108,1,156); font-size: 18px"><b>Note,</b></span> throughout the dashboard you will find underlined text. These are links that can tranfer you to other websites with more information.<br></p>
+  <p style="font-size: 16px;"><span style="color: rgb(108,1,156); font-size: 18px"><b>Note,</b></span> throughout the dashboard you will find underlined text. These are links that can transfer you to other websites with more information.<br></p>
+  
+  <div class="col-sm-3">
+    <img src="img/boerne_lake.png" style="width: 350px; height: 220px; padding-top: 10px; padding-bottom: 20px; display: inline-block;"> </a> 
+  </div>
+  <div class="col-sm-3">
+    <img src="img/boerne_well.png" style="width: 350px; height: 220px; padding-top: 10px; padding-bottom: 20px; display: inline-block;"> </a> 
+  </div>
+  <div class="col-sm-3">
+    <img src="img/boerne_reclaimed.png" style="width: 350px; height: 220px; padding-top: 10px; padding-bottom: 20px; display: inline-block;"> </a> 
+  </div>
+  <div class="col-sm-3">
+    <img src="img/canyon_lake.png" style="width: 350px; height: 220px; padding-top: 10px; padding-bottom: 20px; display: inline-block;"> </a> 
+  </div>
+
   <h3 class = "chartTitles" id="dataUpdateNotice" style="padding-top: 20px; left: 50%;"></h3>
   <br>
   <!-- <img id="utilityHelp" style="position: absolute; height: 22px; right: 5px;" src="img/info_icon.png"> -->
     <form name="selectSystem"> 
-        <h4 style="display: inline-block; padding-left: 350px">Select a utility from the drop down menu:</h4>&nbsp;
+        <h4 style="display: inline-block; padding-left: 420px">Select a utility from the drop down menu:</h4>&nbsp;
       <select style="width: 350px;" name="setSystem" id="setSystem" onchange="setSystemThis(this);">
-              <option selected = "selected" value="none"> Select a Utility </option>
+        <option selected = "selected" value="none"> Select a Utility </option>
       </select>  
   </form>
 </div>
@@ -571,8 +586,8 @@ function setSystemThis(target){
       but it is used strictly for outdoor irrigation. Like demand, these plots use the checkboxes to highlight different years. The first plot, 
       <i>Daily Reclaimed Water Produced</i>, shows daily observed reclaimed water used for each recorded year and is measured in million(s) of gallons 
       per day. The second plot, <i>Reclaimed Percent of Total Water</i>, shows the percentage that reclaimed water makes up of the total amount of water 
-      used by the city. In other words, the total is the sum of demand plus reclaimed water use. Therefore, this plot represents the percentage of total 
-      that is reclaimed.</p>
+      used by the city. In other words, the total is the sum of <i>all</i> demand (including reclaimed water use). Therefore, this plot represents the 
+      percentage of total that is reclaimed.</p>
      <!-- PLOTS -->
       <div class="metadata" id="selectreclaimedMetadata">  </div>
       <div class="row">
