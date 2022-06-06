@@ -1,28 +1,5 @@
-pwsid,utility_name,ws_watershed,huc8,huc8_name,huc6_name
-NC0392020,Cary,Haw River (Jordan Lake),3030002,Haw,Cape Fear
-NC0332010,Durham City,Haw River (Jordan Lake),3030002,Haw,Cape Fear
-NC0332010,Durham City,Eno River (Lower),3020201,Upper Neuse,Neuse
-NC0332010,Durham City,Falls Lake,3020201,Upper Neuse,Neuse
-NC0332010,Durham City,Little River (Little River Reservoir),3020201,Upper Neuse,Neuse
-NC0332010,Durham City,Flat River (Lake Michie),3020201,Upper Neuse,Neuse
-NC0326010,Fayetteville Public Works,Cape Fear River (Fayetteville),3030003,Deep,Cape Fear
-NC0326010,Fayetteville Public Works,Cape Fear River (Fayetteville),3030002,Haw,Cape Fear
-NC0326010,Fayetteville Public Works,Cross Creek,3030004,Upper Cape Fear,Cape Fear
-NC0326010,Fayetteville Public Works,Little Cross Creek,3030004,Upper Cape Fear,Cape Fear
-NC0368010,Orange Water and Sewer Authority,Morgan Creek,3030002,Haw,Cape Fear
-NC0368010,Orange Water and Sewer Authority,Haw River (Jordan Lake),3030002,Haw,Cape Fear
-NC0368010,Orange Water and Sewer Authority,Cane Creek,3030002,Haw,Cape Fear
-NC0392010,Raleigh City,Neuse River (Wake Forest),3020201,Upper Neuse,Neuse
-NC0392010,Raleigh City,Little River (Zebulon),3020201,Upper Neuse,Neuse
-NC0392010,Raleigh City,Smith Creek (Wake Forest Reservoir),3020201,Upper Neuse,Neuse
-NC0392010,Raleigh City,Falls Lake,3020201,Upper Neuse,Neuse
-NC0392010,Raleigh City,Swift Creek (Lake Benson),3020201,Upper Neuse,Neuse
-NC,none,,3030003,Deep,Cape Fear
-NC,none,,3030002,Haw,Cape Fear
-NC,none,,3020203,Contentnea,Neuse
-NC,none,,3020204,Lower Neuse,Neuse
-NC,none,,3020202,Middle Neuse,Neuse
-NC,none,,3020201,Upper Neuse,Neuse
-NC0368015,Hillsborough Town,Eno River (Lake Ben Johnson),3020201,Upper Neuse,Neuse
-NC0368015,Hillsborough Town,Eno River (Corporation Lake),3020201,Upper Neuse,Neuse
-NC0392045,Apex,Haw River (Jordan Lake),3030002,Haw,Cape Fear
+﻿pwsid,utility_name,ws_watershed,huc8,huc8_name,huc6_name
+TX1300001,City of Boerne,Guadalupe River (Canyon Lake),12100201,Upper Guadalupe,Guadalupe
+TX1300001,City of Boerne,Guadalupe River (Canyon Lake),12100202,Middle Guadalupe,Guadalupe
+TX1300001,City of Boerne,Cibolo Creek (Boerne Lake),12100304,Cibolo,San Antonio
+,,,,,
