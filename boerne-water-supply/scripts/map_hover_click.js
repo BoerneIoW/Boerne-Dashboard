@@ -341,7 +341,7 @@ map.on("click", "streamgauge-layer", function (e) {
         " target='_blank'>" +
         streamGaugeName +
         "</a><h4>";
-    fileName = "data/streamflow/all_boerne_stream_stats.csv";
+    fileName = "data/streamflow/all_stream_stats.csv";
 
     createDailyStatistics(streamID, streamPlotType);
 });
@@ -377,7 +377,7 @@ map.on("click", "reservoirs", function (e) {
         " target='_blank'>" +
         reservoirName +
         "</a></u><h4>";
-    fileName = "data/reservoirs/all_canyon_reservoir_stats.csv";
+    fileName = "data/reservoirs/all_reservoir_stats.csv";
     createDailyStatistics(streamID, streamPlotType);
 });
 
