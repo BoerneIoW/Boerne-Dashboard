@@ -18,7 +18,7 @@
 #
 ######################################################################################################################################################################
 #load in geojson for utilities
-utilities <- read_sf(paste0(swd_data, "boerne_utility.geojson")); 
+utilities <- read_sf(paste0(swd_data, "utility.geojson")); 
 pwsid.list <- unique(utilities$pwsid) #Boerne is the utility of interest
 mymonths <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"); #used below to convert numbers to abbrev
 #mapview::mapview(utilities)

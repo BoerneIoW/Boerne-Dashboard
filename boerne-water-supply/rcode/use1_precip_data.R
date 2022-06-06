@@ -284,8 +284,8 @@ rm(pcp, pcp2)
 # Read in old pcp data
 #
 ########################################################################################################################################################
-boerne.sites <- read.csv(paste0(swd_data, "pcp/boerne_pcp_locations.csv"))
-old.pcp <- read.csv(paste0(swd_data, "pcp/boerne_pcp_data.csv")) %>% mutate(date = as.POSIXct(date, format = "%Y-%m-%d")) #historic data
+boerne.sites <- read.csv(paste0(swd_data, "pcp/pcp_locations_metadata.csv"))
+old.pcp <- read.csv(paste0(swd_data, "pcp/historic_pcp_data.csv")) %>% mutate(date = as.POSIXct(date, format = "%Y-%m-%d")) #historic data
 ########################################################################################################################################################
 
 ########################################################################################################################################################
@@ -577,18 +577,18 @@ table(check.last.date$date)
 
 # ...........................................................................
 #WRITE OUT UPDATED
-write.csv(pcp.data, paste0(swd_data, "pcp/all_boerne_pcp_data.csv"), row.names = FALSE)
-write.csv(boerne.sites, paste0(swd_data, "pcp/all_boerne_pcp_locations.csv"), row.names = FALSE)
+write.csv(pcp.data, paste0(swd_data, "pcp/all_pcp_data.csv"), row.names = FALSE)
+write.csv(boerne.sites, paste0(swd_data, "pcp/all_pcp_locations_metadata.csv"), row.names = FALSE)
 
 #LOAD IN UPDATED 
-pcp.data <- read.csv(paste0(swd_data,"pcp/all_boerne_pcp_data.csv"), header = TRUE)
-pcp.loc <- read.csv(paste0(swd_data, "pcp/all_boerne_pcp_locations.csv"), header = TRUE)
+pcp.data <- read.csv(paste0(swd_data,"pcp/all_pcp_data.csv"), header = TRUE)
+pcp.loc <- read.csv(paste0(swd_data, "pcp/all_pcp_locations_metadata.csv"), header = TRUE)
 # ............................................................................
 
 ###################################################################################################################################
 #          CREATE TABLE FOR MONTHLY PRECIPITATION TOTALS
 ###################################################################################################################################
-pcp.data <- read.csv(paste0(swd_data, "pcp/all_boerne_pcp_data.csv"), header = TRUE)
+pcp.data <- read.csv(paste0(swd_data, "pcp/all_pcp_data.csv"), header = TRUE)
 
 #Can plot like demand - monthly summary
 foo.month <- pcp.data %>% group_by(id, year, month) %>% summarize(pcp_in = sum(pcp_in, na.rm=TRUE), ndays = n(), .groups="drop")  %>% 
@@ -610,7 +610,7 @@ foo.month <- foo.month %>% mutate(year = as.numeric(as.character(year))) %>% fil
 
 #save file --- since only plotting recent years will only save out 2000 onward
 #foo.month <- foo.month %>% filter(year>=1997)
-write.csv(foo.month, paste0(swd_data, "pcp/all_boerne_pcp_months_total.csv"), row.names=FALSE)
+write.csv(foo.month, paste0(swd_data, "pcp/all_pcp_months_total.csv"), row.names=FALSE)
 
 ###################################################################################################################################
 #
@@ -646,7 +646,7 @@ foo.cum2$date2 <- as.Date(foo.cum2$julian, origin=paste0(foo.cum2$year,"-01-01")
 foo.cum2$date <- format(foo.cum2$date2, format="%b-%d")
 foo.cum2 <- foo.cum2 %>% dplyr::select(id, year, julian, pcp_in, date)
 
-write.csv(foo.cum2, paste0(swd_data, "pcp/all_boerne_pcp_cum_total.csv"), row.names=FALSE)
+write.csv(foo.cum2, paste0(swd_data, "pcp/all_pcp_cum_total.csv"), row.names=FALSE)
 
 ###################################################################################################################################
 #          Add current status to map
@@ -677,7 +677,7 @@ ytd.now <- ytd.now%>% distinct() # site GBVT2 was duplicated for some reason
 table(ytd.now$status, useNA="ifany")
 
 boerne.sites <- merge(sites, ytd.now[,c("id", "julian", "date", "year", "pcp_in", "status")], by.x="id", by.y="id", all=TRUE)
-geojson_write(boerne.sites, file = paste0(swd_data, "pcp/all_boerne_pcp_sites.geojson"))
+geojson_write(boerne.sites, file = paste0(swd_data, "pcp/all_pcp_sites.geojson"))
 mapview::mapview(boerne.sites)
 
 ################################################################################################################################################################

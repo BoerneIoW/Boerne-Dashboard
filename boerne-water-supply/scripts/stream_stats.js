@@ -287,12 +287,12 @@ var data; var y_title = ""; var x_axis_format = '%b-%d';
 
 if(streamPlotType === "on"){
   x_axis_format =  '%b-%d';
-  if (fileName === "data/streamflow/all_boerne_stream_stats.csv"){
+  if (fileName === "data/streamflow/all_stream_stats.csv"){
     data = [traceMin, trace10, trace25, trace50, trace75, trace90, traceThisYear];
     y_title = "Streamflow (cfs)";
   }
 
-  if (fileName === "data/reservoirs/all_canyon_reservoir_stats.csv"){
+  if (fileName === "data/reservoirs/all_reservoir_stats.csv"){
     y_title = "Percent Storage (%)";
     data = [traceMin, trace10, trace25, trace75, trace90, traceOT, trace50, traceThisYear];
   }
@@ -309,7 +309,7 @@ if(streamPlotType === "off"){
   for (j=0; j<xColorPoints.length; j++){  yOT2[j] = 100; }  
   
   var traceColorStatus;
-  if(fileName==="data/streamflow/all_boerne_stream_stats.csv"){
+  if(fileName==="data/streamflow/all_stream_stats.csv"){
     traceColorStatus = {
       type: 'scatter',
       x: xColorPoints,  y: yColorPoints,
@@ -322,7 +322,7 @@ if(streamPlotType === "off"){
     };
   }
   
-  if(fileName==="data/reservoirs/all_canyon_reservoir_stats.csv"){
+  if(fileName==="data/reservoirs/all_reservoir_stats.csv"){
     traceColorStatus = {
       type: 'scatter',
       x: xColorPoints,  y: yColorPoints,
@@ -343,12 +343,12 @@ if(streamPlotType === "off"){
     line: {  color: 'darkgray',  width: 3 }
   };
   
-  if (fileName === "data/streamflow/all_boerne_stream_stats.csv"){
+  if (fileName === "data/streamflow/all_stream_stats.csv"){
     data = [traceColorStatus];
     y_title = "Streamflow (cfs)";
   }
 
-  if (fileName === "data/reservoirs/all_canyon_reservoir_stats.csv"){
+  if (fileName === "data/reservoirs/all_reservoir_stats.csv"){
     y_title = "Percent Storage (%)";
     data = [traceOT2, traceColorStatus];
   }

@@ -44,7 +44,7 @@ guadaluperiver.site2 <- tx.sites2 %>% filter(site == "08167800"); guadaluperiver
 relevant.sites <- rbind (cibolocreek.site, guadaluperiver.site1, guadaluperiver.site2) #bind the relevant sites  
 
 #save metadata
-write.csv(relevant.sites, paste0(swd_data, "streamflow/boerne_stream_metadata.csv"), row.names=FALSE)
+write.csv(relevant.sites, paste0(swd_data, "streamflow/stream_gauge_metadata.csv"), row.names=FALSE)
 
 #calculate unique sites
 unique.sites <- unique(relevant.sites$site)
@@ -73,12 +73,12 @@ for (i in 1:length(unique.sites)){
 summary(year.flow)
 
 #write files
-write.csv(year.flow, paste0(swd_data, "streamflow/boerne_stream_data.csv"), row.names=FALSE)
+write.csv(year.flow, paste0(swd_data, "streamflow/historic_stream_data.csv"), row.names=FALSE)
 
 #create geojson 
 boerne_points <- st_as_sf(relevant.sites, coords = c("longitude", "latitude"), crs = 4326, agr = "constant")
 mapview::mapview(boerne_points)
-geojson_write(boerne_points, file =  paste0(swd_data, "streamflow/boerne_stream_gauge_sites.geojson"))
+geojson_write(boerne_points, file =  paste0(swd_data, "streamflow/stream_gauge_sites.geojson"))
 
 
 ################################################################################################################################################################

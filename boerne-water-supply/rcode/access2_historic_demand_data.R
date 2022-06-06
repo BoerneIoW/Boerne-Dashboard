@@ -11,11 +11,11 @@
 
 ######################################################################################################################################################################
 #
-#   LOAD Data
+#   Load Utilities Geojson File
 #
 ######################################################################################################################################################################
 #load in geojson for utilities
-utilities <- read_sf(paste0(swd_data, "boerne_utility.geojson"))
+utilities <- read_sf(paste0(swd_data, "utility.geojson"))
 pwsid.list <- unique(utilities$pwsid) #Boerne is the utility of interest
 mymonths <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"); #used below to convert numbers to abbrev
 #mapview::mapview(utilities)
@@ -23,6 +23,17 @@ mymonths <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov",
 #calculate moving average function
 ma <- function(x,n=7){stats::filter(x,rep(1/n,n), sides=1)}
 
+######################################################################################################################################################################
+#
+# Read in water demand data from CKAN
+#
+#####################################################################################################################################################################
+#CKAN API Token
+token <- "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJIb2lVQVZfdE9Xci1Va1QtRzl2V2tFYTczMzFBTnNEdC1EZWJQWG1kMXFoRlNmNC1PZjlvRkhoNjkydVp3cXI4eFNqajFuWW5pMkZScG14bSIsImlhdCI6MTY1NDUzNDAzM30.kG5YxBboYHTTxXg7gZpTJPp9pA5UqFNtMOkCvxLgfO4"
+ckanr_setup(url = "http://boerne-tx.dathere.com/", key = "token")
+url <- resource_show(id = "ed9bc342-b163-40a8-b4c6-1320207f5d8d", url = "http://boerne-tx.dathere.com/", key = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJIb2lVQVZfdE9Xci1Va1QtRzl2V2tFYTczMzFBTnNEdC1EZWJQWG1kMXFoRlNmNC1PZjlvRkhoNjkydVp3cXI4eFNqajFuWW5pMkZScG14bSIsImlhdCI6MTY1NDUzNDAzM30.kG5YxBboYHTTxXg7gZpTJPp9pA5UqFNtMOkCvxLgfO4")
+data <- ("http://boerne-tx.dathere.com/api/3/action/datastore_search?resource_id=ed9bc342-b163-40a8-b4c6-1320207f5d8d")
+data <- ckan_fetch("http://boerne-tx.dathere.com/dataset/boerne-water-demand-data/resource/ed9bc342-b163-40a8-b4c6-1320207f5d8d", store = "session", format = "csv", key = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJIb2lVQVZfdE9Xci1Va1QtRzl2V2tFYTczMzFBTnNEdC1EZWJQWG1kMXFoRlNmNC1PZjlvRkhoNjkydVp3cXI4eFNqajFuWW5pMkZScG14bSIsImlhdCI6MTY1NDUzNDAzM30.kG5YxBboYHTTxXg7gZpTJPp9pA5UqFNtMOkCvxLgfO4")
 ######################################################################################################################################################################
 #
 # Read in water demand data from Google spreadsheet

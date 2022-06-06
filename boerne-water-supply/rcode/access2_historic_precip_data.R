@@ -275,7 +275,7 @@ table(substr(check.last.date$date,0,10))
    all.sites <- st_as_sf(all.station.metadata, coords = c("longitude", "latitude"), crs = 4326); 
    mapview::mapview(all.sites)
 
-write.csv(all.station.metadata, paste0(swd_data, "pcp/boerne_pcp_locations.csv"), row.names = FALSE)     
+write.csv(all.station.metadata, paste0(swd_data, "pcp/pcp_locations_metadata.csv"), row.names = FALSE)     
    
 #data
    all.station.data <- rbind(synoptic.all.station.data2, noaa.all.station.data2)
@@ -283,7 +283,7 @@ write.csv(all.station.metadata, paste0(swd_data, "pcp/boerne_pcp_locations.csv")
    check.last.date <- all.station.data %>% filter(date == max(date)) %>% dplyr::select(date)
    table(check.last.date$date)
 
-write.csv(all.station.data, paste0(swd_data, "pcp/boerne_pcp_data.csv"), row.names = FALSE)
+write.csv(all.station.data, paste0(swd_data, "pcp/historic_pcp_data.csv"), row.names = FALSE)
 
 ##################################################################################################################################################################
 #

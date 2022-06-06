@@ -493,7 +493,7 @@ function drawMap(){
  //Groundwater------------------------------------------------------
    map.addSource('groundwater', {
     'type': 'geojson',
-    'data': 'data/gw/all_boerne_gw_sites.geojson',
+    'data': 'data/gw/all_gw_sites.geojson',
     'generateId': true
    });
     map.addLayer({
@@ -529,7 +529,7 @@ function drawMap(){
  //STREAM GAUGES------------------------------------------------------
    map.addSource('streamgauges', {
     'type': 'geojson',
-    'data': 'data/streamflow/all_boerne_stream_gauge_sites.geojson',
+    'data': 'data/streamflow/all_stream_gauge_sites.geojson',
     'generateId': true
    });
     map.addLayer({
@@ -605,7 +605,7 @@ function drawMap(){
 
     map.addSource('precipitation', {
     'type': 'geojson',
-    'data': 'data/pcp/all_boerne_pcp_sites.geojson',
+    'data': 'data/pcp/all_pcp_sites.geojson',
     'generateId': true
    });
     map.addLayer({

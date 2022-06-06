@@ -89,7 +89,7 @@ for(i in 1:length(sheet.number)) {
   str(boerne_all_well_metadata)
 
 # save out
-write.csv(boerne_all_well_metadata, paste0(swd_data, "gw/boerne_well_metadata.csv"), row.names = FALSE)
+write.csv(boerne_all_well_metadata, paste0(swd_data, "gw/well_metadata.csv"), row.names = FALSE)
 
 
 #clean up data
@@ -132,24 +132,24 @@ write.csv(boerne_all_well_metadata, paste0(swd_data, "gw/boerne_well_metadata.cs
   table(check.last.date$date)
 
 # save out
-write.csv(boerne_all_gw_levels, paste0(swd_data, "gw/boerne_gw_levels.csv"), row.names = FALSE)
+write.csv(boerne_all_gw_levels, paste0(swd_data, "gw/historic_gw_levels.csv"), row.names = FALSE)
 
 #data frame w/o elevation
 boerne_gw_depth <- select(boerne_all_gw_levels, c(1, 2, 4, 7))
 
-write.csv(boerne_gw_depth, paste0(swd_data, "gw/boerne_gw_depth.csv"), row.names=FALSE)
+write.csv(boerne_gw_depth, paste0(swd_data, "gw/historic_gw_depth.csv"), row.names=FALSE)
 
 ######################################################################################################################################################################
 #
 #   ACCESS GROUNDWATER DATA FROM GOOGLE SPREADSHEET: CITY DATA
 #
 ######################################################################################################################################################################
-city_well_data <- read_sheet("https://docs.google.com/spreadsheets/d/1Mne3oTY8OUe_h_sXmBalG1CdWhFzsd7qje6SfwdcFLg/edit#gid=0", sheet = 1, range = "A3:J", col_names = FALSE)
+#city_well_data <- read_sheet("https://docs.google.com/spreadsheets/d/1Mne3oTY8OUe_h_sXmBalG1CdWhFzsd7qje6SfwdcFLg/edit#gid=0", sheet = 1, range = "A3:J", col_names = FALSE)
 
 #rename columns
-city_well_data <- rename(city_well_data, date = "...1", well_1 = "...2", well_2 = "...3",
-                         well_4 = "...4", well_6 = "...5", well_9 = "...6", well_10 = "...7",
-                         well_11 = "...8", well_13 = "...9", well_14 = "...10")
+#city_well_data <- rename(city_well_data, date = "...1", well_1 = "...2", well_2 = "...3",
+#                         well_4 = "...4", well_6 = "...5", well_9 = "...6", well_10 = "...7",
+#                         well_11 = "...8", well_13 = "...9", well_14 = "...10")
 #reformat
 well_1 <- select(city_well_data, c(1, 2)); well_1$well_num <- "well 1"; well_1 <- rename(well_1, depth_ft = "well_1")
 well_2 <- select(city_well_data, c(1, 3)); well_2$well_num <- "well 2"; well_2 <- rename(well_2, depth_ft = "well_2")

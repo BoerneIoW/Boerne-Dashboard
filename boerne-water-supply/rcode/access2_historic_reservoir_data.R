@@ -21,7 +21,7 @@
 
 canyonlake <- read.csv(paste0(swd_data, "reservoirs/usace_usbr_dams.csv"))
 canyonlake <- canyonlake %>% filter(name == "Canyon Lake")
-write.csv(canyonlake, (paste0(swd_data, "reservoirs/canyonlake.csv")), row.names = FALSE)
+write.csv(canyonlake, (paste0(swd_data, "reservoirs/historic_reservoir_data.csv")), row.names = FALSE)
 
 
 ################################################################################################################################################################

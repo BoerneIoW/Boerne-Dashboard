@@ -15,8 +15,8 @@
 #   READ IN GROUNDWATER SITES AND GROUNDWATER DATA
 #
 ######################################################################################################################################################################
-boerne.sites <- read.csv(paste0(swd_data, "gw/boerne_well_metadata.csv"))
-old.data <- read.csv(paste0(swd_data, "gw/boerne_gw_depth.csv")) %>% mutate(date = as.Date(date, format="%Y-%m-%d"))
+boerne.sites <- read.csv(paste0(swd_data, "gw/well_metadata.csv"))
+old.data <- read.csv(paste0(swd_data, "gw/historic_gw_depth.csv")) %>% mutate(date = as.Date(date, format="%Y-%m-%d"))
 
 #double-check that each column is the desired type (numeric, character, etc.) and make necessary changes
 str(old.data) # site = chr; date = Date, format; julian = int; depth_ft = num
@@ -116,7 +116,7 @@ all_boerne_gw_depth <- rbind(old.data, new_boerne_gw_depth) %>% arrange(site, da
 str(all_boerne_gw_depth) # site = chr; date = Date, format; julian = int; depth_ft = num
 all_boerne_gw_depth$julian <- as.integer(all_boerne_gw_depth$julian)
 
-write.csv(all_boerne_gw_depth, paste0(swd_data, "gw/all_boerne_gw_depth.csv"), row.names=FALSE)
+write.csv(all_boerne_gw_depth, paste0(swd_data, "gw/all_gw_depth.csv"), row.names=FALSE)
 
 #####################################################################################################################################################################
 
@@ -145,7 +145,7 @@ year.flow <- rename(year.flow, date = date2)
 #fix variable type to save out monthly averages
 year.flow$month <- as.numeric(year.flow$month)
 all_boerne_monthly_avg <- select(year.flow, c(1, 2, 3, 4, 5, 7))   
-write.csv(all_boerne_monthly_avg, paste0(swd_data, "gw/all_boerne_monthly_avg.csv"), row.names=FALSE)
+write.csv(all_boerne_monthly_avg, paste0(swd_data, "gw/all_monthly_avg.csv"), row.names=FALSE)
 
 
 #stats calculations of daily data:
@@ -219,7 +219,7 @@ boerne.sites2 <- merge(boerne.sites2 %>% dplyr::select(-date), recent.flow[,c("s
 #Save out
 boerne.sites2 <- boerne.sites2 %>% dplyr::select(agency, site, location, elevation, total_depth, aquifer, status, depth_ft, julian, flow50, date, geometry)
 boerne.sites2 <- rename(boerne.sites2, AgencyCd = agency, SiteName = location, WellDepth = total_depth, LocalAquiferName = aquifer)
-geojson_write(boerne.sites2, file=paste0(swd_data, "gw/all_boerne_gw_sites.geojson"))
+geojson_write(boerne.sites2, file=paste0(swd_data, "gw/all_gw_sites.geojson"))
 mapview::mapview(boerne.sites2)
 
 #plot for fun
@@ -244,7 +244,7 @@ table(stats2$status, useNA="ifany")
 stats2 <- stats2 %>% mutate(colorStatus = ifelse(status=="Extremely Dry", "darkred", ifelse(status=="Very Dry", "red", ifelse(status=="Moderately Dry", "orange", ifelse(status=="Moderately Wet", "cornflowerblue",
                                                                                                                                                                          ifelse(status=="Very Wet", "blue", ifelse(status=="Extremely Wet", "navy", "gray")))))))
 stats2 <- stats2 %>% dplyr::select(site, julian, date, depth_ft, status, colorStatus) %>% filter(site %in% boerne.sites$site)
-write.csv(stats2, paste0(swd_data, "gw/all_boerne_gw_status.csv"), row.names=FALSE)
+write.csv(stats2, paste0(swd_data, "gw/all_gw_status.csv"), row.names=FALSE)
 
 
 #set up month names and save out stats file
@@ -254,13 +254,13 @@ stats.merge <- stats %>% mutate(date3 = date2, date2 = date) %>% dplyr::select(-
 current.stat2 <- merge(recent.flow, stats.merge, by.x=c("site","julian"), by.y=c("site","julian"), all.y=TRUE)%>% filter(site %in% boerne.sites2$site)
 
 current.stat2 <- current.stat2 %>% mutate(month = my.month.name(as.numeric(substr(date,6,7)))) %>% mutate(date = date2, date2 = date3) %>% dplyr::select(-date3);  #okay to have NA for date because want chart to end there
-write.csv(current.stat2, paste0(swd_data, "gw/all_boerne_gw_stats.csv"), row.names=FALSE)
+write.csv(current.stat2, paste0(swd_data, "gw/all_gw_stats.csv"), row.names=FALSE)
 
 
 #let's do annual trends
 gw.annual <- year.flow %>% mutate(year = year(date)) %>% group_by(site, year) %>% summarize(medianDepth = median(depth_ft, na.rm=TRUE), nobsv = n(), .groups="drop") %>% 
   filter(site %in% boerne.sites2$site)
-write.csv(gw.annual, paste0(swd_data, "gw/all_boerne_gw_annual.csv"), row.names=FALSE)
+write.csv(gw.annual, paste0(swd_data, "gw/all_gw_annual.csv"), row.names=FALSE)
 
   
 ################################################################################################################################################################

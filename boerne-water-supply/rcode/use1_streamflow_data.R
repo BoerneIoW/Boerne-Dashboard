@@ -31,9 +31,9 @@ serv <- "dv"
 #
 #################################################################################################################################
 #Old Data
-boerne.sites <- read_sf(paste0(swd_data, "streamflow/boerne_stream_gauge_sites.geojson")) %>% select(site, name, huc8, startYr, endYr, nYears, geometry,ws_watershed)
-boerne.site.metadata <- read.csv(paste0(swd_data, "streamflow/boerne_stream_metadata.csv"))
-boerne.data <- read.csv(paste0(swd_data, "streamflow/boerne_stream_data.csv"), colClasses=c("site" = "character")) %>% mutate(date = as.Date(date, format="%Y-%m-%d"))
+boerne.sites <- read_sf(paste0(swd_data, "streamflow/stream_gauge_sites.geojson")) %>% select(site, name, huc8, startYr, endYr, nYears, geometry,ws_watershed)
+boerne.site.metadata <- read.csv(paste0(swd_data, "streamflow/stream_gauge_metadata.csv"))
+boerne.data <- read.csv(paste0(swd_data, "streamflow/historic_stream_data.csv"), colClasses=c("site" = "character")) %>% mutate(date = as.Date(date, format="%Y-%m-%d"))
 boerne.data <- boerne.data %>% group_by(site) %>% filter(date < max(date))
 
 #ws.bounds <- read_sf(paste0(swd_data, "streamflow/boerne_ws_watersheds.geojson")) %>% select(geometry)
@@ -84,7 +84,7 @@ summary(year.flow)
 
 #bind old and new data
 boerne.data <- rbind(boerne.data, year.flow) %>% arrange(site, date)
-write.csv(boerne.data, paste0(swd_data, "streamflow/all_boerne_stream_data.csv"), row.names=FALSE)
+write.csv(boerne.data, paste0(swd_data, "streamflow/all_stream_data.csv"), row.names=FALSE)
 #do rolling average etc next
 
 #calculate 7 day rolling average (function is in global api)
@@ -143,7 +143,7 @@ table(current.stat$status)
 
 #merge to geojson file with current status for map display
 boerne.sites2 <- merge(boerne.sites, current.stat[,c("site","status","flow","julian","date","flow50")], by.x="site", by.y="site")
-geojson_write(boerne.sites2, file=paste0(swd_data, "streamflow/all_boerne_stream_gauge_sites.geojson"))
+geojson_write(boerne.sites2, file=paste0(swd_data, "streamflow/all_stream_gauge_sites.geojson"))
 
 
 #to create stats diagram with past and current year - need to make separate for dates and then rbind
@@ -165,7 +165,7 @@ table(stats2$status, useNA="ifany")
 table(stats2$colorStatus, useNA="ifany")
 
 #write out the csv to draw daily flow based on stream status
-write.csv(stats2, paste0(swd_data, "streamflow/all_boerne_stream_stats.csv"), row.names=FALSE)
+write.csv(stats2, paste0(swd_data, "streamflow/all_stream_stats.csv"), row.names=FALSE)
 
 
 # #write out the current status for water supply watershed 

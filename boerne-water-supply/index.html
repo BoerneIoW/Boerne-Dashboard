@@ -721,7 +721,7 @@ function setSystemThis(target){
 //draw initial map... set delay to ensure utilities loaded first
   var utilities;
   function getSystemData() { 
-    return $.getJSON("data/boerne_utility.geojson", function(siteData){
+    return $.getJSON("data/utility.geojson", function(siteData){
            utilities = siteData; 
            setTimeout(drawMap(), 4000);
     });
