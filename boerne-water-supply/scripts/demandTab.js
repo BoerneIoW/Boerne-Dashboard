@@ -19,7 +19,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
 
     //console.log(checkedDemand);
     //read in demand data
-    d3.csv("data/demand/all_boerne_total_demand.csv").then(function (demandData) {
+    d3.csv("data/demand/all_total_demand.csv").then(function (demandData) {
         demandData.forEach(function (d) {
             d.date3 = parseDate("2022-" + d.date2.substring(5, d.date2.length));
             d.demand_mgd = +d.demand_mgd;
@@ -245,7 +245,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
     //##################################################################################################################################
 
     //Cmulative data plot
-    d3.csv("data/demand/all_boerne_demand_cum.csv").then(function (cumdemand) {
+    d3.csv("data/demand/all_demand_cum.csv").then(function (cumdemand) {
         cumdemand.forEach(function (d) {
             //d.date = parseDate(("2020-"+d.date));
             d.year = +d.year;

@@ -24,10 +24,10 @@ mymonths <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov",
 #mapview::mapview(utilities)
 
 #read in old data
-old_total_demand <- read.csv(paste0(swd_data, "demand/boerne_total_demand.csv"))
-old_demand_by_source <- read.csv(paste0(swd_data, "demand/boerne_demand_by_source.csv"))
-old_reclaimed <- read.csv(paste0(swd_data, "demand/boerne_reclaimed_water.csv"))
-old_pop <- read.csv(paste0(swd_data, "demand/boerne_pop.csv"))
+old_total_demand <- read.csv(paste0(swd_data, "demand/historic_total_demand.csv"))
+old_demand_by_source <- read.csv(paste0(swd_data, "demand/historic_demand_by_source.csv"))
+old_reclaimed <- read.csv(paste0(swd_data, "demand/historic_reclaimed_water.csv"))
+old_pop <- read.csv(paste0(swd_data, "demand/historic_pop.csv"))
 
 #calculate moving average function
 ma <- function(x,n=7){stats::filter(x,rep(1/n,n), sides=1)}
@@ -92,7 +92,7 @@ check.last.date <- all_demand_by_mgd %>% filter(date == max(date)) %>% dplyr::se
 table(check.last.date$date)
 
 #write.csv
-write.csv(demand_by_mgd, paste0(swd_data, "demand/all_boerne_demand_by_source.csv"), row.names=FALSE)
+write.csv(demand_by_mgd, paste0(swd_data, "demand/all_demand_by_source.csv"), row.names=FALSE)
 
 
 #include month abbreviations
@@ -116,7 +116,7 @@ demand7 <- rename(demand7, demand_mgd = "total")
 demand7 <- demand7[, c("pwsid", "date","demand_mgd", "mean_demand", "julian", "month", "monthAbb", "year", "peak_demand", "date2")]
 
 #write.csv
-write.csv(demand7, paste0(swd_data, "demand/all_boerne_total_demand.csv"), row.names=FALSE)
+write.csv(demand7, paste0(swd_data, "demand/all_total_demand.csv"), row.names=FALSE)
 
 
 #create comulative demand
@@ -132,7 +132,7 @@ table(foo.cum$pwsid, foo.cum$year)
 #in case duplicate days - take average
 foo.cum3 <- foo.cum2 %>% group_by(pwsid, year, julian, date) %>% summarize(demand_mgd = round(mean(demand_mgd, na.rm=TRUE),2), .groups="drop") %>% distinct()
 
-write.csv(foo.cum3, paste0(swd_data, "demand/all_boerne_demand_cum.csv"), row.names=FALSE)
+write.csv(foo.cum3, paste0(swd_data, "demand/all_demand_cum.csv"), row.names=FALSE)
 
 
 ######################################################################################################################################################################
@@ -162,7 +162,7 @@ all_reclaimed7 <- all_reclaimed6 %>% mutate(date2 = date, date = paste0(monthAbb
 
 #write.csv
 all_reclaimed8 <- subset(all_reclaimed7, select = c(pwsid, date, reclaimed, mean_reclaimed, julian, month, monthAbb, year, peak_reclaimed, date2))
-write.csv(all_reclaimed8, paste0(swd_data, "demand/all_boerne_reclaimed_water.csv"), row.names=FALSE)
+write.csv(all_reclaimed8, paste0(swd_data, "demand/all_reclaimed_water.csv"), row.names=FALSE)
 
 #calculate percent of total
 all_reclaimed9 <- all_reclaimed8
@@ -170,7 +170,7 @@ all_reclaimed9$total <- all_demand_by_mgd$total
 all_reclaimed9$percent_of_total <- (all_reclaimed9$reclaimed/all_reclaimed9$total)*100
 
 #write.csv
-write.csv(all_reclaimed9, paste0(swd_data, "demand/all_boerne_reclaimed_percent_of_total.csv"), row.names=FALSE)
+write.csv(all_reclaimed9, paste0(swd_data, "demand/all_reclaimed_percent_of_total.csv"), row.names=FALSE)
 
 
 ######################################################################################################################################################################
@@ -217,7 +217,7 @@ new_pop_data <- pop_data %>% filter(year >= 2022)
 all_pop_data <- rbind(old_pop, new_pop_data)
 
 #write.csv
-write.csv(pop_data, paste0(swd_data, "demand/all_boerne_pop.csv"), row.names=FALSE)
+write.csv(pop_data, paste0(swd_data, "demand/all_pop.csv"), row.names=FALSE)
 
 ################################################################################################################################################################
 # remove all except for global environment 

@@ -78,7 +78,7 @@ check.last.date <- demand_by_mgd %>% filter(date == max(date)) %>% dplyr::select
 table(check.last.date$date)
 
 #write.csv
-write.csv(demand_by_mgd, paste0(swd_data, "demand/boerne_demand_by_source.csv"), row.names=FALSE)
+write.csv(demand_by_mgd, paste0(swd_data, "demand/historic_demand_by_source.csv"), row.names=FALSE)
 
 
 #calculate monthly peak
@@ -89,7 +89,7 @@ demand2 <- demand2 %>% group_by(pwsid, month, year) %>% mutate(peak_demand = rou
 demand2$julian <- demand_by_mgd$julian
 
 #write.csv
-write.csv(demand2, paste0(swd_data, "demand/boerne_total_demand.csv"), row.names=FALSE)
+write.csv(demand2, paste0(swd_data, "demand/historic_total_demand.csv"), row.names=FALSE)
 
 ######################################################################################################################################################################
 #
@@ -98,7 +98,7 @@ write.csv(demand2, paste0(swd_data, "demand/boerne_total_demand.csv"), row.names
 #####################################################################################################################################################################
 reclaimed <- subset(demand_by_mgd, select = -c(total,groundwater,boerne_lake,GBRA))
 
-write.csv(reclaimed, paste0(swd_data, "demand/boerne_reclaimed_water.csv"), row.names=FALSE)
+write.csv(reclaimed, paste0(swd_data, "demand/historic_reclaimed_water.csv"), row.names=FALSE)
 
 ######################################################################################################################################################################
 #
@@ -141,7 +141,7 @@ pop_data$pwsid <- "TX300001"
 pop_data <- pop_data %>% filter(year <= 2021)
 
 #write.csv
-write.csv(pop_data, paste0(swd_data, "demand/boerne_pop.csv"), row.names=FALSE)
+write.csv(pop_data, paste0(swd_data, "demand/historic_pop.csv"), row.names=FALSE)
 
 ################################################################################################################################################################
 # remove all except for global environment 

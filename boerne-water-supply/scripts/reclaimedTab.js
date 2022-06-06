@@ -19,7 +19,7 @@ function createReclaimedInfo(myUtilityID, checkedReclaimed) {
 
     //console.log(checkedReclaimed);
     //read in reclaimed data
-    d3.csv("data/demand/all_boerne_reclaimed_water.csv").then(function (reclaimedData) {
+    d3.csv("data/demand/all_reclaimed_water.csv").then(function (reclaimedData) {
         reclaimedData.forEach(function (d) {
             d.date3 = parseDate("2022-" + d.date2.substring(5, d.date2.length));
             d.reclaimed = +d.reclaimed;
@@ -246,7 +246,7 @@ function createReclaimedInfo(myUtilityID, checkedReclaimed) {
 
     //Percent of Total data plot
 
-    d3.csv("data/demand/all_boerne_reclaimed_percent_of_total.csv").then(function (reclaimedpercentData) {
+    d3.csv("data/demand/all_reclaimed_percent_of_total.csv").then(function (reclaimedpercentData) {
         reclaimedpercentData.forEach(function (d) {
             d.date3 = parseDate("2022-" + d.date2.substring(5, d.date2.length));
             d.reclaimedpercent = +d.percent_of_total;

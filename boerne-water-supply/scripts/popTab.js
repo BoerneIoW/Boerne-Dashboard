@@ -15,7 +15,7 @@ function createPopInfo(myUtilityID, checkedPop) {
     //parse date to scale axis
     parseDate = d3.timeParse("%Y-%m-%d");
     
-    d3.csv("data/demand/all_boerne_pop.csv").then(function(popAnnual){
+    d3.csv("data/demand/all_pop.csv").then(function(popAnnual){
         popAnnual.forEach(function(d){
             d.clb_pop = +d.clb_pop;
             d.wsb_pop = +d.wsb_pop;
