@@ -85,6 +85,9 @@ str(demand_by_mgd)
 new_demand_by_mgd <- demand_by_mgd %>% filter(year >= 2022 & date < today)
 new_demand_by_mgd$date <- format(as.Date(new_demand_by_mgd$date), "%Y-%m-%d") # make sure the date format is the same for old and new before binding
 
+#remove days that don't have data (utilities director includes 0's for days he hasn't input data yet)
+new_demand_by_mgd <- filter(new_demand_by_mgd, groundwater > 0, boerne_lake > 0, GBRA > 0, reclaimed > 0)
+
 #merge old and new data
 all_demand_by_mgd <- rbind(old_demand_by_source, new_demand_by_mgd) 
 
