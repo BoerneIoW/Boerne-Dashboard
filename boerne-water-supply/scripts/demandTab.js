@@ -236,7 +236,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
                     myUtility +
                     " has " +
                     demandTrajectory +
-                    " demand than last week";
+                    " demand than the previous marked week";
             }
         } //end if we have utility data for selectect utility
     }); // end D3
