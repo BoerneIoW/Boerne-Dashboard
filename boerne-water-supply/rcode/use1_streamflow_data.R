@@ -63,9 +63,9 @@ year.flow  <- as.data.frame(matrix(nrow=0, ncol=4));    colnames(year.flow) <- c
 for (i in 1:length(unique.sites)){
   old.data <- boerne.data %>% filter(site==unique.sites[i]) %>% filter(date==max(date))
 
-  zt <- readNWISuv(siteNumbers = unique.sites[i], parameterCd = pcode, startDate=(old.data$date[1]+1), endDate = end.date); #only read in new data
-  zt <- renameNWISColumns(zt);
-      names(zt) [names(zt) == "FROM.DCP_Flow" ] <- "Flow" 
+  zt <- readNWISuv(siteNumbers = unique.sites[i], parameterCd = pcode, startDate=(old.data$date[1]+1), endDate = today); #only read in new data
+  zt <- renameNWISColumns(zt)
+      
   if (dim(zt)[1] > 0)  {
     zt <- zt %>% mutate(julian = as.POSIXlt(dateTime, format = "%Y-%m-%d")$yday) %>% mutate(date = as.Date(dateTime, format="%Y-%m-%d")); #calculates julian date
     #calculate mean value
@@ -89,6 +89,7 @@ write.csv(boerne.data, paste0(swd_data, "streamflow/all_stream_data.csv"), row.n
 
 #calculate 7 day rolling average (function is in global api)
 #Check for missing days, if so, add NA rows: #https://waterdata.usgs.gov/blog/moving-averages/
+current.year <-year(today);
 year.flow  <- as.data.frame(matrix(nrow=0, ncol=4));    colnames(year.flow) <- c("site", "date", "julian", "flow")
 stats <- as.data.frame(matrix(nrow=0,ncol=13));        colnames(stats) <- c("Site", "julian", "min", "flow10", "flow25", "flow50", "flow75", "flow90", "max", "Nobs","startYr","endYr","date"); 
 for (i in 1:length(unique.sites)){
