@@ -154,6 +154,8 @@ year.flow <- all_boerne_gw_depth
 #account for any duplicates
 #  year.flow <- year.flow %>% group_by(site, date, julian) %>% summarize(depth_ft = median(depth_ft, na.rm=TRUE), .groups="drop")
 
+stats <- as.data.frame(matrix(nrow=0,ncol=13));        colnames(stats) <- c("site", "julian", "min", "flow10", "flow25", "flow50", "flow75", "flow90", "max", "Nobs","startYr","endYr","date"); 
+
 #Calculate stats for all data... this takes a long while to do in tidyverse... like to see it making progress in loop
 unique.sites <- unique(year.flow$site)
 for (i in 1:length(unique.sites)){
