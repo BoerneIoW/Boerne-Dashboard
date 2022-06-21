@@ -410,7 +410,7 @@ old.pcp <- read.csv(paste0(swd_data, "pcp/historic_pcp_data.csv")) %>% mutate(da
    state_fips = paste0("FIPS:", stateFips)
 
 #lets find stations in TX
-   noaa.stations <- ghcnd_stations()
+   noaa.stations <- ghcnd_stations(refresh=TRUE)
    #takes a long time to run... save out file for later
    #write.csv(noaa.stations, paste0(swd_data,"pcp/noaa_stations.csv"), row.names = FALSE)
    #noaa.stations <- read.csv(paste0(swd_data,"pcp/noaa_stations.csv"))
@@ -420,11 +420,11 @@ old.pcp <- read.csv(paste0(swd_data, "pcp/historic_pcp_data.csv")) %>% mutate(da
    noaa.boerne.stations <- noaa.stations %>% filter(id=="USC00410902" | id=="USC00411429" | id=="USC00411433" | id=="USC00411434" | id=="USC00411920") #filter the specific site(s) of interest
    noaa.boerne.sites <- noaa.boerne.stations %>% filter(element == "PRCP")
    noaa.boerne.sites <- noaa.boerne.sites %>% filter(first_year <= 2015)
-   noaa.boerne.sites <- noaa.boerne.sites %>% filter(last_year == current.year-1) 
+   noaa.boerne.sites <- noaa.boerne.sites %>% filter(last_year == current.year) 
    
 #Or if we want daily summaries
    # Fetch more information about location id FIPS:48
-   daily.stations <- ncdc_locs(datasetid = 'GHCND', locationcategoryid = "ST", token = ncdc_token) #Global Historical Climatological Network Daily
+   #daily.stations <- ncdc_locs(datasetid = 'GHCND', locationcategoryid = "ST", token = ncdc_token) #Global Historical Climatological Network Daily
    # Fetch available locations for the GHCND (Daily Summaries) dataset
    ## change ST in locationcategoryid
    
@@ -452,7 +452,7 @@ sites <- noaa.boerne.sites
    
 # Modify this to fit the number of unique sites you need to loop through 
    length(unique.stations) # Split up calls according to the number of unique stations
-   dat.a <- ghcnd(stationid = unique.stations[1:5], token = ncdc_token)
+   dat.a <- ghcnd(stationid = unique.stations[1:5], refresh = TRUE, token = ncdc_token)
    #dat.b <- ghcnd(stationid = unique.stations[100:199], token = ncdc_token)
    #dat.c <- ghcnd(stationid = unique.stations[200:299], token = ncdc_token)
    #dat.d <- ghcnd(stationid = unique.stations[300:399], token = ncdc_token)
@@ -538,9 +538,11 @@ summary(noaa.all.station.data)
    noaa.all.station.data2$pcp_in <- trunc(noaa.all.station.data2$pcp_in*100)/100
    #remove pcp_mm
    noaa.all.station.data2 <- subset(noaa.all.station.data2, select=-c(pcp_mm))
+
 ##################################################################################################################################################################
 #
-#  Combine New Synoptic and NOAA Data: synoptic data no longer available so just use NOAA for now
+#  Combine New Synoptic and NOAA Data: synoptic data no longer available for new data so use NOAA and previously 
+#  obtained synoptic data for now
 #
 #################################################################################################################################################################
 #data
@@ -548,8 +550,16 @@ summary(noaa.all.station.data)
    # new.all.station.data <- new.all.station.data %>% mutate(date = as.Date(date)) # precaution to make sure all are in the same date format
    # check.last.date <- new.all.station.data %>% filter(date == max(date)) %>% dplyr::select(date)
    # table(check.last.date$date)
+   texmes_pcp_data <- read.csv(paste0(swd_data,"pcp/texmes_pcp_data.csv"), header = TRUE)
+   texmes_pcp_data <- texmes_pcp_data %>% filter(year >= 2022)
+   texmes_pcp_data2 <- subset(texmes_pcp_data, id != "USC00410902" & id != "USC00411433" & id != "USC00411920" & id != "USC00411434" & id != "USC00411429")
+   texmes_pcp_data2 <- texmes_pcp_data2 %>% mutate(date = as.Date(date)) 
    
-   new.all.station.data <- noaa.all.station.data2
+   new.all.station.data <- rbind(texmes_pcp_data2, noaa.all.station.data2)
+   new.all.station.data <- new.all.station.data %>% mutate(date = as.Date(date)) # precaution to make sure all are in the same date format
+   check.last.date <- new.all.station.data %>% group_by(id) %>% filter(date == max(date)) %>% dplyr::select(date)
+   table(check.last.date$date)
+   
 ##################################################################################################################################################################
 #
 #  Combine New and Old Data 
@@ -682,7 +692,8 @@ ytd.now <- merge(ytd.now, ytd2, by.x=c("id", "julian"), by.y=c("id","julian"), a
 ytd.now <- ytd.now %>% mutate(status = ifelse(pcp_in <= flow10, "Extremely Dry", ifelse(pcp_in > flow10 & pcp_in <= flow25, "Very Dry", ifelse(pcp_in >= flow25 & pcp_in < flow50, "Moderately Dry", 
                                                                                                                                                ifelse(pcp_in >= flow50 & pcp_in < flow75, "Moderately Wet", ifelse(pcp_in >= flow75 & pcp_in < flow90, "Very Wet", ifelse(pcp_in >= flow90, "Extremely Wet", "Unknown")))))))
 ytd.now <- ytd.now %>% mutate(date = as.Date(date)) %>% mutate(status = ifelse(is.na(status)==TRUE, "Unknown", status)) %>%
-   mutate(status = ifelse(date <= (max(date)-10), "Unknown", status)) 
+ytd.now <- ytd.now %>% mutate(date = as.Date(date)) %>% mutate(status = ifelse(is.na(status)==TRUE, "Unknown", status)) %>%
+   # mutate(status = ifelse(date <= (max(date)-10), "Unknown", status))
 ytd.now <- ytd.now%>% distinct() # site GBVT2 was duplicated for some reason 
 table(ytd.now$status, useNA="ifany")
 
