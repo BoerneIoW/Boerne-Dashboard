@@ -303,98 +303,101 @@ old.pcp <- read.csv(paste0(swd_data, "pcp/historic_pcp_data.csv")) %>% mutate(da
 # https://developers.synopticdata.com/mesonet/v2/stations/precipitation/
 
 # Base URL & station ID list for API calls: 
-   base.pcp.url <- "https://api.synopticdata.com/v2/stations/precip?stid=" #this is same for all sites
-   site.ids <- c("cict2", "twb03", "gubt2", "gbft2", "gbkt2", "gbjt2", 
-                 "gbrt2", "gbtt2", "gbvt2", "gbmt2", "gbst2", "gbdt2", "gbqt2",
-                 "gupt2", "smct2", "ea004", "ea006", "ea035") #this is the part that changes
-   
-   start_date = "202201011200" # this is the format needed for the listed website above
-   end_date <- as.POSIXct(today)
-   end_date = end_date +
-      hours(12)
-   end_date <- as.character(end_date)
-   end_date <- gsub('\\s+', '', end_date)
-   end_date <- gsub('-', '', end_date)
-   end_date <- gsub(':', '', end_date)
-   end_date <- substr(end_date, 1,12)
-   url_time_start = paste0("&start=",start_date)
-   url_time_end = paste0("&end=",end_date)
-   
-   addl.pars.url <- "&pmode=intervals&interval=day&units=english" #this is same for all sites
-
-   texmesonet.token <- "2517050a33774d43a7ff0557daf50271"
-   url_token = paste0("&token=", texmesonet.token)
-   
-# Pull the data   
-   # create empty storage dfs
-   synoptic.all.station.metadata <- matrix(nrow = 0, ncol = 14) %>% as.data.frame()
-   colnames(synoptic.all.station.metadata) <- c("STATUS", "MNET_ID", "ELEVATION", "NAME",                  
-                                                "STID", "ELEV_DEM", "LONGITUDE", "STATE",                 
-                                                "RESTRICTED", "LATITUDE", "TIMEZONE", "ID",                    
-                                                "PERIOD_OF_RECORD.start", "PERIOD_OF_RECORD.end")
-   
-   synoptic.all.station.data <- matrix(nrow = 0, ncol = 8) %>% as.data.frame()
-   colnames(synoptic.all.station.data) <- c("count", "first_report", "interval", "report_type", "last_report",
-                                            "total", "station", "agency")
-      
-      # create a list of assigned stations to their agencies
-      HADS <- c("CICT2", "GUBT2", "SMCT2")
-      TWDB <- c("TWB03")
-      EAA <- c("EA004", "EA006", "EA035")
-      GBRA <- c("GBFT2", "GBKT2", "GBJT2", "GBRT2", "GBTT2", "GBVT2", "GBMT2", "GBST2", "GBDT2", "GBQT2")
-      RAWS <- c("GUPT2")
-                                
-   # loop through sites and pull data
-   for(i in 1:length(site.ids)) {
-      api.url <- paste0(base.pcp.url, site.ids[i], url_time_start, url_time_end, addl.pars.url, url_token)
-      api.return <- fromJSON(api.url, flatten = TRUE)
-      api.station <- api.return$STATION
-      api.station.metadata <- subset(api.station, select=-c(OBSERVATIONS.precipitation))
-      api.station.data <- api.station$OBSERVATIONS.precipitation
-      api.station.data <- do.call(rbind.data.frame, api.station.data)
-      api.station.data$station <- api.station.metadata[1,5]
-      api.station.data$agency <- case_when(
-         api.station.data$station %in% HADS ~ "HADS",
-         api.station.data$station %in% TWDB ~ "TWDB",
-         api.station.data$station %in% EAA ~ "EAA", 
-         api.station.data$station %in% GBRA ~ "GBRA",
-         api.station.data$station %in% RAWS ~ "RAWS"
-      )
-      api.station.metadata$agency <- case_when(
-         api.station.metadata$STID %in% HADS ~ "HADS",
-         api.station.metadata$STID %in% TWDB ~ "TWDB",
-         api.station.metadata$STID %in% EAA ~ "EAA", 
-         api.station.metadata$STID %in% GBRA ~ "GBRA",
-         api.station.metadata$STID %in% RAWS ~ "RAWS"
-      )
-      # Now bind it up to save out
-      synoptic.all.station.metadata <- rbind(synoptic.all.station.metadata, api.station.metadata)
-      synoptic.all.station.data <- rbind(synoptic.all.station.data, api.station.data)
-      
-      # Keep an eye on the progress:
-      print(paste0("Completed pull for ", site.ids[i], ". ", round(i*100/length(site.ids), 2), "% complete."))
-   }
-
-            
-# clean new data
-      synoptic.all.station.data2 <- select(synoptic.all.station.data, c(2, 5, 6, 7))
-      
-      # make sure there are no duplicates
-      synoptic.all.station.data2 <- unique(synoptic.all.station.data2[c("station", "first_report", "last_report", "total")])
-      
-      # choose last report as the date and rename columns
-      synoptic.all.station.data2 <- select(synoptic.all.station.data2, c(1, 3, 4))
-      synoptic.all.station.data2 <- rename(synoptic.all.station.data2, id = "station", date = "last_report", pcp_in = "total")
-      
-      #format dates
-      synoptic.all.station.data2$year <- year(synoptic.all.station.data2$date)
-      synoptic.all.station.data2$month <- month(synoptic.all.station.data2$date)
-      synoptic.all.station.data2$day <- day(synoptic.all.station.data2$date)
-      synoptic.all.station.data2 <- synoptic.all.station.data2 %>% mutate(date = as.POSIXct(date, format = "%Y-%m-%d"))
-      
-      #check the last date
-      check.last.date <- synoptic.all.station.data2 %>% filter(date == max(date)) %>% dplyr::select(date)
-      table(check.last.date$date)
+#    base.pcp.url <- "https://api.synopticdata.com/v2/stations/timeseries?stid=" #this is same for all sites
+#    site.ids <- c("cict2", "twb03", "gubt2", "gbft2", "gbkt2", "gbjt2",
+#                  "gbrt2", "gbtt2", "gbvt2", "gbmt2", "gbst2", "gbdt2", "gbqt2",
+#                  "gupt2", "smct2", "ea004", "ea006", "ea035") #this is the part that changes
+# 
+#    start_date = "202201011200" # this is the format needed for the listed website above
+#    end_date <- as.POSIXct(today)
+#    end_date = end_date +
+#       hours(12)
+#    end_date <- as.character(end_date)
+#    end_date <- gsub('\\s+', '', end_date)
+#    end_date <- gsub('-', '', end_date)
+#    end_date <- gsub(':', '', end_date)
+#    end_date <- substr(end_date, 1,12)
+#    url_time_start = paste0("&start=",start_date)
+#    url_time_end = paste0("&end=",end_date)
+# 
+#    addl.pars.url <- "&precip=1&units=english" #this is same for all sites
+# 
+#    texmesonet.token <- "67d666866fcd4cd384aafea43b3184af"
+#    url_token = paste0("&token=", texmesonet.token)
+# 
+# # Pull the data
+#    # create empty storage dfs
+#    synoptic.all.station.metadata <- matrix(nrow = 0, ncol = 15) %>% as.data.frame()
+#    colnames(synoptic.all.station.metadata) <- c("STATUS", "MNET_ID", "ELEVATION", "NAME",
+#                                                 "STID", "ELEV_DEM", "LONGITUDE", "STATE",
+#                                                 "RESTRICTED", "QC_FLAGGED", "LATITUDE", "TIMEZONE", "ID",
+#                                                 "PERIOD_OF_RECORD.start", "PERIOD_OF_RECORD.end")
+# 
+#    synoptic.all.station.data <- matrix(nrow = 0, ncol = 8) %>% as.data.frame()
+#    colnames(synoptic.all.station.data) <- c("count", "first_report", "interval", "report_type", "last_report",
+#                                             "total", "station", "agency")
+# 
+#       # create a list of assigned stations to their agencies
+#       HADS <- c("CICT2", "GUBT2", "SMCT2")
+#       TWDB <- c("TWB03")
+#       EAA <- c("EA004", "EA006", "EA035")
+#       GBRA <- c("GBFT2", "GBKT2", "GBJT2", "GBRT2", "GBTT2", "GBVT2", "GBMT2", "GBST2", "GBDT2", "GBQT2")
+#       RAWS <- c("GUPT2")
+# 
+# 
+#    # loop through sites and pull data
+#    for(i in 1:length(site.ids)) {
+#       api.url <- paste0(base.pcp.url, site.ids[i], url_time_start, url_time_end, addl.pars.url, url_token)
+#       api.return <- fromJSON(api.url, flatten = TRUE)
+#       api.station <- api.return$STATION
+#       api.station.metadata <- subset(api.station, select=-c(16:53))
+#       api.station.data <- api.station$OBSERVATIONS.precip_accumulated_set_1d
+#       api.station.data <- unlist(api.station.data)
+#       api.station.data <- as.data.frame(api.station.data)
+#       api.station.data <- do.call(rbind.data.frame, api.station.data)
+#       api.station.data$station <- api.station.metadata[1,5]
+#       api.station.data$agency <- case_when(
+#          api.station.data$station %in% HADS ~ "HADS",
+#          api.station.data$station %in% TWDB ~ "TWDB",
+#          api.station.data$station %in% EAA ~ "EAA",
+#          api.station.data$station %in% GBRA ~ "GBRA",
+#          api.station.data$station %in% RAWS ~ "RAWS"
+#       )
+#       api.station.metadata$agency <- case_when(
+#          api.station.metadata$STID %in% HADS ~ "HADS",
+#          api.station.metadata$STID %in% TWDB ~ "TWDB",
+#          api.station.metadata$STID %in% EAA ~ "EAA",
+#          api.station.metadata$STID %in% GBRA ~ "GBRA",
+#          api.station.metadata$STID %in% RAWS ~ "RAWS"
+#       )
+#       # Now bind it up to save out
+#       synoptic.all.station.metadata <- rbind(synoptic.all.station.metadata, api.station.metadata)
+#       synoptic.all.station.data <- rbind(synoptic.all.station.data, api.station.data)
+# 
+#       # Keep an eye on the progress:
+#       print(paste0("Completed pull for ", site.ids[i], ". ", round(i*100/length(site.ids), 2), "% complete."))
+#    }
+# 
+# 
+# # clean new data
+#       synoptic.all.station.data2 <- select(synoptic.all.station.data, c(2, 5, 6, 7))
+# 
+#       # make sure there are no duplicates
+#       synoptic.all.station.data2 <- unique(synoptic.all.station.data2[c("station", "first_report", "last_report", "total")])
+# 
+#       # choose last report as the date and rename columns
+#       synoptic.all.station.data2 <- select(synoptic.all.station.data2, c(1, 3, 4))
+#       synoptic.all.station.data2 <- rename(synoptic.all.station.data2, id = "station", date = "last_report", pcp_in = "total")
+# 
+#       #format dates
+#       synoptic.all.station.data2$year <- year(synoptic.all.station.data2$date)
+#       synoptic.all.station.data2$month <- month(synoptic.all.station.data2$date)
+#       synoptic.all.station.data2$day <- day(synoptic.all.station.data2$date)
+#       synoptic.all.station.data2 <- synoptic.all.station.data2 %>% mutate(date = as.POSIXct(date, format = "%Y-%m-%d"))
+# 
+#       #check the last date
+#       check.last.date <- synoptic.all.station.data2 %>% filter(date == max(date)) %>% dplyr::select(date)
+#       table(check.last.date$date)
 
 ##################################################################################################################################################################
 #
@@ -537,15 +540,16 @@ summary(noaa.all.station.data)
    noaa.all.station.data2 <- subset(noaa.all.station.data2, select=-c(pcp_mm))
 ##################################################################################################################################################################
 #
-#  Combine New Synoptic and NOAA Data 
+#  Combine New Synoptic and NOAA Data: synoptic data no longer available so just use NOAA for now
 #
 #################################################################################################################################################################
 #data
-   new.all.station.data <- rbind(synoptic.all.station.data2, noaa.all.station.data2) 
-   new.all.station.data <- new.all.station.data %>% mutate(date = as.Date(date)) # precaution to make sure all are in the same date format
-   check.last.date <- new.all.station.data %>% filter(date == max(date)) %>% dplyr::select(date)
-   table(check.last.date$date)
+   # new.all.station.data <- rbind(synoptic.all.station.data2, noaa.all.station.data2) 
+   # new.all.station.data <- new.all.station.data %>% mutate(date = as.Date(date)) # precaution to make sure all are in the same date format
+   # check.last.date <- new.all.station.data %>% filter(date == max(date)) %>% dplyr::select(date)
+   # table(check.last.date$date)
    
+   new.all.station.data <- noaa.all.station.data2
 ##################################################################################################################################################################
 #
 #  Combine New and Old Data 
