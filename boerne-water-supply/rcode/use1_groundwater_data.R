@@ -222,7 +222,7 @@ boerne.sites2 <- merge(boerne.sites2 %>% dplyr::select(-date), recent.flow[,c("s
 boerne.sites2 <- boerne.sites2 %>% dplyr::select(agency, site, location, elevation, total_depth, aquifer, status, depth_ft, julian, flow50, date, geometry)
 boerne.sites2 <- rename(boerne.sites2, AgencyCd = agency, SiteName = location, WellDepth = total_depth, LocalAquiferName = aquifer)
 geojson_write(boerne.sites2, file=paste0(swd_data, "gw/all_gw_sites.geojson"))
-mapview::mapview(boerne.sites2)
+#mapview::mapview(boerne.sites2)
 
 #plot for fun
 #boerne.sites2 <- boerne.sites2 %>% mutate(colorStatus = ifelse(status=="Extremely Dry", "darkred", 

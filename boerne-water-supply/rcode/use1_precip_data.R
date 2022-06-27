@@ -691,9 +691,8 @@ ytd.now <- merge(ytd.now, ytd2, by.x=c("id", "julian"), by.y=c("id","julian"), a
 
 ytd.now <- ytd.now %>% mutate(status = ifelse(pcp_in <= flow10, "Extremely Dry", ifelse(pcp_in > flow10 & pcp_in <= flow25, "Very Dry", ifelse(pcp_in >= flow25 & pcp_in < flow50, "Moderately Dry", 
                                                                                                                                                ifelse(pcp_in >= flow50 & pcp_in < flow75, "Moderately Wet", ifelse(pcp_in >= flow75 & pcp_in < flow90, "Very Wet", ifelse(pcp_in >= flow90, "Extremely Wet", "Unknown")))))))
-ytd.now <- ytd.now %>% mutate(date = as.Date(date)) %>% mutate(status = ifelse(is.na(status)==TRUE, "Unknown", status)) %>%
-ytd.now <- ytd.now %>% mutate(date = as.Date(date)) %>% mutate(status = ifelse(is.na(status)==TRUE, "Unknown", status)) %>%
-   # mutate(status = ifelse(date <= (max(date)-10), "Unknown", status))
+# ytd.now <- ytd.now %>% mutate(date = as.Date(date)) %>% mutate(status = ifelse(is.na(status)==TRUE, "Unknown", status)) %>%
+#    mutate(status = ifelse(date <= (max(date)-10), "Unknown", status)) 
 ytd.now <- ytd.now%>% distinct() # site GBVT2 was duplicated for some reason 
 table(ytd.now$status, useNA="ifany")
 
