@@ -34,6 +34,10 @@ package.check <- lapply(
 install.packages("dataRetrieval", repos=c("http://owi.usgs.gov/R", getOption("repos")))
 library(dataRetrieval);  library(EGRET); #usgs links
 
+#automation packages
+#install.packages("cronR")
+library(cronR)
+
 ######################################################################################################################################################################
 
 
