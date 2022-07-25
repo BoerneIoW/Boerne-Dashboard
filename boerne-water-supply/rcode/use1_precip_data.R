@@ -332,9 +332,9 @@ old.pcp <- read.csv(paste0(swd_data, "pcp/historic_pcp_data.csv")) %>% mutate(da
                                                  "RESTRICTED", "QC_FLAGGED", "LATITUDE", "TIMEZONE", "ID",
                                                  "PERIOD_OF_RECORD.start", "PERIOD_OF_RECORD.end")
  
-    synoptic.all.station.data <- matrix(nrow = 0, ncol = 3) %>% as.data.frame()
+    synoptic.all.station.data <- matrix(nrow = 0, ncol = 5) %>% as.data.frame()
     colnames(synoptic.all.station.data) <- c("OBSERVATIONS.date_time", "OBSERVATIONS.precip_accumulated_set_1d",
-                                             "OBSERVATIONS.precip_intervals_set_1d")
+                                             "OBSERVATIONS.precip_intervals_set_1d", "station", "agency")
  
        # create a list of assigned stations to their agencies
        HADS <- c("CICT2", "GUBT2", "SMCT2")
@@ -394,7 +394,7 @@ old.pcp <- read.csv(paste0(swd_data, "pcp/historic_pcp_data.csv")) %>% mutate(da
       synoptic.all.station.data2$year <- year(synoptic.all.station.data2$date)
       synoptic.all.station.data2$month <- month(synoptic.all.station.data2$date)
       synoptic.all.station.data2$day <- day(synoptic.all.station.data2$date)
-      synoptic.all.station.data2 <- synoptic.all.station.data2 %>% mutate(date = as.POSIXct(date, format = "%Y-%m-%d"))
+      #synoptic.all.station.data2 <- synoptic.all.station.data2 %>% mutate(date = as.POSIXct(date, format = "%Y-%m-%d"))
 
       #check the last date
       check.last.date <- synoptic.all.station.data2 %>% filter(date == max(date)) %>% dplyr::select(date)
