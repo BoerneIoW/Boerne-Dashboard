@@ -379,7 +379,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
             y: yCurrent,
             mode: "lines",
             type: "scatter",
-            hovertemplate: "%{y:.1f} inches by %{x} " + currentYear,
+            hovertemplate: "%{y:.1f} mgd by %{x} " + currentYear,
             opacity: 1,
             line: { color: "black", width: 3 },
             name: "",
