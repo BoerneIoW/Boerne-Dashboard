@@ -84,6 +84,11 @@ for(i in 1:length(sheet.number)) {
   boerne_all_gw_levels$date <- format(as.Date(boerne_all_gw_levels$date), "%Y-%m-%d")
   boerne_all_gw_levels <- as.data.frame(boerne_all_gw_levels)
   
+  #remove na's
+  boerne_all_gw_levels <- na.omit(boerne_all_gw_levels)
+  boerne_all_gw_levels$depth_ft <- unlist(boerne_all_gw_levels$depth_ft)
+  boerne_all_gw_levels <- na.omit(boerne_all_gw_levels)
+  
   #add julian indexing
   nx <- boerne_all_gw_levels %>% mutate(year = year(date), day_month = substr(date, 6, 10))
   
@@ -109,6 +114,7 @@ for(i in 1:length(sheet.number)) {
   check.last.date <- new_boerne_gw_depth %>% filter(date == max(date)) %>% dplyr::select(date)
   table(check.last.date$date)
 
+  
 #combine old and new
 all_boerne_gw_depth <- rbind(old.data, new_boerne_gw_depth) %>% arrange(site, date)
 
