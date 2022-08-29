@@ -231,14 +231,14 @@ geojson_write(boerne.sites2, file=paste0(swd_data, "gw/all_gw_sites.geojson"))
 #mapview::mapview(boerne.sites2)
 
 #plot for fun
-#boerne.sites2 <- boerne.sites2 %>% mutate(colorStatus = ifelse(status=="Extremely Dry", "darkred", 
-#                                                               ifelse(status=="Very Dry", "red", 
-#                                                                      ifelse(status=="Moderately Dry", "orange", 
-#                                                                             ifelse(status=="Moderately Wet", "cornflowerblue",
-#                                                                                    ifelse(status=="Very Wet", "blue", 
-#                                                                                           ifelse(status=="Extremely Wet", "navy", "gray")))))))
-#leaflet() %>%  addProviderTiles("Stamen.TonerLite") %>% 
-#  addCircleMarkers(data = boerne.sites2, radius=4, fillOpacity= 0.8, fillColor = boerne.sites2$colorStatus, color="black", weight=0) 
+boerne.sites2 <- boerne.sites2 %>% mutate(colorStatus = ifelse(status=="Extremely Dry", "darkred", 
+                                                               ifelse(status=="Very Dry", "red", 
+                                                                      ifelse(status=="Moderately Dry", "orange", 
+                                                                             ifelse(status=="Moderately Wet", "cornflowerblue",
+                                                                                    ifelse(status=="Very Wet", "blue", 
+                                                                                           ifelse(status=="Extremely Wet", "navy", "gray")))))))
+leaflet() %>%  addProviderTiles("Stamen.TonerLite") %>% 
+  addCircleMarkers(data = boerne.sites2, radius=4, fillOpacity= 0.8, fillColor = boerne.sites2$colorStatus, color="black", weight=0) 
 
 
 #Now clip time series data to past two years and assign a depth based on stats
