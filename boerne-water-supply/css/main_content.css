@@ -11,7 +11,7 @@
    ========================================================================== */
 
 html {
-    color: #6c019c;
+    color: #001d67;
     font-size: 1em;
     line-height: 1.4;
 }
@@ -20,12 +20,12 @@ html {
  * Remove text-shadow in selection highlight:
 */
 ::-moz-selection {
-    background: #6c019c;
+    background: #001d67;
     text-shadow: none;
 }
 
 ::selection {
-    background: #6c019c;
+    background: #001d67;
     text-shadow: none;
 }
 
@@ -123,11 +123,11 @@ li {
 /*Make URL's IoW specific*/
 a {
     /*color: #831a1b;*/
-    color: #6c019c;
+    color: #001d67;
     text-decoration: underline;
 }
 a:hover {
-    color: #6c019c;
+    color: #001d67;
     text-decoration: underline;
 }
 
@@ -233,7 +233,7 @@ select {
 /*Header
 ---------------------------------------*/
 .header {
-    color: #000000;
+    color: #001d67;
     font-family: "Open Sans", sans-serif;
     font-size: 18px;
     margin: 5px 1px;
@@ -250,7 +250,7 @@ select {
 /*Headers for chart titles and map layers
 ---------------------------------------*/
 .chartTitles {
-    color: rgb(108, 1, 156);
+    color: rgb(000, 029, 103);
     font-family: "Open Sans", sans-serif;
     font-weight: bold;
     margin: 1px auto;
@@ -281,7 +281,7 @@ select {
 }
 
 .nav-pills > li > a {
-    color: rgb(108,1,156);
+    color: rgb(000, 029, 103);
     font-weight: bold;
     text-decoration: none;
 }
@@ -289,8 +289,8 @@ select {
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
-    background-color: #6c019c;
-    color: #ffd700;
+    background-color: #001d67;
+    color: #98d801;
     font-weight: bold;
 }
 
@@ -298,7 +298,7 @@ select {
 ---------------------------------------------------------*/
 .map-layers-row {
     background-color: rgb(240, 240, 240);
-    border: thin solid rgb(108, 1, 156);
+    border: thin solid rgb(000, 029, 103);
     margin: 1px 0 0 0;
     padding: 2px;
     text-align: center;
@@ -425,7 +425,7 @@ select {
 }
 .intro-bkgd {
     background-color: rgb(245, 245, 245);
-    border-bottom: solid 2px rgb(108, 1, 156);
+    border-bottom: solid 2px rgb(000, 029, 103);
     padding: 20px;
     position: relative;
     margin: 0 -10px;
@@ -460,7 +460,7 @@ footer {
 
 .left-footer {
     background-color: rgb(230, 230, 230);
-    border-right: solid 2px rgb(108, 1, 156);
+    border-right: solid 2px rgb(000, 029, 103);
     display: inline-block;
     left: 0;
     position: relative;
