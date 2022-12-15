@@ -686,8 +686,8 @@ $('button').on('click', function(){
                document.getElementById("moreForecastInfo").style.display = "block";
               }
             }
-          this.style.backgroundColor = '#6c019c';
-          this.style.color = "gold";
+          this.style.backgroundColor = '#001d67';
+          this.style.color = "#98d801";
         }
 
 
