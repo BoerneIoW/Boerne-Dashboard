@@ -185,7 +185,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
                     showline: false,
                     showgrid: true,
                     showticklabels: true,
-                    range: [0, maxYValue],
+                    range: [0, 6],
                 },
                 xaxis: {
                     showline: false,
@@ -395,7 +395,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
                 showline: false,
                 showgrid: false,
                 showticklabels: true,
-                range: [0, 1000],
+                range: [0, 1500],
             },
             xaxis: {
                 showline: false,
