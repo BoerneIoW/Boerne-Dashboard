@@ -1,1 +1,1 @@
-{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"NIDID":"TX00004","Name":"Canyon Lake","Jurisdiction":"USACE","status":"Extremely Dry","percent_storage":79,"julian":15,"flow50":96.82},"geometry":{"type":"Point","coordinates":[-98.1986111,29.8686111]}}]}
+{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"NIDID":"TX00004","Name":"Canyon Lake","Jurisdiction":"USACE","status":"Extremely Dry","percent_storage":78.85,"julian":20,"flow50":97.2},"geometry":{"type":"Point","coordinates":[-98.1986111,29.8686111]}}]}
