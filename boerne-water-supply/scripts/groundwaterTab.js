@@ -337,7 +337,7 @@ function plotGroundwater(gwID, checkedGW) {
     //draw the traces for all years but current
     var xYear2 = [];
     var minYear = d3.min(selGWMonthly.map(function (d) {  return d.year; }) );
-    for (var i = minYear; i <= 2022; i++) {
+    for (var i = minYear; i <= 2023; i++) {
       xYear2.push(i);
     }
     var showLegVal = true;
@@ -418,7 +418,7 @@ function plotGroundwater(gwID, checkedGW) {
       data4.push(selectTraces);
     }
 
-    //draw 2022 year
+    //draw 2023 year
     var yCurrent = selGWMonthly
       .filter(function (d) {
         return d.year === currentYear;
@@ -426,7 +426,7 @@ function plotGroundwater(gwID, checkedGW) {
       .map(function (d) {
         return d.mean_depth_ft;
       });
-    var trace2022 = {
+    var trace2023 = {
       x: xMonth,
       y: yCurrent,
       mode: "lines+markers",
@@ -438,7 +438,7 @@ function plotGroundwater(gwID, checkedGW) {
       name: currentYear,
       showlegend: true,
     };
-    data4.push(trace2022);
+    data4.push(trace2023);
 
     //PLOT CHART
     var gwlayout4 = {

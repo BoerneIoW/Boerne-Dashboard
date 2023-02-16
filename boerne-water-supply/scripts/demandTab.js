@@ -21,7 +21,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
     //read in demand data
     d3.csv("data/demand/all_total_demand.csv").then(function (demandData) {
         demandData.forEach(function (d) {
-            d.date3 = parseDate("2022-" + d.date2.substring(5, d.date2.length));
+            d.date3 = parseDate("2023-" + d.date2.substring(5, d.date2.length));
             d.demand_mgd = +d.demand_mgd;
             d.month = +d.month;
             d.year = +d.year;
@@ -172,7 +172,7 @@ function createDemandInfo(myUtilityID, checkedDemand) {
                 line: { color: "rgb(43,28,88", width: 3 },
                 mode: "lines",
                 type: "scatter",
-                name: "2022",
+                name: "2023",
                 showlegend: true,
                 hovertemplate: "%{y:.1f} mgd in %{x}",
             };

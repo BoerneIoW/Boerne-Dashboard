@@ -40,7 +40,7 @@ function plotPrecipitation(pcpID, checked) {
         //draw the traces for all years but current
         var xYear = [];
         var minYear = d3.min(selpcp.map(function (d) {  return d.year; }) );
-        for (var i = minYear; i <= 2022; i++) {
+        for (var i = minYear; i <= 2023; i++) {
             xYear.push(i);
         }
 
@@ -123,7 +123,7 @@ function plotPrecipitation(pcpID, checked) {
             data.push(selectTraces);
         }
 
-        //draw 2022 year
+        //draw 2023 year
         var yCurrent = selpcp
             .filter(function (d) {
                 return d.year === currentYear;
@@ -131,7 +131,7 @@ function plotPrecipitation(pcpID, checked) {
             .map(function (d) {
                 return d.pcp_in;
             });
-        var trace2022 = {
+        var trace2023 = {
             x: xMonth,
             y: yCurrent,
             mode: "lines+markers",
@@ -143,7 +143,7 @@ function plotPrecipitation(pcpID, checked) {
             name: currentYear,
             showlegend: true,
         };
-        data.push(trace2022);
+        data.push(trace2023);
 
         //PLOT CHART
         var layout = {
@@ -180,7 +180,7 @@ function plotPrecipitation(pcpID, checked) {
     //parseDate = d3.timeParse("%Y-%b-%d");
     d3.csv("data/pcp/all_pcp_cum_total.csv").then(function (cumpcp) {
         cumpcp.forEach(function (d) {
-            //d.date = parseDate(("2022-"+d.date));
+            //d.date = parseDate(("2023-"+d.date));
             d.year = +d.year;
             d.julian = +d.julian;
             d.pcp_in = +d.pcp_in;
@@ -208,7 +208,7 @@ function plotPrecipitation(pcpID, checked) {
             })
         );
 
-        for (var i = minYear; i <= 2022; i++) {
+        for (var i = minYear; i <= 2023; i++) {
             xYear.push(i);
         }
 
@@ -292,7 +292,7 @@ function plotPrecipitation(pcpID, checked) {
             cumdata.push(selectTraces);
         }
 
-        //draw 2022 year
+        //draw 2023 year
         var yCurrent = selpcp
             .filter(function (d) {
                 return d.year === currentYear;
@@ -307,7 +307,7 @@ function plotPrecipitation(pcpID, checked) {
             .map(function (d) {
                 return d.date;
             });
-        var trace2022 = {
+        var trace2023 = {
             x: xJulian,
             y: yCurrent,
             mode: "lines",
@@ -317,7 +317,7 @@ function plotPrecipitation(pcpID, checked) {
             line: { color: "black", width: 3 },
             name: "",
         };
-        cumdata.push(trace2022);
+        cumdata.push(trace2023);
 
         //PLOT CHART
         var layout = {

@@ -21,7 +21,7 @@ function createReclaimedInfo(myUtilityID, checkedReclaimed) {
     //read in reclaimed data
     d3.csv("data/demand/all_reclaimed_water.csv").then(function (reclaimedData) {
         reclaimedData.forEach(function (d) {
-            d.date3 = parseDate("2022-" + d.date2.substring(5, d.date2.length));
+            d.date3 = parseDate("2023-" + d.date2.substring(5, d.date2.length));
             d.reclaimed = +d.reclaimed;
             d.month = +d.month;
             d.year = +d.year;
@@ -172,7 +172,7 @@ function createReclaimedInfo(myUtilityID, checkedReclaimed) {
                 line: { color: "rgb(43,28,88", width: 3 },
                 mode: "lines",
                 type: "scatter",
-                name: "2022",
+                name: "2023",
                 showlegend: true,
                 hovertemplate: "%{y:.1f} mgd in %{x}",
             };
@@ -248,7 +248,7 @@ function createReclaimedInfo(myUtilityID, checkedReclaimed) {
 
     d3.csv("data/demand/all_reclaimed_percent_of_total.csv").then(function (reclaimedpercentData) {
         reclaimedpercentData.forEach(function (d) {
-            d.date3 = parseDate("2022-" + d.date2.substring(5, d.date2.length));
+            d.date3 = parseDate("2023-" + d.date2.substring(5, d.date2.length));
             d.reclaimedpercent = +d.percent_of_total;
             d.month = +d.month;
             d.year = +d.year;
@@ -388,7 +388,7 @@ function createReclaimedInfo(myUtilityID, checkedReclaimed) {
                 line: { color: "rgb(43,28,88", width: 3 },
                 mode: "lines",
                 type: "scatter",
-                name: "2022",
+                name: "2023",
                 showlegend: true,
                 hovertemplate: "%{y:.1f}% of total in %{x}",
             };
