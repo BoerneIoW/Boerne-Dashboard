@@ -61,7 +61,7 @@ end.date <- paste0("12/31/", year(today))
 #create dataframe and pull new data
 drought.time <- as.data.frame(matrix(nrow=0, ncol=9)); colnames(drought.time) <- c("huc8","name","date","none","d0","d1","d2","d3","d4")
 for (m in 1:length(huc.list)){
-   full_url <-paste0("https://usdmdataservices.unl.edu/api/HUCStatistics/GetDroughtSeverityStatisticsByAreaPercent?aoi=",huc.list[m],"&startdate=",last.date,"&enddate=", end.date, "&statisticsType=1")
+   full_url <-paste0("https://usdmdataservices.unl.edu/api/HUCStatistics/GetDroughtSeverityStatisticsByAreaPercent?aoi=",huc.list[m],"&startdate=",last.date,"&enddate=", end.date, "&statisticsType=1&hucLevel=8")
    api.data <- GET(full_url, timeout(15000)) #use httr libirary to avoid timeout
    df <- content(api.data, "parse")
    
